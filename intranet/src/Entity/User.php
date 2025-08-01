@@ -6,10 +6,12 @@ use App\Enum\UserRole;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -109,5 +111,23 @@ class User
         $this->role = $role;
 
         return $this;
+    }
+
+    // Implement UserInterface & PasswordAuthenticatedUserInterface methods
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getRoles(): array
+    {
+        // Assuming your UserRole enum values are strings like "ROLE_ADMIN"
+        return $this->role ? [$this->role->value] : [];
+    }
+
+    public function eraseCredentials(): void
+    {
+        // If you had any temporary sensitive data, clear it here.
     }
 }

@@ -1,0 +1,4 @@
+# config/routes/logout.yaml
+app_logout:
+    path: /logout
+    controller: null

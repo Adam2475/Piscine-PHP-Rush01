@@ -1,5 +1,13 @@
+# config/routes.yaml
+
+# Load all routes defined with PHP 8+ attributes in the src/Controller directory
 controllers:
     resource:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+# Load logout route from separate YAML file
+logout:
+    resource: logout.yaml
+    type: yaml

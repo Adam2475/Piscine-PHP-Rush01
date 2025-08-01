@@ -1,0 +1,52 @@
+# config/packages/security.yaml
+security:
+    password_hashers:
+        # Use 'auto' algorithm for your User entity which implements PasswordAuthenticatedUserInterface
+        App\Entity\User:
+            algorithm: auto
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            lazy: true
+            provider: app_user_provider
+
+            form_login:
+                login_path: login
+                check_path: login
+                default_target_path: homepage
+                # Optional: Uncomment if you want to enable remember me functionality
+                # remember_me: true
+
+            logout:
+                path: app_logout  # This is the route name, not URL
+                target: app_login # Optional: redirect to login after logout
+
+            custom_authenticator: App\Security\IntranetAuthenticator
+
+            # Add this line to specify which authenticator triggers the login process
+            entry_point: form_login
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+                # by default, the feature is enabled by checking a checkbox in the
+                # login form, uncomment the following line to always enable it.
+                # always_remember_me: true
+
+    access_control:
+        # Admin backend access - only ROLE_ADMIN
+        - { path: ^/admin, roles: ROLE_ADMIN }
+
+        # User profile and other logged-in areas
+        - { path: ^/profile, roles: ROLE_USER }
