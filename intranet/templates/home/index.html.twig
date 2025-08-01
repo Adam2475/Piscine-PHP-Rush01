@@ -3,6 +3,11 @@
 {% block title %}Homepage{% endblock %}
 
 {% block body %}
+
+    {% if user %}
+        <button><a href="userpage">personal</a></button>
+    {% endif %}
+
     <h1>Welcome to the Intranet</h1>
 
     <a href="{{ path('app_logout') }}">Logout</a>
