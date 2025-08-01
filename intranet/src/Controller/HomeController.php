@@ -1,17 +1,21 @@
 <?php
-
+// src/Controller/HomeController.php
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'homepage')]
     public function index(): Response
     {
-        return $this->render('home/index.html.twig');
+        // Get the logged-in user (or null if not logged in)
+        $user = $this->getUser();
+
+        return $this->render('home/index.html.twig', [
+            'user' => $user,
+        ]);
     }
 }
