@@ -29,7 +29,7 @@ security:
 
             logout:
                 path: app_logout  # This is the route name, not URL
-                target: app_login # Optional: redirect to login after logout
+                target: / # Optional: redirect to login after logout
 
             custom_authenticator: App\Security\IntranetAuthenticator
 
@@ -40,6 +40,7 @@ security:
                 secret: '%kernel.secret%'
                 lifetime: 604800
                 path: /
+                remember_me_parameter: _remember_me
                 # by default, the feature is enabled by checking a checkbox in the
                 # login form, uncomment the following line to always enable it.
                 # always_remember_me: true

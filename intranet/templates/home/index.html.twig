@@ -12,16 +12,22 @@
 
     <a href="{{ path('app_logout') }}">Logout</a>
 
-    {% if user %}
-        <h2>User Information</h2>
-        <ul>
-            <li><strong>First Name:</strong> {{ user.firstName }}</li>
-            <li><strong>Last Name:</strong> {{ user.lastName }}</li>
-            <li><strong>Email:</strong> {{ user.email }}</li>
-            <li><strong>Role:</strong> {{ user.roles|join(', ') }}</li>
-            <li><strong>Account Created:</strong> {{ user.created ? user.created|date('Y-m-d') : 'N/A' }}</li>
-        </ul>
-    {% else %}
-        <p>You are not logged in.</p>
+    <h2>User Information</h2>
+    <ul>
+        <li><strong>First Name:</strong> {{ user.firstName }}</li>
+        <li><strong>Last Name:</strong> {{ user.lastName }}</li>
+        <li><strong>Email:</strong> {{ user.email }}</li>
+        <li><strong>Role:</strong> {{ user.roles|join(', ') }}</li>
+        <li><strong>Account Created:</strong> {{ user.created ? user.created|date('Y-m-d') : 'N/A' }}</li>
+    </ul>
+
+    {% if registrationForm is not null %}
+        <h2>Register a New User</h2>
+        {{ form_start(registrationForm) }}
+            {{ form_widget(registrationForm) }}
+            <button class="btn btn-primary">Register</button>
+        {{ form_end(registrationForm) }}
     {% endif %}
-{% endblock %}
+{% else %}
+    <a href="{{ path('app_login') }}">Login</a>
+{% endif %}
