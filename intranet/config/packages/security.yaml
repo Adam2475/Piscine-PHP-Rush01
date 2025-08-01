@@ -1,0 +1,40 @@
+# config/packages/security.yaml
+security:
+    password_hashers:
+        # Use 'auto' algorithm for your User entity which implements PasswordAuthenticatedUserInterface
+        App\Entity\User:
+            algorithm: auto
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            lazy: true
+            provider: app_user_provider
+
+            form_login:
+                login_path: login
+                check_path: login
+                default_target_path: homepage
+                # Optional: Uncomment if you want to enable remember me functionality
+                # remember_me: true
+
+            logout:
+                path: logout
+                target: /
+
+    access_control:
+        # Admin backend access - only ROLE_ADMIN
+        - { path: ^/admin, roles: ROLE_ADMIN }
+
+        # User profile and other logged-in areas
+        - { path: ^/profile, roles: ROLE_USER }
+
