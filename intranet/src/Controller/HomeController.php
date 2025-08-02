@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 use App\Enum\UserRole;
 
@@ -53,7 +54,11 @@ final class HomeController extends AbstractController
                     ->htmlTemplate('emails/confirmation.html.twig')
                     ->context([
                         'user' => $newUser,
-                        'confirmationUrl' => $this->generateUrl('app_confirm_account', ['token' => $token], true),
+                        'confirmationUrl' => $this->generateUrl(
+                            'app_confirm_account',
+                            ['token' => $newUser->getConfirmationToken()],
+                            UrlGeneratorInterface::ABSOLUTE_URL
+                        ),
                     ]);
 
                 $mailer->send($email);
