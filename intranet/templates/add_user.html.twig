@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | add User
+{% endblock %}
+
+{% block body %} 
+    <form action="{{ path('insert_user') }}" method="post">
+    <label>First Name: <input type="text" name="firt_name" required></label><br>
+    <label>Last Name: <input type="text" name="last_name" required></label><br>
+    <label>Email: <input type="email" name="email" required></label><br>
+    <label>Role: <input type="text" name="role" required></label><br>
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock %}

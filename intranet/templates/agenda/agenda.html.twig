@@ -1,48 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AgendaController!{% endblock %}
-
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+
+<h1>Agenda</h1>
 
 <div class="example-wrapper">
-    <h1>{{ controller_name }}! ✅</h1>
-    {% if events %}
-    <ul>
-    {% for event in events %}
-        <li>
-            <p>{{event.name}}</p>
-            <h3 class="event-title">{{event.title}}</h3>
-            {% if event.participants < event.maxParticipants %}
-            <div class="event-container">
-                <div class="date-container">
-                    <p>{{ event.date|date('Y-m-d') }}</p>
-                    <p>{{ event.startTime|date('H:i') }} h</p>
-                    <p>{{ event.endTime|date('H:i') }} h</p>
-                    <p>{{ event.duration }} h</p>
-                </div>
-                <div class="event-description">
-                    {{event.description}}
-                </div>
-                <div class="event-participant">
-                    {{event.participants}}/{{event.maxParticipants}}
-                </div>
-            {% else %}
-                <div>
-                    This event is full!
-                </div>
-            {% endif %}
-            </div>
-        </li>
-    {% endfor %}
-    </ul>
-    {% else %}
-    <div>
-        No events scheduled!
-    <div>
-    {% endif %}
+	<h1>{{ controller_name }}! ✅</h1>
+	{% if events %}
+	<ul>
+	{% for event in events %}
+		<li>
+			<p>{{event.name}}</p>
+			<h3 class="event-title">{{event.title}}</h3>
+			{% if event.participants < event.maxParticipants %}
+			<div class="event-container">
+				<div class="date-container">
+					<p>{{ event.date|date('Y-m-d') }}</p>
+					<p>{{ event.startTime|date('H:i') }} h</p>
+					<p>{{ event.endTime|date('H:i') }} h</p>
+					<p>{{ event.duration }} h</p>
+				</div>
+				<div class="event-description">
+					{{event.description}}
+				</div>
+				<div class="event-participant">
+					{{event.participants}}/{{event.maxParticipants}}
+				</div>
+			{% else %}
+				<div>
+					This event is full!
+				</div>
+			{% endif %}
+			</div>
+		</li>
+	{% endfor %}
+	</ul>
+	{% else %}
+	<div>
+		No events scheduled!
+	<div>
+	{% endif %}
 </div>
 {% endblock %}

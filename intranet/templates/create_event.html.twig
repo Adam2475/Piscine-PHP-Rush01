@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    <title>Create Event<title>
+{% endblock %}
+
+{% body block %}
+
+<form action="{{ path('insert_event') }}" method="post">
+<div class="add_event">
+    <label>Event Name: <input type="text" name="event_name" required></label><br>
+    <label>Max nbr Participants: <input type="number" name="max_participants" required></label><br>
+    <label>description: <textarea name="description" required></textarea></label><br>
+    <label>Day: <input type="date" name="date" required></label><br>
+    <label>Starting at: <input type="time" name="startTime" required></lablel><br>
+    <label>Ending at: <input type="time" name="endTime" required></lablel><br>
+    <button type="submit">Submit</button>
+</div>
+</form>
+
+{% endblock %}
