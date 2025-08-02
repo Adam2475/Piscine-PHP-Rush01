@@ -22,15 +22,11 @@ final class HomeController extends AbstractController
     #[Route('/', name: 'homepage')]
     public function index(Request $request, SearchBarService $searchBarService, EntityManagerInterface $em, MailerInterface $mailer): Response
     {
+        $id = null;
         $user = $this->getUser();
-        $search = $request->query->get('search');
-        $searchResults = $searchBarService->searchUsers($search);
-        $id = $user->getId();
 
         return $this->render('home/index.html.twig', [
             'user' => $user,
-            'searchResults' => $searchResults,
-            'id' => $id,
         ]);
     }
 }

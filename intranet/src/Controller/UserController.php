@@ -17,14 +17,20 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Form\CreateEventFormType;
 use App\Entity\Event;
+use App\Service\SearchBarService;
 
 final class UserController extends AbstractController
 {
     #[Route('/userpage/{id}', name: 'userpage')]
-    public function index(User $user): Response
+    public function index(Request $request, User $user, SearchBarService $searchBarService): Response
     {
+        $search = $request->query->get('search');
+        $searchResults = $searchBarService->searchUsers($search);
+
         return $this->render('personal/personal.html.twig', [
             'user' => $user,
+            'id' => $user->getId(),
+            'searchResults' => $searchResults,
         ]);
     }
 

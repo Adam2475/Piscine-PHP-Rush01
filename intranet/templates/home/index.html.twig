@@ -6,62 +6,10 @@
 
 {% block body %}
 
-<<<<<<< HEAD
-<<<<<<< .merge_file_AthZNY
-    <div class="header">
-        <div class="searchbar">
-            <form method="get" action="{{ path('homepage') }}">
-            <input type="text" name="search" placeholder="Search users..." value="{{ app.request.get('search') }}">
-            <button type="submit">Search</button>
-            </form>
-        </div>
-    </div>
-
-    {% if searchResults is defined %}
-        <ul>
-            {% for u in searchResults %}
-                <li>
-                    <a href="/userpage/{{u.id}}">{{ u.firstName }} {{ u.lastName }} ({{ u.email }})</a>
-                </li>
-            {#{% else %}
-                <li>No users found.</li>#}
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    {% if user %}
-
-        {{user.firstName}}
-        {{id}}
-
-        <button><a href="/userpage/{{id}}">personal</a></button>
-
-        <button><a href="/test">test template</a></button>
-
-        {% if user and user.role == constant('App\\Enum\\UserRole::ADMIN') %}
-            <button><a href="admin">admin</a></button>
-        {% endif %}
-
-        <br>
-        <br>
-
-        <button><a href="{{ path('app_logout') }}">Logout</a></button>
-
-    <br>
-    <br>
-
+    <h1>Welcome to 24 School</h1>
+    
     {% else %}
         <button><a href="{{ path('app_login') }}">Login</a></button>
     {% endif %}
-=======
-    <h1>Welcome to 24 School</h1>
-
-    <button><a href="{{ path('app_login') }}">Login</a></button>
->>>>>>> .merge_file_bLDq5L
-=======
-    <h1>Welcome to 24 School</h1>
-
-    <button><a href="{{ path('app_login') }}">Login</a></button>
->>>>>>> origin/main
 
 {% endblock %}
