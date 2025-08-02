@@ -22,13 +22,15 @@ use App\Service\SearchBarService;
 final class UserController extends AbstractController
 {
     #[Route('/userpage/{id}', name: 'userpage')]
-    public function index(Request $request, User $user, SearchBarService $searchBarService): Response
+    public function index(Request $request, EntityManagerInterface $em, User $user, SearchBarService $searchBarService): Response
     {
         $search = $request->query->get('search');
         $searchResults = $searchBarService->searchUsers($search);
+        $events = $em->getRepository(Event::class)->findAll();
 
         return $this->render('personal/personal.html.twig', [
             'user' => $user,
+            'events' => $events,
             'id' => $user->getId(),
             'searchResults' => $searchResults,
         ]);
@@ -99,29 +101,10 @@ final class UserController extends AbstractController
             $registrationFormView = $form->createView();
         }
 
-        // Event creation form
-        $newEvent = new Event();
-        $eventForm = $this->createForm(CreateEventFormType::class, $newEvent);
-        $eventForm->handleRequest($request);
-
-        if ($eventForm->isSubmitted() && $eventForm->isValid()) {
-            // Set agenda or other required fields if needed
-            // $newEvent->setAgenda($someAgenda);
-
-            $em->persist($newEvent);
-            $em->flush();
-
-            $this->addFlash('success', 'Event created successfully!');
-            return $this->redirectToRoute('admin');
-        }
-
-        $eventFormView = $eventForm->createView();
-
-        // Render admin page here
+        // // Render admin page here
         return $this->render('personal/admin.html.twig', [
             'user' => $user,
             'registrationForm' => $registrationFormView,
-            'eventForm' => $eventFormView,
         ]);
     }
 }

@@ -15,36 +15,38 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class CreateEventFormType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
-        $builder
-            ->add('title', TextType::class)
-            ->add('name', TextType::class)
-            ->add('maxParticipants', IntegerType::class)
-            ->add('participants', IntegerType::class)
-            ->add('description', TextareaType::class)
-            ->add('title', TextType::class)
-            ->add('date', DateType::class, [
-                'widget' => 'single_text',
-            ])
-            ->add('startTime', TimeType::class, [
-                'widget' => 'single_text',
-            ])
-            ->add('endTime', TimeType::class, [
-                'widget' => 'single_text',
-            ])
-            ->add('duration', NumberType::class, [
-                'scale' => 2,
-            ])
-        ;
-    }
+	public function buildForm(FormBuilderInterface $builder, array $options): void
+	{
+		$builder
+			->add('name', TextType::class)
+			->add('title', TextType::class)
+			->add('maxParticipants', IntegerType::class)
+			->add('participants', IntegerType::class, [
+				'data' => 0,
+			])
+			->add('description', TextareaType::class)
+			->add('title', TextType::class)
+			->add('date', DateType::class, [
+				'widget' => 'single_text',
+			])
+			->add('startTime', TimeType::class, [
+				'widget' => 'single_text',
+			])
+			->add('endTime', TimeType::class, [
+				'widget' => 'single_text',
+			])
+			->add('duration', NumberType::class, [
+				'scale' => 2,
+			])
+		;
+	}
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Event::class,
-        ]);
-    }
+	public function configureOptions(OptionsResolver $resolver): void
+	{
+		$resolver->setDefaults([
+			'data_class' => Event::class,
+		]);
+	}
 }
 
 ?>

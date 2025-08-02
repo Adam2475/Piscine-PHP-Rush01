@@ -20,11 +20,8 @@
     <br>
 
     <h2>create a new event</h2>
-    {{ form_start(eventForm) }}
-        {{ form_widget(eventForm) }}
-        <button class="btn btn-primary">create event</button>
-    {{ form_end(eventForm) }}
+    <button class="btn btn-primary"><a href="{{path('admin_event_new')}}">Create event</button>
 
-<button><a href="{{ path('homepage') }}">back</a></button>
+<button><a href="{{ path('admin') }}">back</a></button>
 
 {% endblock %}

@@ -43,11 +43,10 @@
     <div class="agenda">
         <h2>Event</h2>
         <ul>
-            {% for event in user.getEvents() %}
-                {% if event.registered == true %}
+            {% for event in events %}
                     <li>
                         <p>{{ event.getName() }}</p>
-                        <h3>{{ event.GetTitle() }}</h3>
+                        <h3>{{ event.getTitle() }}</h3>
                         <div class="participant">
                             {{ event.getParticipants() }}/{{ event.getMaxParticipants() }}
                         </div>
@@ -56,8 +55,13 @@
                             <p>{{ event.getStartTime()|date('H:i') }}</p>
                             <p>{{ event.getEndTime()|date('H:i') }}</p>
                         </div>
+                    {% if event.registered == true %}
+                        <button><a href="{{ path('userpage_event_registration', { id: event.id }) }}">REGISTERED</a></button>
+                    {% else %}
+                        <button><a href="{{ path('userpage_event_deregistration', { id: event.id }) }}">NOT REGISTERED</a></button>
+                    {% endif %}
                     </li>
-                {% endif %}
+
             {% endfor %}
         </ul>
     </div>

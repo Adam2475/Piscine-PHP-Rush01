@@ -10,7 +10,10 @@
 
 <div class="example-wrapper">
     <h1>Event Create! ✅</h1>
-    {{form}}
+        {{ form_start(eventForm) }}
+            {{ form_widget(eventForm) }}
+                <button class="btn btn-primary" type="submit">CREATE</button>
+        {{ form_end(eventForm) }}
 
     This friendly message is coming from:
     <ul>

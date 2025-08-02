@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Agenda;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
@@ -44,10 +43,8 @@ class Event
     #[ORM\Column]
     private ?float $duration = null;
 
-
-    #[ORM\ManyToOne(inversedBy: 'events')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Agenda $agenda = null;
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $registered = false;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'events')]
     private Collection $users;
@@ -55,18 +52,6 @@ class Event
     public function __construct()
     {
         $this->users = new ArrayCollection();
-    }
-
-    public function getAgenda(): ?Agenda
-    {
-        return $this->agenda;
-    }
-
-    public function setAgenda(?Agenda $agenda): static
-    {
-        $this->agenda = $agenda;
-
-        return $this;
     }
 
     public function getId(): ?int
@@ -202,6 +187,18 @@ class Event
     public function removeUser(User $user): static
     {
         $this->users->removeElement($user);
+
+        return $this;
+    }
+
+    public function isRegistered(): ?bool
+    {
+        return $this->registered;
+    }
+
+    public function setRegistered(bool $registered): static
+    {
+        $this->registered = $registered;
 
         return $this;
     }
