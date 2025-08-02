@@ -1,0 +1,41 @@
+{%extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Profile
+{% endblock %}
+
+{% block body %}
+
+<div class="main_profile">
+    <div class="pick_and_name">
+        <h2 class="user_name">
+        "{{ user.first_name }}"
+        "{{ user.last_name }}"
+        </h2>
+    </div>
+    <div class="info">
+        <ul>
+            <li>Email: {{ user.email }}</li>
+            <li>Role: {{ user.role }}</li>
+        </ul>
+    </div>
+    <div class="agenda">
+        <h2>Event</h2>
+        <ul>
+            {% for event in events %}
+                <li>
+                    <p>{{ event.name }}</p>
+                    <h3>{{ event.title }}</h3>
+                    <div class="participant">
+                        {{ event.participants }}/{{ event.maxParticipants}}
+                    </div>
+                    <div class="event_info">
+                        <p>{{ event.date|date('d-m-Y')}}</p>
+                        <p>{{ event.startTime|date('H:i') }}</p>
+                        <p>{{ event.endTime|ate('H:i') }}</p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
