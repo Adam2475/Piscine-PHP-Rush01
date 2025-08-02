@@ -20,14 +20,9 @@ use App\Entity\Event;
 
 final class UserController extends AbstractController
 {
-    #[Route('/userpage', name: 'userpage')]
-    public function index(): Response
+    #[Route('/userpage/{id}', name: 'userpage')]
+    public function index(User $user): Response
     {
-        // Get the logged-in user (or null if not logged in)
-        $user = $this->getUser();
-
-        // var_dump($user->getRole());
-
         return $this->render('personal/personal.html.twig', [
             'user' => $user,
         ]);
