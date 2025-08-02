@@ -5,7 +5,16 @@
 
 {% block body %}
 
-{% include 'components/searchbar.html.twig' %}
+<div class="header">
+    {% include 'components/searchbar.html.twig' %}
+    <div class="user-dropdown">
+        {% if user.role is defined and user.role and user.role.value == 'admin' %}
+            <button><a href="/admin"> admin </a></button>
+        {% else %}
+            <button><a href="/userpage/{{user.id}}"> admin </a></button>
+        {% endif %}
+    </div>
+</div>
 
 {% include 'components/navbar.html.twig' %}
 

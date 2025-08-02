@@ -143,6 +143,8 @@ button:hover {
 
 .header {
     background-color: #004d66;
+    display: flex;
+    flex-direction: row;
     color: white;
     padding: 20px;
     text-align: center;

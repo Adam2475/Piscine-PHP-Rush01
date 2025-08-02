@@ -22,8 +22,9 @@ use App\Service\SearchBarService;
 final class UserController extends AbstractController
 {
     #[Route('/userpage/{id}', name: 'userpage')]
-    public function index(Request $request, User $user, SearchBarService $searchBarService): Response
+    public function index(Request $request, SearchBarService $searchBarService): Response
     {
+        $user = $this->getUser();
         $search = $request->query->get('search');
         $searchResults = $searchBarService->searchUsers($search);
 

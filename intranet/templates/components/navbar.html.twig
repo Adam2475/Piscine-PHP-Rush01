@@ -1,6 +1,6 @@
 <div class="navbar">
     <ul>
-        <li><a href="{{ path('homepage') }}">Home</a></li>
+        <li><a href="{{ path('userpage', {'id': user.id}) }}">Home</a></li>
         <li><a href="{{ path('userpage', {'id': user.id}) }}">Profile</a></li>
         <li><a href="#">Agenda</a></li>
         <li><a href="#">Projects</a></li>
