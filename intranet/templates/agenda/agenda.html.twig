@@ -6,6 +6,10 @@
 
 <div class="example-wrapper">
 	<h1>{{ controller_name }}! ✅</h1>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('admin_event_new') }}" class="btn btn-primary">+ Crea Evento</a>
+    {% endif %}
+
 	{% if events %}
 	<ul>
 	{% for event in events %}
