@@ -17,6 +17,7 @@
         <ul>
             <li>Email: {{ user.email }}</li>
             <li>Role: {{ user.role }}</li>
+            <li>Created: {{ user.created|date('d-m-Y') }}</li>
         </ul>
     </div>
     <div class="agenda">
