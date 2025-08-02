@@ -1,9 +1,7 @@
 {%extends 'base.html.twig' %}
 
 {% block title %}
-    {{ parent() }} | Profile
-    
-{% endblock %}
+    {{ parent() }} | Profile{% endblock %}
 
 {% block body %}
 
@@ -11,14 +9,24 @@
     <div class="user_info">
         <div class="pick_and_name">
             <h2 class="user_name">
+<<<<<<< HEAD:intranet/templates/personal/show_user.html.twig
             {{ user.getFirstName() }}
             {{ user.getLastName() }}
+=======
+            {{ user.first_name }}
+            {{ user.last_name }}
+>>>>>>> origin/main:intranet/templates/show_user.html.twig
             </h2>
         </div>
         <div class="info">
             <ul>
+<<<<<<< HEAD:intranet/templates/personal/show_user.html.twig
                 <li>Email: {{ user.getEmail() }}</li>
                 {#<li>Role: {{ user.getRole() }}</li>#}
+=======
+                <li>Email: {{ user.email }}</li>
+                <li>Role: {{ user.role }}</li>
+>>>>>>> origin/main:intranet/templates/show_user.html.twig
                 <li>Created: {{ user.created|date('d-m-Y') }}</li>
             </ul>
         </div>
@@ -32,10 +40,10 @@
                         <p>{{ event.name }}</p>
                         <h3>{{ event.title }}</h3>
                         <div class="participant">
-                            {{ event.participants }}/{{ event.maxParticipants}}
+                            {{ event.participants }}/{{ event.maxParticipants }}
                         </div>
                         <div class="event_info">
-                            <p>{{ event.date|date('d-m-Y')}}</p>
+                            <p>{{ event.date|date('d-m-Y') }}</p>
                             <p>{{ event.startTime|date('H:i') }}</p>
                             <p>{{ event.endTime|date('H:i') }}</p>
                         </div>
@@ -44,8 +52,45 @@
             {% endfor %} #}
         </ul>
     </div>
+<<<<<<< HEAD:intranet/templates/personal/show_user.html.twig
 </div>
 
 <button><a href="{{ path('homepage') }}">back</a></button>
 
+=======
+    <div class="courses">
+        <h2>Courses A</h2>
+    </div>
+    <div class="project">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+</div>
+>>>>>>> origin/main:intranet/templates/show_user.html.twig
 {% endblock %}

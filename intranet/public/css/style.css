@@ -86,8 +86,6 @@ h1, h2 {
     margin-top: 0;
 }
 
-<<<<<<< .merge_file_KhPOxl
-=======
 button {
   width: 200px;
   height: 50px;
@@ -108,17 +106,14 @@ button:hover {
   transform: translateY(-2px);
 }
 
->>>>>>> .merge_file_ebVGFP
 /* Grid for agenda + tbd blocks */
 .main_profile > .agenda,
 .main_profile > .tbd {
     display: inline-block;
     vertical-align: top;
-<<<<<<< .merge_file_KhPOxl
     width: calc(33.333% - 20px); /* 3 columns with margin compensation */
-=======
     width: calc(33% - 20px); /* 3 columns with margin compensation */
->>>>>>> .merge_file_ebVGFP
+    width: calc(33% - 20px); /* 3 columns with margin compensation */
     min-height: 200px;
     box-sizing: border-box;
 }
@@ -141,7 +136,6 @@ button:hover {
         width: 100%;
     }
 }
-<<<<<<< .merge_file_KhPOxl
 
 
 /* adam header */
@@ -162,5 +156,4 @@ button:hover {
 }
 
 /* adam navbar */
-=======
->>>>>>> .merge_file_ebVGFP
+
