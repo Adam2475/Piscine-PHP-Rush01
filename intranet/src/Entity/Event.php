@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\EventRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Agenda;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
@@ -18,7 +19,7 @@ class Event
     private ?string $name = null;
 
     #[ORM\Column]
-    private ?int $max_participants = null;
+    private ?int $maxParticipants = null;
 
     #[ORM\Column]
     private ?int $participants = null;
@@ -33,13 +34,30 @@ class Event
     private ?\DateTime $date = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTime $start_time = null;
+    private ?\DateTime $startTime = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTime $end_time = null;
+    private ?\DateTime $endTime = null;
 
     #[ORM\Column]
     private ?float $duration = null;
+
+
+    #[ORM\ManyToOne(inversedBy: 'events')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Agenda $agenda = null;
+
+    public function getAgenda(): ?Agenda
+    {
+        return $this->agenda;
+    }
+
+    public function setAgenda(?Agenda $agenda): static
+    {
+        $this->agenda = $agenda;
+
+        return $this;
+    }
 
     public function getId(): ?int
     {

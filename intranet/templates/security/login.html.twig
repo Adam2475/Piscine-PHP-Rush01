@@ -3,6 +3,15 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+
+{% for label, messages in app.flashes %}
+    <div class="alert alert-{{ label }}">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endfor %}
+
 <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -30,5 +39,8 @@
     <button class="btn btn-lg btn-primary" type="submit">
         Sign in
     </button>
+
+    <p><a href="{{ path('app_forgot_password') }}">Forgot your password?</a></p>
+
 </form>
 {% endblock %}
