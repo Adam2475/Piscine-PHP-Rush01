@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ parent() }} | Agenda
+    {{ parent() }} | Main Page
 {% endblock %}
 
 {% block body %}
 
+<<<<<<< .merge_file_AthZNY
     <div class="header">
         <div class="searchbar">
             <form method="get" action="{{ path('homepage') }}">
@@ -51,5 +52,10 @@
     {% else %}
         <button><a href="{{ path('app_login') }}">Login</a></button>
     {% endif %}
+=======
+    <h1>Welcome to 24 School</h1>
+
+    <button><a href="{{ path('app_login') }}">Login</a></button>
+>>>>>>> .merge_file_bLDq5L
 
 {% endblock %}
