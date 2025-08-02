@@ -46,6 +46,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private bool $isActive = false;
 
+    // Inversed reference to Agenda
+    #[ORM\ManyToOne(targetEntity: Agenda::class, inversedBy: 'users')]
+    private Agenda $agenda;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -157,5 +161,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // Clear temporary sensitive data if any
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function getAgenda(): ?Agenda
+    {
+        return $this->agenda;
+    }
+
+    public function setAgenda(?Agenda $agenda): static
+    {
+        $this->agenda = $agenda;
+
+        return $this;
     }
 }
