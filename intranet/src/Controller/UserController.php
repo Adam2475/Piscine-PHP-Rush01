@@ -6,10 +6,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 use App\Enum\UserRole;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Form\CreateEventFormType;
+use App\Entity\Event;
 
 final class UserController extends AbstractController
 {
@@ -27,7 +34,7 @@ final class UserController extends AbstractController
     }
 
     #[Route('/admin', name: 'admin')]
-    public function admin(Request $request): Response
+    public function admin(Request $request, EntityManagerInterface $em, MailerInterface $mailer): Response
     {
         $user = $this->getUser();
         $registrationFormView = null;
@@ -82,10 +89,29 @@ final class UserController extends AbstractController
             $registrationFormView = $form->createView();
         }
 
+        // Event creation form
+        $newEvent = new Event();
+        $eventForm = $this->createForm(CreateEventFormType::class, $newEvent);
+        $eventForm->handleRequest($request);
+
+        if ($eventForm->isSubmitted() && $eventForm->isValid()) {
+            // Set agenda or other required fields if needed
+            // $newEvent->setAgenda($someAgenda);
+
+            $em->persist($newEvent);
+            $em->flush();
+
+            $this->addFlash('success', 'Event created successfully!');
+            return $this->redirectToRoute('admin');
+        }
+
+        $eventFormView = $eventForm->createView();
+
         // Render admin page here
         return $this->render('personal/admin.html.twig', [
             'user' => $user,
             'registrationForm' => $registrationFormView,
+            'eventForm' => $eventFormView,
         ]);
     }
 }

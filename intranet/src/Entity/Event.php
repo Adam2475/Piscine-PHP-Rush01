@@ -78,12 +78,12 @@ class Event
 
     public function getMaxParticipants(): ?int
     {
-        return $this->max_participants;
+        return $this->maxParticipants;
     }
 
     public function setMaxParticipants(int $max_participants): static
     {
-        $this->max_participants = $max_participants;
+        $this->maxParticipants = $max_participants;
 
         return $this;
     }
@@ -138,24 +138,24 @@ class Event
 
     public function getStartTime(): ?\DateTime
     {
-        return $this->start_time;
+        return $this->startTime;
     }
 
     public function setStartTime(\DateTime $start_time): static
     {
-        $this->start_time = $start_time;
+        $this->startTime = $start_time;
 
         return $this;
     }
 
     public function getEndTime(): ?\DateTime
     {
-        return $this->end_time;
+        return $this->endTime;
     }
 
     public function setEndTime(\DateTime $end_time): static
     {
-        $this->end_time = $end_time;
+        $this->endTime = $end_time;
 
         return $this;
     }
