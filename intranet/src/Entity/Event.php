@@ -19,7 +19,7 @@ class Event
     private ?string $name = null;
 
     #[ORM\Column]
-    private ?int $max_participants = null;
+    private ?int $maxParticipants = null;
 
     #[ORM\Column]
     private ?int $participants = null;
@@ -34,10 +34,10 @@ class Event
     private ?\DateTime $date = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTime $start_time = null;
+    private ?\DateTime $startTime = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTime $end_time = null;
+    private ?\DateTime $endTime = null;
 
     #[ORM\Column]
     private ?float $duration = null;

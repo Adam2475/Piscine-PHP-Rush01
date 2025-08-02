@@ -1,5 +1,5 @@
 <?php
-// src/Controller/AccountConfirmationController.php
+
 namespace App\Controller;
 
 use App\Entity\User;
@@ -26,21 +26,24 @@ class AccountConfirmationController extends AbstractController
         $user = $em->getRepository(User::class)->findOneBy(['confirmationToken' => $token]);
 
         if (!$user) {
-            $this->addFlash('error', 'Invalid or expired confirmation token.');
+            $this->addFlash('error', 'Invalid or expired token.');
             return $this->redirectToRoute('homepage');
         }
 
-        // Form per settare la password
+        // Form to set or reset password
         $form = $this->createFormBuilder()
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => 'Password'],
+                'first_options' => ['label' => 'New Password'],
                 'second_options' => ['label' => 'Repeat Password'],
                 'invalid_message' => 'The password fields must match.',
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank(['message' => 'Password should not be blank']),
-                    new Length(['min' => 6, 'minMessage' => 'Password must be at least {{ limit }} characters']),
+                    new Length([
+                        'min' => 6,
+                        'minMessage' => 'Password must be at least {{ limit }} characters',
+                    ]),
                 ],
             ])
             ->getForm();
@@ -48,14 +51,21 @@ class AccountConfirmationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $hashedPassword = $passwordHasher->hashPassword($user, $form->get('plainPassword')->getData());
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $form->get('plainPassword')->getData()
+            );
             $user->setPassword($hashedPassword);
-            $user->setIsActive(true);
-            $user->setConfirmationToken(null);
+            $user->setConfirmationToken(null); // token is one-time use
+
+            if (!$user->getIsActive()) {
+                $user->setIsActive(true); // For new users
+                $this->addFlash('success', 'Your account has been activated!');
+            } else {
+                $this->addFlash('success', 'Your password has been updated!');
+            }
 
             $em->flush();
-
-            $this->addFlash('success', 'Your account has been activated! You can now log in.');
             return $this->redirectToRoute('app_login');
         }
 
