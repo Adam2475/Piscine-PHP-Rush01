@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\UserRole;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -47,8 +49,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private bool $isActive = false;
 
     // Inversed reference to Agenda
-    #[ORM\ManyToOne(targetEntity: Agenda::class, inversedBy: 'users')]
-    private Agenda $agenda;
+    // #[ORM\ManyToOne(targetEntity: Agenda::class, inversedBy: 'users')]
+    // private Agenda $agenda;
+
+    #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'users')]
+    private Collection $events;
+
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -176,6 +186,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAgenda(?Agenda $agenda): static
     {
         $this->agenda = $agenda;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): static
+    {
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
+            $event->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): static
+    {
+        if ($this->events->removeElement($event)) {
+            $event->removeUser($this);
+        }
 
         return $this;
     }

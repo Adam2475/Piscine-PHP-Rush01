@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Agenda;
@@ -46,6 +48,14 @@ class Event
     #[ORM\ManyToOne(inversedBy: 'events')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Agenda $agenda = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'events')]
+    private Collection $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public function getAgenda(): ?Agenda
     {
@@ -168,6 +178,30 @@ class Event
     public function setDuration(float $duration): static
     {
         $this->duration = $duration;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        $this->users->removeElement($user);
 
         return $this;
     }

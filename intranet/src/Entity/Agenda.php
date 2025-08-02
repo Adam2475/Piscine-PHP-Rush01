@@ -17,8 +17,8 @@ class Agenda
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToMany(mappedBy:'agenda', targetEntity: User::class)]
-    private Collection $users;
+    // #[ORM\OneToMany(mappedBy:'agenda', targetEntity: User::class)]
+    // private Collection $users;
 
     #[ORM\OneToMany(mappedBy: 'agenda', targetEntity: Event::class, cascade: ['persist', 'remove'])]
     private Collection $events;
