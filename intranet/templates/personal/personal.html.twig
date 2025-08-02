@@ -1,23 +1,78 @@
-{% extends 'base.html.twig' %}
+{%extends 'base.html.twig' %}
 
-{% block title %}Personal{% endblock %}
-
+{% block title %}
+    {{ parent() }} | Profile{% endblock %}
 
 {% block body %}
 
-<h2>User Information</h2>
-<ul>
-    <li><strong>First Name:</strong> {{ user.firstName }}</li>
-    <li><strong>Last Name:</strong> {{ user.lastName }}</li>
-    <li><strong>Email:</strong> {{ user.email }}</li>
-    <li><strong>Role:</strong>
-        {{ user.roles|first|replace({'ROLE_': ''})|lower }}
-    </li>
-    <li><strong>Account Created:</strong> {{ user.created ? user.created|date('Y-m-d') : 'N/A' }}</li>
-</ul>
-
-<button><a href="{{ path('app_profile_edit') }}" class="btn btn-secondary">Edit Profile</a></button>
-
-<button><a href="{{ path('homepage') }}">back</a></button>
-
+<div class="main_profile">
+    <div class="user_info">
+        <div class="pick_and_name">
+            <h2 class="user_name">
+            {{ user.getFirstName() }}
+            {{ user.getLastName() }}
+            </h2>
+        </div>
+        <div class="info">
+            <ul>
+                <li>Email: {{ user.getEmail() }}</li>
+                <li>Role: {{ user.getRole() }}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="agenda">
+        <h2>Event</h2>
+        <ul>
+            {% for event in events %}
+                {% if event.registered == true %}
+                    <li>
+                        <p>{{ event.getName() }}</p>
+                        <h3>{{ event.GetTitle() }}</h3>
+                        <div class="participant">
+                            {{ event.getParticipants() }}/{{ event.getMaxParticipants() }}
+                        </div>
+                        <div class="event_info">
+                            <p>{{ event.getDate()|date('d-m-Y') }}</p>
+                            <p>{{ event.getStartTime()|date('H:i') }}</p>
+                            <p>{{ event.getEndTime()|date('H:i') }}</p>
+                        </div>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+    <div class="tbd">
+        <h2>TBD</h2>
+    </div>
+</div>
 {% endblock %}
