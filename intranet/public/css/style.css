@@ -114,3 +114,23 @@ h1, h2 {
         width: 100%;
     }
 }
+
+
+/* adam header */
+
+.header {
+    background-color: #004d66;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+.searchbar {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+    width:80%;
+}
+
+/* adam navbar */

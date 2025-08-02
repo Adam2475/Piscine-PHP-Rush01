@@ -28,6 +28,15 @@ final class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/test', name: 'test')]
+    public function Test(): Response
+    {
+        $user = $this->getUser();
+        return $this->render('personal/show_user.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
     #[Route('/admin', name: 'admin')]
     public function admin(Request $request, EntityManagerInterface $em, MailerInterface $mailer): Response
     {
