@@ -15,12 +15,14 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 use App\Enum\UserRole;
+use App\Service\SearchBarService;
 
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'homepage')]
-    public function index(Request $request, EntityManagerInterface $em, MailerInterface $mailer): Response
+    public function index(Request $request, SearchBarService $searchBarService, EntityManagerInterface $em, MailerInterface $mailer): Response
     {
+        $id = null;
         $user = $this->getUser();
 
         return $this->render('home/index.html.twig', [

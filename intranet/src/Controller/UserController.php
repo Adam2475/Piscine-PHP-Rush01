@@ -17,18 +17,28 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Form\CreateEventFormType;
 use App\Entity\Event;
+use App\Service\SearchBarService;
 
 final class UserController extends AbstractController
 {
-    #[Route('/userpage', name: 'userpage')]
-    public function index(): Response
+    #[Route('/userpage/{id}', name: 'userpage')]
+    public function index(Request $request, User $user, SearchBarService $searchBarService): Response
     {
-        // Get the logged-in user (or null if not logged in)
-        $user = $this->getUser();
-
-        // var_dump($user->getRole());
+        $search = $request->query->get('search');
+        $searchResults = $searchBarService->searchUsers($search);
 
         return $this->render('personal/personal.html.twig', [
+            'user' => $user,
+            'id' => $user->getId(),
+            'searchResults' => $searchResults,
+        ]);
+    }
+
+    #[Route('/test', name: 'test')]
+    public function Test(): Response
+    {
+        $user = $this->getUser();
+        return $this->render('personal/show_user.html.twig', [
             'user' => $user,
         ]);
     }
