@@ -5,6 +5,10 @@
 
 {% block body %}
 
+{% if user.image %}
+    <img src="{{ user.image }}" alt="Profile Image" style="max-width:150px;">
+{% endif %}
+
 <div class="header">
     {% include 'components/searchbar.html.twig' %}
     <div class="user-dropdown">
