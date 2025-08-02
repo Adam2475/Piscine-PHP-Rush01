@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Agenda;
@@ -47,6 +49,14 @@ class Event
     #[ORM\JoinColumn(nullable: false)]
     private ?Agenda $agenda = null;
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'events')]
+    private Collection $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
+
     public function getAgenda(): ?Agenda
     {
         return $this->agenda;
@@ -78,12 +88,12 @@ class Event
 
     public function getMaxParticipants(): ?int
     {
-        return $this->max_participants;
+        return $this->maxParticipants;
     }
 
     public function setMaxParticipants(int $max_participants): static
     {
-        $this->max_participants = $max_participants;
+        $this->maxParticipants = $max_participants;
 
         return $this;
     }
@@ -138,24 +148,24 @@ class Event
 
     public function getStartTime(): ?\DateTime
     {
-        return $this->start_time;
+        return $this->startTime;
     }
 
     public function setStartTime(\DateTime $start_time): static
     {
-        $this->start_time = $start_time;
+        $this->startTime = $start_time;
 
         return $this;
     }
 
     public function getEndTime(): ?\DateTime
     {
-        return $this->end_time;
+        return $this->endTime;
     }
 
     public function setEndTime(\DateTime $end_time): static
     {
-        $this->end_time = $end_time;
+        $this->endTime = $end_time;
 
         return $this;
     }
@@ -168,6 +178,30 @@ class Event
     public function setDuration(float $duration): static
     {
         $this->duration = $duration;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        $this->users->removeElement($user);
 
         return $this;
     }

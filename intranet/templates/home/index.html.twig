@@ -9,33 +9,25 @@
     <h1>Welcome to the Intranet</h1>
 
     {% if user %}
+
+        {{user.firstName}}
+
         <button><a href="userpage">personal</a></button>
 
-        <a href="{{ path('app_logout') }}">Logout</a>
-
-        <h2>User Information</h2>
-        <ul>
-            <li><strong>First Name:</strong> {{ user.firstName }}</li>
-            <li><strong>Last Name:</strong> {{ user.lastName }}</li>
-            <li><strong>Email:</strong> {{ user.email }}</li>
-            <li><strong>Role:</strong>
-                {{ user.roles|first|replace({'ROLE_': ''})|lower }}
-            </li>
-            <li><strong>Account Created:</strong> {{ user.created ? user.created|date('Y-m-d') : 'N/A' }}</li>
-        </ul>
-
-        <a href="{{ path('app_profile_edit') }}" class="btn btn-secondary">Edit Profile</a>
-
-        {% if registrationForm is defined and registrationForm is not null %}
-            <h2>Register a New User</h2>
-            {{ form_start(registrationForm) }}
-                {{ form_widget(registrationForm) }}
-                <button class="btn btn-primary">Register</button>
-            {{ form_end(registrationForm) }}
+        {% if user and user.role == constant('App\\Enum\\UserRole::ADMIN') %}
+            <button><a href="admin">admin</a></button>
         {% endif %}
 
+        <br>
+        <br>
+
+        <button><a href="{{ path('app_logout') }}">Logout</a></button>
+
+    <br>
+    <br>
+
     {% else %}
-        <a href="{{ path('app_login') }}">Login</a>
+        <button><a href="{{ path('app_login') }}">Login</a></button>
     {% endif %}
 
 {% endblock %}
