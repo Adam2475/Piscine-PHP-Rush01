@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block body %}
+
+<h2>Add new user</h2>
+        {% if registrationForm is defined and registrationForm is not null %}
+            <h2>Register a New User</h2>
+            {{ form_start(registrationForm) }}
+                {{ form_widget(registrationForm) }}
+                <button class="btn btn-primary">Register</button>
+            {{ form_end(registrationForm) }}
+        {% endif %}
+
+<button><a href="{{ path('homepage') }}">back</a></button>
+
+{% endblock %}
