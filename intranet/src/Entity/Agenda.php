@@ -17,8 +17,8 @@ class Agenda
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    private ?array $users = null;
+    #[ORM\OneToMany(mappedBy:'agenda', targetEntity: User::class)]
+    private Collection $users;
 
     #[ORM\OneToMany(mappedBy: 'agenda', targetEntity: Event::class, cascade: ['persist', 'remove'])]
     private Collection $events;
@@ -26,6 +26,7 @@ class Agenda
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
     
     public function getEvents(): Collection
@@ -66,6 +67,28 @@ class Agenda
     public function setUsers(?array $users): static
     {
         $this->users = $users;
+
+        return $this;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->setAgenda($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getAgenda() === $this) {
+                $user->setAgenda(null);
+            }
+        }
 
         return $this;
     }
