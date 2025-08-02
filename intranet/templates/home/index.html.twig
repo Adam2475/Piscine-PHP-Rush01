@@ -6,28 +6,8 @@
 
 {% block body %}
 
-    <h1>Welcome to the Intranet</h1>
+    <h1>Welcome to 24 School</h1>
 
-    {% if user %}
-
-        {{user.firstName}}
-
-        <button><a href="userpage">personal</a></button>
-
-        {% if user and user.role == constant('App\\Enum\\UserRole::ADMIN') %}
-            <button><a href="admin">admin</a></button>
-        {% endif %}
-
-        <br>
-        <br>
-
-        <button><a href="{{ path('app_logout') }}">Logout</a></button>
-
-    <br>
-    <br>
-
-    {% else %}
-        <button><a href="{{ path('app_login') }}">Login</a></button>
-    {% endif %}
+    <button><a href="{{ path('app_login') }}">Login</a></button>
 
 {% endblock %}

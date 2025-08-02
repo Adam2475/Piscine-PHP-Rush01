@@ -49,7 +49,7 @@ class IntranetAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         // Redirect alla homepage dopo il login
-        return new RedirectResponse($this->urlGenerator->generate('homepage'));
+        return new RedirectResponse($this->urlGenerator->generate('userpage'));
     }
 
     protected function getLoginUrl(Request $request): string

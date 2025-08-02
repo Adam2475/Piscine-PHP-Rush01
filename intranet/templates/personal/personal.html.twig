@@ -16,14 +16,13 @@
         <div class="info">
             <ul>
                 <li>Email: {{ user.getEmail() }}</li>
-                <li>Role: {{ user.getRole() }}</li>
             </ul>
         </div>
     </div>
     <div class="agenda">
         <h2>Event</h2>
         <ul>
-            {% for event in events %}
+            {% for event in user.getEvents() %}
                 {% if event.registered == true %}
                     <li>
                         <p>{{ event.getName() }}</p>
@@ -42,10 +41,10 @@
         </ul>
     </div>
     <div class="tbd">
-        <h2>TBD</h2>
+        <h2>Project</h2>
     </div>
     <div class="tbd">
-        <h2>TBD</h2>
+        <h2>Courses</h2>
     </div>
     <div class="tbd">
         <h2>TBD</h2>

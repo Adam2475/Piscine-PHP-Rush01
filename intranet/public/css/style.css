@@ -84,12 +84,32 @@ h1, h2 {
     margin-top: 0;
 }
 
+button {
+  width: 200px;
+  height: 50px;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(to bottom, #5dd39e, #3fbf7f);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+button:hover {
+  background: linear-gradient(to bottom, #76e7b6, #4fd18d);
+  transform: translateY(-2px);
+}
+
 /* Grid for agenda + tbd blocks */
 .main_profile > .agenda,
 .main_profile > .tbd {
     display: inline-block;
     vertical-align: top;
-    width: calc(33.333% - 20px); /* 3 columns with margin compensation */
+    width: calc(33% - 20px); /* 3 columns with margin compensation */
     min-height: 200px;
     box-sizing: border-box;
 }
