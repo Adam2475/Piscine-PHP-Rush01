@@ -28,3 +28,19 @@ h1, h2 {
 	width: 95%;
 	font: 18px/1.5 sans-serif;
 }
+
+.main_profile {
+	text-align: center;
+}
+
+.pick_and_name {
+	text-align: center;
+}
+
+.info {
+	text-align: center;
+}
+
+.agenda {
+	text-align: center;
+}

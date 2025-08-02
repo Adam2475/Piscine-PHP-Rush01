@@ -24,18 +24,20 @@
         <h2>Event</h2>
         <ul>
             {% for event in events %}
-                <li>
-                    <p>{{ event.name }}</p>
-                    <h3>{{ event.title }}</h3>
-                    <div class="participant">
-                        {{ event.participants }}/{{ event.maxParticipants}}
-                    </div>
-                    <div class="event_info">
-                        <p>{{ event.date|date('d-m-Y')}}</p>
-                        <p>{{ event.startTime|date('H:i') }}</p>
-                        <p>{{ event.endTime|ate('H:i') }}</p>
-                    </div>
-                </li>
+                {% if event.registered == true %}
+                    <li>
+                        <p>{{ event.name }}</p>
+                        <h3>{{ event.title }}</h3>
+                        <div class="participant">
+                            {{ event.participants }}/{{ event.maxParticipants}}
+                        </div>
+                        <div class="event_info">
+                            <p>{{ event.date|date('d-m-Y')}}</p>
+                            <p>{{ event.startTime|date('H:i') }}</p>
+                            <p>{{ event.endTime|ate('H:i') }}</p>
+                        </div>
+                    </li>
+                {% endif %}
             {% endfor %}
         </ul>
     </div>
