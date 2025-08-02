@@ -6,25 +6,29 @@
 
 {% block body %}
 
-<h2>Add new user</h2>
+<div class="user_info" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 50px; gap: 20px; width:40%">
 
-    {% if registrationForm is defined and registrationForm is not null %}
-        <h2>Register a New User</h2>
-        {{ form_start(registrationForm) }}
-            {{ form_widget(registrationForm) }}
-            <button class="btn btn-primary">Register</button>
-        {{ form_end(registrationForm) }}
-    {% endif %}
+    <h2>Admin Section</h2>
 
-    <br>
-    <br>
+        {% if registrationForm is defined and registrationForm is not null %}
+            <h2>Register a New User</h2>
+            {{ form_start(registrationForm) }}
+                {{ form_widget(registrationForm) }}
+                <button class="btn btn-primary">Register</button>
+            {{ form_end(registrationForm) }}
+        {% endif %}
 
-    <h2>create a new event</h2>
-    {{ form_start(eventForm) }}
-        {{ form_widget(eventForm) }}
-        <button class="btn btn-primary">create event</button>
-    {{ form_end(eventForm) }}
+        <br>
+        <br>
 
-<button><a href="{{ path('homepage') }}">back</a></button>
+        <h2>Create a New Event</h2>
+        {{ form_start(eventForm) }}
+            {{ form_widget(eventForm) }}
+            <button class="btn btn-primary">Create Event</button>
+        {{ form_end(eventForm) }}
+
+    <button><a href="{{ path('homepage') }}">Back</a></button>
+
+</div>
 
 {% endblock %}

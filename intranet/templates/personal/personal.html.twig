@@ -5,13 +5,17 @@
 
 {% block body %}
 
-<div class="header">
-    <div class="searchbar">
+<div class="header" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+    <button><a href="{{ path('app_profile_edit') }}">Edit Info</a></button>
+
+    <div class="searchbar" style="flex-grow: 1; max-width: 400px;">
         <form method="get" action="{{ path('userpage', {'id': user.id}) }}">
-        <input type="text" name="search" placeholder="Search users..." value="{{ app.request.get('search') }}">
-        <button type="submit">Search</button>
+            <input type="text" name="search" placeholder="Search users..." value="{{ app.request.get('search') }}">
+            <button type="submit">Search</button>
         </form>
     </div>
+
+    <button><a href="{{ path('app_logout') }}" class="btn btn-secondary">Logout</a></button>
 </div>
 
 {% if searchResults is defined %}
