@@ -22,24 +22,22 @@ final class HomeController extends AbstractController
     public function index(Request $request, EntityManagerInterface $em, MailerInterface $mailer): Response
     {
         $user = $this->getUser();
-
         $registrationFormView = null;
 
-        if ($user && in_array(UserRole::ADMIN->value, $user->getRoles(), true)) {
+        if ($user && $user->getRole() === UserRole::ADMIN) {
             $newUser = new User();
             $form = $this->createForm(RegistrationFormType::class, $newUser);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                // La password viene settata dall/utente.
-
-                // Generazione del token di conferma
+                // Generate confirmation token
                 $token = bin2hex(random_bytes(32));
                 $newUser->setConfirmationToken($token);
 
-                // Utente e inattivo per default
+                // Mark as inactive by default
                 $newUser->setIsActive(false);
 
+                // Set role from form
                 $newUser->setRole($form->get('role')->getData());
 
                 $newUser->setCreated(new \DateTime());
@@ -47,6 +45,7 @@ final class HomeController extends AbstractController
                 $em->persist($newUser);
                 $em->flush();
 
+                // Send confirmation email
                 $email = (new TemplatedEmail())
                     ->from(new Address('no-reply@example.com', 'Intranet Admin'))
                     ->to($newUser->getEmail())

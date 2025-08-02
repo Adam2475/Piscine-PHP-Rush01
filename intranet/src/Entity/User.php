@@ -146,7 +146,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        return $this->role ? [$this->role->value] : [];
+        if (!$this->role) {
+            return [];
+        }
+
+        // Symfony vuole che i ruoli siano prefixati da ROLE
+        return ['ROLE_' . strtoupper($this->role->value)];
     }
 
     public function eraseCredentials(): void

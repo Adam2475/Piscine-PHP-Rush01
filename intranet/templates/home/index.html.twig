@@ -16,11 +16,15 @@
             <li><strong>First Name:</strong> {{ user.firstName }}</li>
             <li><strong>Last Name:</strong> {{ user.lastName }}</li>
             <li><strong>Email:</strong> {{ user.email }}</li>
-            <li><strong>Role:</strong> {{ user.roles|join(', ') }}</li>
+            <li><strong>Role:</strong>
+                {{ user.roles|first|replace({'ROLE_': ''})|lower }}
+            </li>
             <li><strong>Account Created:</strong> {{ user.created ? user.created|date('Y-m-d') : 'N/A' }}</li>
         </ul>
 
-        {% if registrationForm is not null %}
+        <a href="{{ path('app_profile_edit') }}" class="btn btn-secondary">Edit Profile</a>
+
+        {% if registrationForm is defined and registrationForm is not null %}
             <h2>Register a New User</h2>
             {{ form_start(registrationForm) }}
                 {{ form_widget(registrationForm) }}
