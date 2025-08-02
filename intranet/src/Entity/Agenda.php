@@ -58,38 +58,4 @@ class Agenda
     {
         return $this->id;
     }
-
-    public function getUsers(): ?array
-    {
-        return $this->users;
-    }
-
-    public function setUsers(?array $users): static
-    {
-        $this->users = $users;
-
-        return $this;
-    }
-
-    public function addUser(User $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->setAgenda($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): static
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getAgenda() === $this) {
-                $user->setAgenda(null);
-            }
-        }
-
-        return $this;
-    }
 }

@@ -178,18 +178,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->isActive;
     }
 
-    public function getAgenda(): ?Agenda
-    {
-        return $this->agenda;
-    }
-
-    public function setAgenda(?Agenda $agenda): static
-    {
-        $this->agenda = $agenda;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Event>
      */
