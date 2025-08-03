@@ -15,7 +15,10 @@
     <div class="dropdown" id="dropdown-toggle" style="cursor: pointer;">
 
         <p>{{ originalUser.email }}</p>
-        <img class="round-img" src="{{ originalUser.image }}" alt="Profile Image" style="max-width:150px;">
+        <img class="round-img"
+            src="{{ originalUser.image is not empty ? originalUser.image : asset('images/default_profile.jpeg') }}"
+            alt="Profile Image"
+            style="max-width:150px;">
 
         <div class="user-dropdown" id="dropdown-menu" style="display: none;">
             <ul>
