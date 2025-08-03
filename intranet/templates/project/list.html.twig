@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}All Projects{% endblock %}
+
+{% block body %}
+<div class="user_info" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 50px; gap: 20px; width:40%">
+    <h1>Available Projects</h1>
+
+    {% if projects is empty %}
+        <p>No projects available at the moment.</p>
+    {% else %}
+        <ul>
+            {% for project in projects %}
+                <li>
+                    <strong>{{ project.name }}</strong><br>
+                    {{ project.description|length > 100 ? project.description[:100] ~ '...' : project.description }}
+                    <br>
+                    XP: {{ project.xp }} |
+                    Estimated time: {{ project.estimatedTimeInHours }} hours
+                    <br>
+                    <a href="{{ path('project_show', { id: project.id }) }}">View Details</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if app.user %}
+        <p>
+            <a href="{{ path('userpage', { id: app.user.id }) }}" class="btn btn-primary">
+                Back to your profile
+            </a>
+        </p>
+    {% endif %}
+</div>
+{% endblock %}

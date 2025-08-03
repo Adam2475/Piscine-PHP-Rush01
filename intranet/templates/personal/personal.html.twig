@@ -1,7 +1,8 @@
-{%extends 'base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ parent() }} | Profile{% endblock %}
+    {{ parent() }} | Profile
+{% endblock %}
 
 {% block body %}
 
@@ -34,38 +35,36 @@
             {% endfor %}
         </ul>
     </div>
+
     <div class="tbd">
-        <h2>Project</h2>
+        <h2>Projects</h2>
+        <ul>
+            {% for project in user.getProjects() %}
+                <li>
+                    <a href="{{ path('project_show', { id: project.id }) }}">{{ project.name }}</a>
+                    {% if app.user and app.user.id == user.id %}
+                        <form method="post" action="{{ path('project_unregister', { id: project.id }) }}">
+                        <input type="hidden" name="redirect_to" value="userpage">
+                        <button>Unregister</button>
+                    {% endif %}
+                </form>
+                </li>
+            {% else %}
+                <li>No projects registered</li>
+            {% endfor %}
+        </ul>
+        {% if app.user and app.user.id == user.id %}
+            <a href="{{ path('project_list') }}" class="btn btn-primary" style="margin-top: 10px; display: inline-block;">
+                View All Projects & Register
+            </a>
+        {% endif %}
     </div>
+
     <div class="tbd">
         <h2>Courses</h2>
     </div>
-    {#<div class="tbd">
-        <h2>TBD</h2>
-    </div>
-    <div class="tbd">
-        <h2>TBD</h2>
-    </div>
-    <div class="tbd">
-        <h2>TBD</h2>
-    </div>
-    <div class="tbd">
-        <h2>TBD</h2>
-    </div>
-    <div class="tbd">
-        <h2>TBD</h2>
-    </div>
-    <div class="tbd">
-        <h2>TBD</h2>
-    </div>
-    <div class="tbd">
-        <h2>TBD</h2>
-    </div>
-    <div class="tbd">
-        <h2>TBD</h2>
-    </div>
-    <div class="tbd">
-        <h2>TBD</h2>
-    </div>#}
+
+    {# Additional TBD sections #}
 </div>
+
 {% endblock %}

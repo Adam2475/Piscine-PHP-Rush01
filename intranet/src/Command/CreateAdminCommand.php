@@ -51,6 +51,7 @@ class CreateAdminCommand extends Command
         $user->setEmail($email);
         $user->setCreated(new \DateTime());
         $user->setRole(UserRole::ADMIN);
+        $user->setIsActive(true);
 
         $hashedPassword = $this->hasher->hashPassword($user, $password);
         $user->setPassword($hashedPassword);
