@@ -18,17 +18,12 @@
             {{ form_end(registrationForm) }}
         {% endif %}
 
-        <br>
-        <br>
+    <h2>create a new event</h2>
+    {  { form_start(eventForm, {'attr': {'enctype': 'multipart/form-data'}}) }}
+        {{ form_widget(eventForm) }}
+        <button class="btn btn-primary">create event</button>
+    {{ form_end(eventForm) }}
 
-        <h2>Create a New Event</h2>
-        {{ form_start(eventForm) }}
-            {{ form_widget(eventForm) }}
-            <button class="btn btn-primary">Create Event</button>
-        {{ form_end(eventForm) }}
-
-    <button><a href="{{ path('homepage') }}">Back</a></button>
-
-</div>
+<button><a href="/userpage/{{user.id}}">back</a></button>
 
 {% endblock %}

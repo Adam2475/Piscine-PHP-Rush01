@@ -8,7 +8,7 @@ User entity:
 
 creating admin: php bin/console app:create-admin
 
-@ when updating entities
+### Updating Schema
 
 - php bin/console doctrine:schema:validate
     - check if the schema is valid before creating

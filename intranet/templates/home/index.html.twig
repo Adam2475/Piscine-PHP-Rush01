@@ -6,28 +6,9 @@
 
 {% block body %}
 
-<div class="user_info" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 50px; gap: 20px;">
-        <h1 style="margin: 0;">Welcome to 24 School</h1>
-
-        {% if app.user %}
-            <h2 style="margin: 0;">Hello {{ app.user.firstName }}!</h2>
-
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
-                <a href="{{ path('userpage', {'id': app.user.id}) }}">
-                    <button type="button" style="width: 220px;">Go to your profile</button>
-                </a>
-
-                <a href="{{ path('app_logout') }}">
-                    <button type="button" style="width: 220px;">Logout</button>
-                </a>
-            </div>
-        {% else %}
-            <a href="{{ path('app_login') }}">
-                <button type="button" style="width: 220px;">Login</button>
-            </a>
-        {% endif %}
-    </div>
-
+    <h1>Welcome to 24 School</h1>
+    
+    <button><a href="{{ path('app_login') }}">Login</a></button>
 
 {% endblock %}
 

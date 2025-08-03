@@ -55,6 +55,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'users')]
     private Collection $events;
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $image = null;
+
+    // Getters and Setters
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+        return $this;
+    }
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
