@@ -25,9 +25,9 @@
 
 <div class="main_profile">
     <div class="user_info">
-    {% if user.image %}
-        <img src="{{ user.image }}" alt="Profile Image" style="max-width:150px;">
-    {% endif %}
+    <img src="{{ user.image is not empty ? user.image : asset('images/default_profile.jpeg') }}"
+     alt="Profile Image"
+     style="max-width:150px;">
         <div class="pick_and_name">
             <h2 class="user_name">
             {{ user.getFirstName() }}
