@@ -9,6 +9,7 @@ body, head {
 	flex-direction: column;
 	align-items: center;
 	background-color: #666;
+    margin-left: 200px;
 }
 
 h1, h2 {
@@ -142,6 +143,8 @@ button:hover {
 
 .header {
     background-color: #004d66;
+    display: flex;
+    flex-direction: row;
     color: white;
     padding: 20px;
     text-align: center;
@@ -155,5 +158,61 @@ button:hover {
     width:80%;
 }
 
+.search-results {
+    position: absolute;
+    top: 75%;
+    left: 30%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+}
+
+.round-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
 /* adam navbar */
 
+.navbar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200px;
+    height: 100vh;
+    background: #222;
+    color: #fff;
+    padding-top: 40px;
+    z-index: 1000;
+}
+
+.navbar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.navbar ul li {
+    margin: 20px 0;
+    text-align: left;
+}
+
+.navbar ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+    transition: background 0.2s;
+}
+
+.navbar ul li a:hover {
+    background: #444;
+}

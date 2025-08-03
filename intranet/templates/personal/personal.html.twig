@@ -5,29 +5,29 @@
 
 {% block body %}
 
+
 <div class="header">
-    <div class="searchbar">
-        <form method="get" action="{{ path('userpage', {'id': user.id}) }}">
-        <input type="text" name="search" placeholder="Search users..." value="{{ app.request.get('search') }}">
-        <button type="submit">Search</button>
-        </form>
+    {% include 'components/searchbar.html.twig' %}
+    <div class="user-dropdown">
+        <button><a href="/profile/edit">edit profile</a></button>
+        {% if user.role is defined and user.role and user.role.value == 'admin' %}
+            <button><a href="/admin"> admin </a></button>
+        {% else %}
+            <button><a href="/userpage/{{user.id}}"> admin </a></button>
+        {% endif %}
     </div>
+
+    <button><a href="{{ path('app_logout') }}" class="btn btn-secondary">Logout</a></button>
 </div>
 
-{% if searchResults is defined %}
-    <ul>
-        {% for u in searchResults %}
-            <li>
-                <a href="/userpage/{{u.id}}">{{ u.firstName }} {{ u.lastName }} ({{ u.email }})</a>
-            </li>
-        {#{% else %}
-            <li>No users found.</li>#}
-        {% endfor %}
-    </ul>
-{% endif %}
+
+{% include 'components/navbar.html.twig' %}
 
 <div class="main_profile">
     <div class="user_info">
+    {% if user.image %}
+        <img src="{{ user.image }}" alt="Profile Image" style="max-width:150px;">
+    {% endif %}
         <div class="pick_and_name">
             <h2 class="user_name">
             {{ user.getFirstName() }}
@@ -71,7 +71,7 @@
     <div class="tbd">
         <h2>Courses</h2>
     </div>
-    <div class="tbd">
+    {#<div class="tbd">
         <h2>TBD</h2>
     </div>
     <div class="tbd">
@@ -97,6 +97,6 @@
     </div>
     <div class="tbd">
         <h2>TBD</h2>
-    </div>
+    </div>#}
 </div>
 {% endblock %}

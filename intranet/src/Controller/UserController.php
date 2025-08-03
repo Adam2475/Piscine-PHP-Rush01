@@ -22,26 +22,25 @@ use App\Service\SearchBarService;
 final class UserController extends AbstractController
 {
     #[Route('/userpage/{id}', name: 'userpage')]
-    public function index(Request $request, EntityManagerInterface $em, User $user, SearchBarService $searchBarService): Response
+    public function index(Request $request, SearchBarService $searchBarService, int $id, EntityManagerInterface $em): Response
     {
+        // returning original user to keep a reference to return to
+        $user = $this->getUser();
+        // calling the searchBar service
         $search = $request->query->get('search');
         $searchResults = $searchBarService->searchUsers($search);
-        $events = $em->getRepository(Event::class)->findAll();
+        // get the searched user by ID
+        $searchedUser = $em->getRepository(User::class)->find($id);
+
+        if (!$searchedUser) {
+            throw $this->createNotFoundException('User not found.');
+        }
 
         return $this->render('personal/personal.html.twig', [
-            'user' => $user,
-            'events' => $events,
-            'id' => $user->getId(),
+            'user' => $searchedUser,
+            'originalUser' => $user, // Pass the original user
+            'id' => $searchedUser->getId(),
             'searchResults' => $searchResults,
-        ]);
-    }
-
-    #[Route('/test', name: 'test')]
-    public function Test(): Response
-    {
-        $user = $this->getUser();
-        return $this->render('personal/show_user.html.twig', [
-            'user' => $user,
         ]);
     }
 
@@ -65,15 +64,22 @@ final class UserController extends AbstractController
                 // Generate confirmation token
                 $token = bin2hex(random_bytes(32));
                 $newUser->setConfirmationToken($token);
-
+                // Handle image upload
+                $imageFile = $form->get('image')->getData();
                 // Mark as inactive by default
                 $newUser->setIsActive(false);
 
-                // Set role from form
+                // Encoding the image to base64
+                if ($imageFile)
+                {
+                    $imageData = file_get_contents($imageFile->getPathname());
+                    $base64 = base64_encode($imageData);
+                    $mime = $imageFile->getMimeType();
+                    $newUser->setImage('data:' . $mime . ';base64,' . $base64);
+                    echo "Image uploaded successfully.";
+                }
                 $newUser->setRole($form->get('role')->getData());
-
                 $newUser->setCreated(new \DateTime());
-
                 $em->persist($newUser);
                 $em->flush();
 
@@ -95,7 +101,7 @@ final class UserController extends AbstractController
                 $mailer->send($email);
 
                 $this->addFlash('success', 'User registered successfully! A confirmation email has been sent.');
-                return $this->redirectToRoute('homepage');
+                return $this->redirectToRoute('admin');
             }
 
             $registrationFormView = $form->createView();

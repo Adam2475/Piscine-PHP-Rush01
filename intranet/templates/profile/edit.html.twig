@@ -4,6 +4,7 @@
 {% block title %}Edit Profile{% endblock %}
 
 {% block body %}
+<div class="user_info" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 50px; gap: 20px;">
     <h1>Edit Your Profile</h1>
 
     {{ form_start(form) }}
@@ -12,4 +13,5 @@
         {{ form_row(form.email) }}
         <button class="btn btn-primary">Save Changes</button>
     {{ form_end(form) }}
+</div>
 {% endblock %}

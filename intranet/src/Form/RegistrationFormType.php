@@ -11,6 +11,8 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Enum\UserRole;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\File;
 
 class RegistrationFormType extends AbstractType
 {
@@ -47,7 +49,21 @@ class RegistrationFormType extends AbstractType
                 ],
                 'label' => 'Role',
             ])
-        ;
+            ->add('image', FileType::class, [
+                'label' => 'Profile Image (JPG or PNG file)',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2M',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid JPG or PNG image',
+                    ])
+                ],
+            ]);
 
         // Add transformer to convert between string and UserRole enum
         $builder->get('role')
