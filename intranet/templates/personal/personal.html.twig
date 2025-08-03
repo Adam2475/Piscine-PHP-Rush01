@@ -5,41 +5,14 @@
 
 {% block body %}
 
-
-<div class="header">
-    {% include 'components/searchbar.html.twig' %}
-    <div class="user-dropdown">
-        <button><a href="/profile/edit">edit profile</a></button>
-        {% if user.role is defined and user.role and user.role.value == 'admin' %}
-            <button><a href="/admin"> admin </a></button>
-        {% else %}
-            <button><a href="/userpage/{{user.id}}"> admin </a></button>
-        {% endif %}
-    </div>
-
-    <button><a href="{{ path('app_logout') }}" class="btn btn-secondary">Logout</a></button>
-</div>
-
+{% include 'components/searchbar.html.twig' %}
 
 {% include 'components/navbar.html.twig' %}
 
 <div class="main_profile">
-    <div class="user_info">
-    <img src="{{ user.image is not empty ? user.image : asset('images/default_profile.jpeg') }}"
-     alt="Profile Image"
-     style="max-width:150px;">
-        <div class="pick_and_name">
-            <h2 class="user_name">
-            {{ user.getFirstName() }}
-            {{ user.getLastName() }}
-            </h2>
-        </div>
-        <div class="info">
-            <ul>
-                <li>Email: {{ user.getEmail() }}</li>
-            </ul>
-        </div>
-    </div>
+
+    {% include 'components/userinfo.html.twig' %}
+    
     <div class="agenda">
         <h2>Event</h2>
         <ul>

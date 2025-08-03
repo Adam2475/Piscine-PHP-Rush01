@@ -1,0 +1,60 @@
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('user-search');
+        const resultsContainer = document.getElementById('search-results');
+
+        input.addEventListener('input', async function () {
+            const query = input.value.trim();
+
+            if (query.length === 0) {
+                resultsContainer.style.display = 'none';
+                resultsContainer.innerHTML = '';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/search/users?q=${encodeURIComponent(query)}`);
+                const users = await response.json();
+
+                resultsContainer.innerHTML = '';
+                if (users.length > 0) {
+                    users.forEach(user => {
+                        const li = document.createElement('li');
+                        const link = document.createElement('a');
+                        link.href = `/userpage/${user.id}`;
+                        link.textContent = `${user.firstName} ${user.lastName} (${user.email})`;
+                        li.appendChild(link);
+                        resultsContainer.appendChild(li);
+                    });
+                    resultsContainer.style.display = 'block';
+                } else {
+                    resultsContainer.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!input.contains(e.target) && !resultsContainer.contains(e.target)) {
+                resultsContainer.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const toggle = document.getElementById('dropdown-toggle');
+    const menu = document.getElementById('dropdown-menu');
+
+    toggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    });
+
+    document.addEventListener('click', function () {
+        menu.style.display = 'none';
+    });
+});
+</script>
