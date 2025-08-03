@@ -1,10 +1,12 @@
-TODO: user schema : wip
-TODO: administrator security setting
-
+TODO: user schema | OK
+TODO: administrator security setting | OK
 TODO: protect admin page with security | OK
 
-TODO: rendere barra di ricerca asincrona con Ajax(?)
+TODO: rendere barra di ricerca asincrona con Ajax | (?)
 
+
+TODO: inserire immagini encodate in DB | OK
+TODO: inserire immagine default se non presente | (?)
 
 TODO: Posts logic
 

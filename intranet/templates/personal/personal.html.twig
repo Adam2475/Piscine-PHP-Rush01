@@ -5,13 +5,11 @@
 
 {% block body %}
 
-{% if user.image %}
-    <img src="{{ user.image }}" alt="Profile Image" style="max-width:150px;">
-{% endif %}
 
 <div class="header">
     {% include 'components/searchbar.html.twig' %}
     <div class="user-dropdown">
+        <button><a href="/profile/edit">edit profile</a></button>
         {% if user.role is defined and user.role and user.role.value == 'admin' %}
             <button><a href="/admin"> admin </a></button>
         {% else %}
@@ -20,10 +18,14 @@
     </div>
 </div>
 
+
 {% include 'components/navbar.html.twig' %}
 
 <div class="main_profile">
     <div class="user_info">
+    {% if user.image %}
+        <img src="{{ user.image }}" alt="Profile Image" style="max-width:150px;">
+    {% endif %}
         <div class="pick_and_name">
             <h2 class="user_name">
             {{ user.getFirstName() }}
@@ -35,7 +37,6 @@
                 <li>Email: {{ user.getEmail() }}</li>
             </ul>
         </div>
-        <button><a href="/profile/edit">edit profile</a></button>
     </div>
     <div class="agenda">
         <h2>Event</h2>
