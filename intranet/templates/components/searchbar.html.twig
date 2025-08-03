@@ -1,5 +1,5 @@
 <div class="header">
-    <div class="search-container">
+    {#<div class="search-container">
         <form method="get" action="{{ path('userpage', {'id': user.id}) }}" autocomplete="off">
             <input type="text" name="search" placeholder="Search users..." value="{{ app.request.get('search') }}">
             <button type="submit">Search</button>
@@ -18,5 +18,13 @@
                 {% endfor %}
             </ul>
         {% endif %}
+    </div>#}
+
+    <div class="search-container" style="position: relative;">
+        <input type="text" id="user-search" name="search" placeholder="Search users..." autocomplete="off">
+        <ul id="search-results" class="search-results"></ul>
     </div>
+
+   {% include 'components/script.html.twig' %}
+
 </div>

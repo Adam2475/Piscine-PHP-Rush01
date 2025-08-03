@@ -11,6 +11,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Enum\UserRole;
 use App\Entity\User;
@@ -21,6 +22,29 @@ use App\Service\SearchBarService;
 
 final class UserController extends AbstractController
 {
+    #[Route('/api/search/users', name: 'api_search_users', methods: ['GET'])]
+    public function searchUsersApi(Request $request, SearchBarService $searchBarService): JsonResponse
+    {
+        $query = $request->query->get('q', '');
+
+        if (empty($query)) {
+            return $this->json([]);
+        }
+
+        $results = $searchBarService->searchUsers($query);
+
+        $data = array_map(function (User $user) {
+            return [
+                'id' => $user->getId(),
+                'firstName' => $user->getFirstName(),
+                'lastName' => $user->getLastName(),
+                'email' => $user->getEmail(),
+            ];
+        }, $results);
+
+        return $this->json($data);
+    }
+
     #[Route('/userpage/{id}', name: 'userpage')]
     public function index(Request $request, SearchBarService $searchBarService, int $id, EntityManagerInterface $em): Response
     {
