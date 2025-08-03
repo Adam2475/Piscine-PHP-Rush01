@@ -40,39 +40,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(enumType: UserRole::class)]
     private ?UserRole $role = null;
 
-    // Properieta per la gestione della conferma dell'email
-
     #[ORM\Column(length: 64, nullable: true, unique: true)]
     private ?string $confirmationToken = null;
 
     #[ORM\Column(type: 'boolean')]
     private bool $isActive = false;
 
-    // Inversed reference to Agenda
-    // #[ORM\ManyToOne(targetEntity: Agenda::class, inversedBy: 'users')]
-    // private Agenda $agenda;
-
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'users')]
     private Collection $events;
+
+    #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'users')]
+    #[ORM\JoinTable(name: 'user_project')]
+    private Collection $projects;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $image = null;
 
-    // Getters and Setters
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): self
-    {
-        $this->image = $image;
-        return $this;
-    }
-
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -168,6 +155,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function isActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
@@ -179,18 +171,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             return [];
         }
 
-        // Symfony vuole che i ruoli siano prefixati da ROLE
         return ['ROLE_' . strtoupper($this->role->value)];
     }
 
     public function eraseCredentials(): void
     {
         // Clear temporary sensitive data if any
-    }
-
-    public function isActive(): ?bool
-    {
-        return $this->isActive;
     }
 
     /**
@@ -217,6 +203,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $event->removeUser($this);
         }
 
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Project>
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): static
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): static
+    {
+        $this->projects->removeElement($project);
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
         return $this;
     }
 }

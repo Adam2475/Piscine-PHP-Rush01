@@ -8,7 +8,11 @@
 
     <h1>Welcome to 24 School</h1>
     
-    <button><a href="{{ path('app_login') }}">Login</a></button>
+    {% if app.user %}
+        <button><a href="{{ path('userpage', { id: app.user.id }) }}">Go to Profile</a></button>
+    {% else %}
+        <button><a href="{{ path('app_login') }}">Login</a></button>
+    {% endif %}
 
 {% endblock %}
 

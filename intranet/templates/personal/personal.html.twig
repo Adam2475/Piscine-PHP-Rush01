@@ -1,10 +1,10 @@
-{%extends 'base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ parent() }} | Profile{% endblock %}
+    {{ parent() }} | Profile
+{% endblock %}
 
 {% block body %}
-
 
 <div class="header">
     {% include 'components/searchbar.html.twig' %}
@@ -12,26 +12,27 @@
         <button><a href="/profile/edit">edit profile</a></button>
         {% if user.role is defined and user.role and user.role.value == 'admin' %}
             <button><a href="/admin"> admin </a></button>
+        {#
         {% else %}
-            <button><a href="/userpage/{{user.id}}"> admin </a></button>
+            <button><a href="/userpage/{{ user.id }}"> admin </a></button>
+        #}
         {% endif %}
     </div>
 
     <button><a href="{{ path('app_logout') }}" class="btn btn-secondary">Logout</a></button>
 </div>
 
-
 {% include 'components/navbar.html.twig' %}
 
 <div class="main_profile">
     <div class="user_info">
-    {% if user.image %}
-        <img src="{{ user.image }}" alt="Profile Image" style="max-width:150px;">
-    {% endif %}
+        <img src="{{ user.image is not empty ? user.image : asset('images/default_profile.jpeg') }}"
+            alt="Profile Image"
+            style="max-width:150px;">
         <div class="pick_and_name">
             <h2 class="user_name">
-            {{ user.getFirstName() }}
-            {{ user.getLastName() }}
+                {{ user.getFirstName() }}
+                {{ user.getLastName() }}
             </h2>
         </div>
         <div class="info">
@@ -40,6 +41,7 @@
             </ul>
         </div>
     </div>
+
     <div class="agenda">
         <h2>Event</h2>
         <ul>
@@ -61,38 +63,36 @@
             {% endfor %}
         </ul>
     </div>
+
     <div class="tbd">
-        <h2>Project</h2>
+        <h2>Projects</h2>
+        <ul>
+            {% for project in user.getProjects() %}
+                <li>
+                    <a href="{{ path('project_show', { id: project.id }) }}">{{ project.name }}</a>
+                    {% if app.user and app.user.id == user.id %}
+                        <form method="post" action="{{ path('project_unregister', { id: project.id }) }}">
+                        <input type="hidden" name="redirect_to" value="userpage">
+                        <button>Unregister</button>
+                    {% endif %}
+                </form>
+                </li>
+            {% else %}
+                <li>No projects registered</li>
+            {% endfor %}
+        </ul>
+        {% if app.user and app.user.id == user.id %}
+            <a href="{{ path('project_list') }}" class="btn btn-primary" style="margin-top: 10px; display: inline-block;">
+                View All Projects & Register
+            </a>
+        {% endif %}
     </div>
+
     <div class="tbd">
         <h2>Courses</h2>
     </div>
-    {#<div class="tbd">
-        <h2>TBD</h2>
-    </div>
-    <div class="tbd">
-        <h2>TBD</h2>
-    </div>
-    <div class="tbd">
-        <h2>TBD</h2>
-    </div>
-    <div class="tbd">
-        <h2>TBD</h2>
-    </div>
-    <div class="tbd">
-        <h2>TBD</h2>
-    </div>
-    <div class="tbd">
-        <h2>TBD</h2>
-    </div>
-    <div class="tbd">
-        <h2>TBD</h2>
-    </div>
-    <div class="tbd">
-        <h2>TBD</h2>
-    </div>
-    <div class="tbd">
-        <h2>TBD</h2>
-    </div>#}
+
+    {# Additional TBD sections #}
 </div>
+
 {% endblock %}

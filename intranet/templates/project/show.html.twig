@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ project.name }}{% endblock %}
+
+{% block body %}
+<div class="user_info" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 50px; gap: 20px; width:40%">
+    <h1>{{ project.name }}</h1>
+
+    <p><strong>Description:</strong> {{ project.description }}</p>
+    <p><strong>XP:</strong> {{ project.xp }}</p>
+    <p><strong>Estimated Time:</strong> {{ project.estimatedTimeInHours }} hours</p>
+
+    <p><strong>Registered Participants:</strong> {{ project.participants|length }}</p>
+
+    {% if app.user %}
+        {% if app.user.projects.contains(project) %}
+            <form action="{{ path('project_unregister', { id: project.id }) }}" method="post">
+                <button type="submit">Unregister</button>
+            </form>
+        {% else %}
+            <form action="{{ path('project_register', { id: project.id }) }}" method="post">
+                <button type="submit">Register</button>
+            </form>
+        {% endif %}
+    {% else %}
+        <p><a href="{{ path('app_login') }}">Login</a> to register for this project.</p>
+    {% endif %}
+
+    <p><a href="{{ path('project_list') }}">Back to list</a></p>
+</div>
+{% endblock %}
