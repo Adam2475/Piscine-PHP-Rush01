@@ -11,26 +11,20 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\File;
 
+use App\Form\RegistrationFormType;
+
 #[IsGranted('ROLE_USER')]
 class ProfileController extends AbstractController
 {
     #[Route('/profile/edit', name: 'app_profile_edit')]
     public function edit(Request $request, EntityManagerInterface $em): Response
     {
-        /** @var \App\Entity\User $user */
         $user = $this->getUser();
-
         $form = $this->createForm(RegistrationFormType::class, $user);
-        dump($request->request->all());       // Text fields
-        dump($request->files->all());         // Uploaded files
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {
-            dump('Form submitted');
-            dump($form->getData());                     // Dump entity (user)
-            dump($form->get('image')->getData());       // Dump uploaded file
-            dump($user->getImage());                    // What’s in the entity?
             $imageFile = $form->get('image')->getData();
 
             // encodindg the image to base64
@@ -41,16 +35,11 @@ class ProfileController extends AbstractController
                 $mime = $imageFile->getMimeType();
                 $user->setImage('data:' . $mime . ';base64,' . $base64);
                 echo "Image uploaded successfully.";
-                 dd([
-                    'image_name' => $imageFile->getClientOriginalName(),
-                    'mime' => $imageFile->getMimeType(),
-                    'saved_to_user' => $user->getImage(),
-                ]);
             }
             $em->persist($user);
             $em->flush();
             $this->addFlash('success', 'Your profile was updated successfully.');
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('userpage', ['id' => $user->getId()]);
         }
 
         return $this->render('profile/edit.html.twig', [

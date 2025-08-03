@@ -64,15 +64,22 @@ final class UserController extends AbstractController
                 // Generate confirmation token
                 $token = bin2hex(random_bytes(32));
                 $newUser->setConfirmationToken($token);
-
+                // Handle image upload
+                $imageFile = $form->get('image')->getData();
                 // Mark as inactive by default
                 $newUser->setIsActive(false);
 
-                // Set role from form
+                // Encoding the image to base64
+                if ($imageFile)
+                {
+                    $imageData = file_get_contents($imageFile->getPathname());
+                    $base64 = base64_encode($imageData);
+                    $mime = $imageFile->getMimeType();
+                    $newUser->setImage('data:' . $mime . ';base64,' . $base64);
+                    echo "Image uploaded successfully.";
+                }
                 $newUser->setRole($form->get('role')->getData());
-
                 $newUser->setCreated(new \DateTime());
-
                 $em->persist($newUser);
                 $em->flush();
 
@@ -94,7 +101,7 @@ final class UserController extends AbstractController
                 $mailer->send($email);
 
                 $this->addFlash('success', 'User registered successfully! A confirmation email has been sent.');
-                return $this->redirectToRoute('homepage');
+                return $this->redirectToRoute('admin');
             }
 
             $registrationFormView = $form->createView();
