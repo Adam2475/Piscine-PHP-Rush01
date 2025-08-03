@@ -22,25 +22,25 @@ use App\Service\SearchBarService;
 final class UserController extends AbstractController
 {
     #[Route('/userpage/{id}', name: 'userpage')]
-    public function index(Request $request, SearchBarService $searchBarService): Response
+    public function index(Request $request, SearchBarService $searchBarService, int $id, EntityManagerInterface $em): Response
     {
+        // returning original user to keep a reference to return to
         $user = $this->getUser();
+        // calling the searchBar service
         $search = $request->query->get('search');
         $searchResults = $searchBarService->searchUsers($search);
+        // get the searched user by ID
+        $searchedUser = $em->getRepository(User::class)->find($id);
+
+        if (!$searchedUser) {
+            throw $this->createNotFoundException('User not found.');
+        }
 
         return $this->render('personal/personal.html.twig', [
-            'user' => $user,
-            'id' => $user->getId(),
+            'user' => $searchedUser,
+            'originalUser' => $user, // Pass the original user
+            'id' => $searchedUser->getId(),
             'searchResults' => $searchResults,
-        ]);
-    }
-
-    #[Route('/test', name: 'test')]
-    public function Test(): Response
-    {
-        $user = $this->getUser();
-        return $this->render('personal/show_user.html.twig', [
-            'user' => $user,
         ]);
     }
 
