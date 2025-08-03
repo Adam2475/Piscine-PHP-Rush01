@@ -13,15 +13,8 @@ use App\Form\CreateEventFormType;
 
 final class EventController extends AbstractController
 {
-    // funzione non utilizzata
-    #[Route('/event', name: 'app_event')]
-    public function index(): Response
-    {
-        return $this->render('event/event.html.twig', [
-            'controller_name' => 'EventController',
-        ]);
-    }
 
+    // Add an event to the agenda
     #[Route('/admin/event/new', name: 'admin_event_new')]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
@@ -37,29 +30,57 @@ final class EventController extends AbstractController
         }
 
         $formView = $form->createView();
-        return $this->render('event/event.html.twig', [
+        return $this->render('event/new_event.html.twig', [
             'eventForm' => $formView,
         ]);
     }
 
-    // TODO: deve registrare e deregistrare l'utente all'evento
-    //       aggiungendo il collegamento o togliendolo nel DB
+    // TODO: Remove an event from the agenda
+    #[Route('/admin/event/remove', name:'admine_event_remve')]
 
-    #[Route('/userpage/event/registration/{id}', name:'userpage_event_registration')]
-    public function registration(Request $request, Event $event, EntityManagerInterface $em): Response
+    // subscribe and unsubscribe ft
+
+    #[Route('/userpage/event/registration/{event_id}/{user_id}', name:'userpage_event_registration')]
+    public function registration(int $event_id, int $user_id, EntityManagerInterface $em): Response
     {
+        $event = $em->getRepository(Event::class)->find($event_id);
+        $user = $em->getRepository(User::class)->find($user_id);
+        if (!$event || !$user) {
+            $this->addFlash('error','User or Event not found');
+            return $this->redirectToRoute('userpage', ['id' => $user_id]);
+        }
+        if ($event->getParticipants() < 0)
+            $event->setParticipants(0);
+        if ($event->getParticipants() == $event->getMaxParticipants()){
+            $this->addFlash('error','This Event is full! Too late...');
+            return $this->redirectToRoute('userpage', ['id' => $user_id]);
+        }
+        $event->addUser($user);
+        $event->setParticipants($event->getParticipants() + 1);
         $event->setRegistered(true);
-        $em->persist($event); // opzionale, ma sicuro
+        $this->addFlash('success', 'You are now registered to the event!');
         $em->flush();
-        return $this->render('personal/personal.html.twig');
+        return $this->redirectToRoute('userpage', ['id' => $user_id]);
     }
     
-    #[Route('/userpage/event/deregistration/{id}', name:'userpage_event_deregistration')]
-    public function deregistration(Request $request, Event $event, EntityManagerInterface $em): Response
+    #[Route('/userpage/event/deregistration/{event_id}/{user_id}', name:'userpage_event_deregistration')]
+    public function deregistration(int $event_id, int $user_id, EntityManagerInterface $em): Response
     {
-        $event->setRegistered(false);
-        $em->persist($event); // opzionale, ma sicuro
-        $em->flush();
-        return $this->render('personal/personal.html.twig');
+        $event = $em->getRepository(Event::class)->find($event_id);
+        $user = $em->getRepository(User::class)->find($user_id);
+        if (!$event || !$user) {
+            $this->addFlash('error','User or Event not found');
+            return $this->redirectToRoute('userpage', ['id' => $user_id]);
+        }
+        if ($event->getParticipants() < 0)
+            $event->setParticipants(0);
+        if ($event->isRegistered() == true) {
+            $event->removeUser($user);
+            $event->setParticipants($event->getParticipants() - 1);
+            $event->setRegistered(false);
+            $this->addFlash('success', 'You are no longer registered to the event!');
+            $em->flush();
+        }
+        return $this->redirectToRoute('userpage', ['id' => $user_id]);
     }
 }

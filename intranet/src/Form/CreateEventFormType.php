@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 
 class CreateEventFormType extends AbstractType
 {
@@ -26,9 +27,19 @@ class CreateEventFormType extends AbstractType
 			])
 			->add('description', TextareaType::class)
 			->add('title', TextType::class)
-			->add('date', DateType::class, [
-				'widget' => 'single_text',
-			])
+    		->add('date', DateType::class, [
+    	    'widget' => 'single_text',
+    	    'html5' => true,
+    	    'constraints' => [
+    	        new GreaterThanOrEqual([
+    	            'value' => (new \DateTime('tomorrow'))->setTime(0, 0),
+    	            'message' => 'The event date must be at least tomorrow.',
+    	        ])
+    	    ],
+    	    'attr' => [
+    	        'min' => (new \DateTime('tomorrow'))->format('Y-m-d'),
+    	    ],
+    		])
 			->add('startTime', TimeType::class, [
 				'widget' => 'single_text',
 			])

@@ -36,11 +36,14 @@ final class UserController extends AbstractController
             throw $this->createNotFoundException('User not found.');
         }
 
+        $events = $em->getRepository(Event::class)->findAll();
+
         return $this->render('personal/personal.html.twig', [
             'user' => $searchedUser,
             'originalUser' => $user, // Pass the original user
             'id' => $searchedUser->getId(),
             'searchResults' => $searchResults,
+            'events' => $events,
         ]);
     }
 
@@ -107,10 +110,13 @@ final class UserController extends AbstractController
             $registrationFormView = $form->createView();
         }
 
+        // TODO see if it's needed
+        $events = $em->getRepository(Event::class)->findAll();
         // // Render admin page here
         return $this->render('personal/admin.html.twig', [
             'user' => $user,
             'registrationForm' => $registrationFormView,
+            'events' => $events,
         ]);
     }
 }

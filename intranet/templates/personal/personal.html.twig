@@ -40,31 +40,48 @@
             </ul>
         </div>
     </div>
-    <div class="agenda">
-        <h2>Event</h2>
-        <ul>
-            {% for event in events %}
-                    <li>
-                        <p>{{ event.getName() }}</p>
-                        <h3>{{ event.getTitle() }}</h3>
-                        <div class="participant">
-                            {{ event.getParticipants() }}/{{ event.getMaxParticipants() }}
-                        </div>
-                        <div class="event_info">
-                            <p>{{ event.getDate()|date('d-m-Y') }}</p>
-                            <p>{{ event.getStartTime()|date('H:i') }}</p>
-                            <p>{{ event.getEndTime()|date('H:i') }}</p>
-                        </div>
-                    {% if event.registered == true %}
-                        <button><a href="{{ path('userpage_event_registration', { id: event.id }) }}">REGISTERED</a></button>
-                    {% else %}
-                        <button><a href="{{ path('userpage_event_deregistration', { id: event.id }) }}">NOT REGISTERED</a></button>
-                    {% endif %}
-                    </li>
+<div class="agenda">
+    <h2>Event</h2>
+    <ul class="event-list">
+        {% for event in events %}
+            <li class="event-item">
+                <p class="event-name">{{ event.getName() }}</p>
+                <h3 class="event-title">{{ event.getTitle() }}</h3>
 
-            {% endfor %}
-        </ul>
-    </div>
+                <div class="event-meta">
+                    <div class="participant">
+                        {{ event.getParticipants() }}/{{ event.getMaxParticipants() }}
+                    </div>
+                    <div class="event-info">
+                        <p>{{ event.getDate()|date('d-m-Y') }}</p>
+                        <p>{{ event.getStartTime()|date('H:i') }}</p>
+                        <p>{{ event.getEndTime()|date('H:i') }}</p>
+                        <p>{{ event.getDuration() }}</p>
+                    </div>
+                </div>
+
+                <div class="event-description">
+                    {{ event.description }}
+                </div>
+
+                <div class="event-action">
+                    {% if event.registered == true %}
+                        <a class="event-button" href="{{ path('userpage_event_deregistration', {
+                            'event_id': event.id,
+                            'user_id': user.id
+                        }) }}">Unsubscribe</a>
+                    {% else %}
+                        <a class="event-button" href="{{ path('userpage_event_registration', {
+                            'event_id': event.id,
+                            'user_id': user.id
+                        }) }}">Subscribe</a>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
     <div class="tbd">
         <h2>Project</h2>
     </div>
