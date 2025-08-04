@@ -154,7 +154,21 @@ class ChatController extends AbstractController
             return $this->json(['error' => 'Recipient not found'], 404);
         $messages = $chatRepo->getPrivateMessages($user, $recipient);
         $chatRepo->markAsRead($recipient, $user);
-        $messagesData = array_map($this->get_message_array($message), $messages);
+        $messagesData = array_map(function($message)
+        {
+            return [
+                'id' => $message->getId(),
+                'content' => $message->getContent(),
+                'mediaUrl' => $message->getMediaUrl(),
+                'mediaName' => $message->getMediaName(),
+                'sender' => [
+                    'id' => $message->getSender()->getId(),
+                    'firstName' => $message->getSender()->getFirstName(),
+                    'lastName' => $message->getSender()->getLastName(),
+                ],
+                'createdAt' => $message->getCreatedAt()->format('Y-m-d H:i:s'),
+            ];
+        }, $messages);
 
         return $this->json($messagesData);
     }
@@ -168,7 +182,21 @@ class ChatController extends AbstractController
         if (!$project || !$project->getParticipants()->contains($user))
             return $this->json(['error' => 'Project not found or access denied'], 403);
         $messages = $chatRepo->getProjectMessages($project);
-        $messagesData = array_map($this->get_message_array($message), $messages);
+        $messagesData = array_map(function($message)
+        {
+            return [
+                'id' => $message->getId(),
+                'content' => $message->getContent(),
+                'mediaUrl' => $message->getMediaUrl(),
+                'mediaName' => $message->getMediaName(),
+                'sender' => [
+                    'id' => $message->getSender()->getId(),
+                    'firstName' => $message->getSender()->getFirstName(),
+                    'lastName' => $message->getSender()->getLastName(),
+                ],
+                'createdAt' => $message->getCreatedAt()->format('Y-m-d H:i:s'),
+            ];
+        }, $messages);
 
         return $this->json($messagesData);
     }
@@ -182,19 +210,4 @@ class ChatController extends AbstractController
         return $this->json(['unreadCount' => $unreadCount]);
     }
 
-    private function get_message_array($message): callable
-    {
-        return [
-            'id' => $message->getId(),
-            'content' => $message->getContent(),
-            'mediaUrl' => $message->getMediaUrl(),
-            'mediaName' => $message->getMediaName(),
-            'sender' => [
-                'id' => $message->getSender()->getId(),
-                'firstName' => $message->getSender()->getFirstName(),
-                'lastName' => $message->getSender()->getLastName(),
-            ],
-            'createdAt' => $message->getCreatedAt()->format('Y-m-d H:i:s'),
-        ];
-    }
 }
