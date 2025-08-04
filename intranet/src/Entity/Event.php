@@ -44,29 +44,12 @@ class Event
     #[ORM\Column]
     private ?float $duration = null;
 
-
-    #[ORM\ManyToOne(inversedBy: 'events')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Agenda $agenda = null;
-
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'events')]
     private Collection $users;
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
-    }
-
-    public function getAgenda(): ?Agenda
-    {
-        return $this->agenda;
-    }
-
-    public function setAgenda(?Agenda $agenda): static
-    {
-        $this->agenda = $agenda;
-
-        return $this;
     }
 
     public function getId(): ?int
