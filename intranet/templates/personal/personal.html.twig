@@ -34,9 +34,9 @@
                     </div>
                     <div class="event-info">
                         <p>Date: {{ event.getDate()|date('d-m-Y') }}</p>
-                        <p>Starting: {{ event.getStartTime()|date('H:i') }}</p>
-                        <p>Ending: {{ event.getEndTime()|date('H:i') }}</p>
-                        <p>Duration: {{ event.getDuration() }}</p>
+                        <p>Starting: {{ event.getStartTime()|date('H:i') }} h</p>
+                        <p>Ending: {{ event.getEndTime()|date('H:i') }} h</p>
+                        <p>Duration: {{ event.getDuration() }} h</p>
                     </div>
 
                 <div class="event-description">

@@ -30,7 +30,8 @@ final class EventController extends AbstractController
 			$interval = $startTime->diff($endTime);		
 			// Converto in float (es. 1 ora 30 min => 1.5)
 			$hours = (float) $interval->h + $interval->i / 60;
-			$event->setDuration($hours);
+			$hoursForm = number_format($hours,2);
+			$event->setDuration($hoursForm);
 			$em->persist($event);
 			$em->flush();
 
