@@ -14,7 +14,7 @@
     <div class="chat-header">
         <a href="{{ path('project_show', { id: project.id }) }}" class="back-btn">← Return to project</a>
         <h2>Chat: {{ project.name }}</h2>
-        <small>{{ project.participants|length }} participants</small>
+        <small>{{ project.userProjects|length }} participants</small>
     </div>
     
     <div id="chat-messages" class="chat-messages">

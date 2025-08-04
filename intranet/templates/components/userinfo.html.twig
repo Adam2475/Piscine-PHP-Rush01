@@ -1,16 +1,20 @@
 <div class="user_info">
     <div class="pick_and_name">
         <img src="{{ user.image is not empty ? user.image : asset('images/default_profile.jpeg') }}"
-        alt="Profile Image"
-        style="max-width:150px;">
+             alt="Profile Image"
+             style="max-width:150px;">
         <h2 class="user_name">
-        {{ user.getFirstName() }}
-        {{ user.getLastName() }}
+            {{ user.getFirstName() }}
+            {{ user.getLastName() }}
         </h2>
+        <h2 class="user_name"><strong>XP:</strong> {{ user.userProjects
+            ? user.userProjects|filter(up => up.validated)|map(up => up.project.xp)|reduce((a, b) => a + b, 0)
+            : 0
+        }}</h2>
     </div>
     <div class="info">
-    <ul>
-        <li>Email: {{ user.getEmail() }}</li>
-    </ul>
+        <ul>
+            <li>Email: {{ user.getEmail() }}</li>
+        </ul>
     </div>
 </div>
