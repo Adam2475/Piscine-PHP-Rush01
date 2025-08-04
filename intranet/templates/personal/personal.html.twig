@@ -33,12 +33,11 @@
                         {{ event.getParticipants() }}/{{ event.getMaxParticipants() }}
                     </div>
                     <div class="event-info">
-                        <p>{{ event.getDate()|date('d-m-Y') }}</p>
-                        <p>{{ event.getStartTime()|date('H:i') }}</p>
-                        <p>{{ event.getEndTime()|date('H:i') }}</p>
-                        <p>{{ event.getDuration() }}</p>
+                        <p>Date: {{ event.getDate()|date('d-m-Y') }}</p>
+                        <p>Starting: {{ event.getStartTime()|date('H:i') }}</p>
+                        <p>Ending: {{ event.getEndTime()|date('H:i') }}</p>
+                        <p>Duration: {{ event.getDuration() }}</p>
                     </div>
-                </div>
 
                 <div class="event-description">
                     {{ event.description }}
