@@ -33,27 +33,46 @@
                         {{ event.getParticipants() }}/{{ event.getMaxParticipants() }}
                     </div>
                     <div class="event-info">
-                        <p>{{ event.getDate()|date('d-m-Y') }}</p>
-                        <p>{{ event.getStartTime()|date('H:i') }}</p>
-                        <p>{{ event.getEndTime()|date('H:i') }}</p>
-                        <p>{{ event.getDuration() }}</p>
+                        <p>Date: {{ event.getDate()|date('d-m-Y') }}</p>
+                        <p>Starting: {{ event.getStartTime()|date('H:i') }}</p>
+                        <p>Ending: {{ event.getEndTime()|date('H:i') }}</p>
+                        <p>Duration: {{ event.getDuration() }}</p>
                     </div>
-                    <div class="event-description">
-                        {{ event.description }}
-                    </div>
-                    <div class="event-action">
-                        {% if event.registered == true %}
-                            <a class="event-button" href="{{ path('userpage_event_deregistration', {
-                                'event_id': event.id,
-                                'user_id': user.id
-                            }) }}">Unsubscribe</a>
-                        {% else %}
-                            <a class="event-button" href="{{ path('userpage_event_registration', {
-                                'event_id': event.id,
-                                'user_id': user.id
-                            }) }}">Subscribe</a>
-                        {% endif %}
-                    </div>
+
+                <div class="event-description">
+                    {{ event.description }}
+                </div>
+
+                <div class="event-action">
+                    {% if event.users.contains(user) == true %}
+                        <a class="event-button" href="{{ path('userpage_event_deregistration', {
+                            'event_id': event.id,
+                            'user_id': user.id
+                        }) }}">Unsubscribe</a>
+                    {% else %}
+                        <a class="event-button" href="{{ path('userpage_event_registration', {
+                            'event_id': event.id,
+                            'user_id': user.id
+                        }) }}">Subscribe</a>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+    <div class="tbd">
+        <h2>Projects</h2>
+        <ul>
+            {% for project in user.getProjects() %}
+                <li>
+                    <a href="{{ path('project_show', { id: project.id }) }}">{{ project.name }}</a>
+                    {% if app.user and app.user.id == user.id %}
+                        <form method="post" action="{{ path('project_unregister', { id: project.id }) }}">
+                        <input type="hidden" name="redirect_to" value="userpage">
+                        <button>Unregister</button>
+                    {% endif %}
+                </form>
                 </li>
             {% endfor %}
         </ul>

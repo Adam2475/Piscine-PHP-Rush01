@@ -77,16 +77,13 @@ final class EventController extends AbstractController
 			$this->addFlash('error','User or Event not found');
 			return $this->redirectToRoute('userpage', ['id' => $user_id]);
 		}
-		if ($event->getParticipants() < 0)
-			$event->setParticipants(0);
 		if ($event->getParticipants() == $event->getMaxParticipants()){
 			$this->addFlash('error','This Event is full! Too late...');
 			return $this->redirectToRoute('userpage', ['id' => $user_id]);
 		}
 		$event->addUser($user);
-		$event->setParticipants($event->getParticipants() + 1);
-		$event->setRegistered(true);
-		$this->addFlash('success', 'You are now registered to the event!');
+		$numParticipants = count($event->getUsers());
+		$event->setParticipants($numParticipants);
 		$em->flush();
 		return $this->redirectToRoute('userpage', ['id' => $user_id]);
 	}
@@ -100,13 +97,10 @@ final class EventController extends AbstractController
 			$this->addFlash('error','User or Event not found');
 			return $this->redirectToRoute('userpage', ['id' => $user_id]);
 		}
-		if ($event->getParticipants() < 0)
-			$event->setParticipants(0);
-		if ($event->isRegistered() == true) {
+		if ($event->getUsers()->contains($user) == true) {
 			$event->removeUser($user);
-			$event->setParticipants($event->getParticipants() - 1);
-			$event->setRegistered(false);
-			$this->addFlash('success', 'You are no longer registered to the event!');
+			$numParticipants = count($event->getUsers());
+			$event->setParticipants($numParticipants);
 			$em->flush();
 		}
 		return $this->redirectToRoute('userpage', ['id' => $user_id]);

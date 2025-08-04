@@ -25,8 +25,13 @@ h1, h2 {
 	padding: 30px 0;
 	margin: 0;
 	font-size: 48px;
-	color: #53989e;
+    color: rgb(106, 204, 221);
 	text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+.user_name {
+    color: #53989e;
+
 }
 
 .example-wrapper code {
@@ -106,11 +111,9 @@ h1, h2 {
 
 /* === AGENDA + TBD SECTION === */
 .agenda, .tbd {
-    opacity: 60%;
-    background-color: #eef0f3;
+    background-color: rgba(255, 255, 255, 0.6);
     padding: 15px;
     margin: 10px;
-    width: calc(33% - 20px);
     border-radius: 10px;
 }
 
@@ -167,6 +170,75 @@ button:hover {
         width: 100%;
     }
 }
+
+
+/* event part */
+
+.event-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.event-item {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f9f9f9;
+}
+
+.event-name,
+.event-title {
+    margin: 0.2rem 0;
+}
+
+.event-meta {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.participant {
+    font-weight: bold;
+    color: #333;
+}
+
+.event-info {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+}
+
+.event-info p {
+    margin: 0;
+}
+
+.event-description {
+    margin: 1rem 0;
+    font-style: italic;
+    color: #555;
+}
+
+.event-action {
+    margin-top: 0.5rem;
+}
+
+.event-button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.event-button:hover {
+    background-color: #0056b3;
+}
+
 
 /* === Search Bar Styles === */
 
