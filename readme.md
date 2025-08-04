@@ -36,7 +36,7 @@ MailHog starts an SMTP server on port 1025 and a web UI on http://localhost:8025
 
 ### Database reset and Load Fixtures
 
-In case of issues with the database or migrations being annoying, here's a quick way to reset the database and make fresh migrations:
+In case of issues with the database or migrations being annoying, here's a quick way to reset the database and make a fresh new migration:
 
 ```
 rm -rf migrations/*
@@ -46,13 +46,14 @@ php bin/console doctrine:migrations:diff
 php bin/console doctrine:migrations:migrate
 ```
 
-To load the fixtures (the available projects in the intranet). Keep in mind it will wipe the database
+To load the fixtures (the available projects in the intranet, otherwise the project page will appear empty)
+Also need to run this command every time more fixtures are added
 
 ```
 php bin/console doctrine:fixtures:load
 ```
 
-Create a new admin once the database has been wiped
+Create a new admin once it's all done
 
 ```
 php bin/console app:create-admin
