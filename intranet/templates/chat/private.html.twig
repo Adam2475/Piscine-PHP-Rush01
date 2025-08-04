@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chat con {{ recipient.firstName }} {{ recipient.lastName }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/chat-private.css') }}">
+{% endblock %}
+
+{% block body %}
+
+{% include 'components/navbar.html.twig' %}
+
+<div class="chat-container">
+    <div class="chat-header">
+        <a href="{{ path('chat_index') }}" class="back-btn">← Return to chat</a>
+        <h2>{{ recipient.firstName }} {{ recipient.lastName }}</h2>
+    </div>
+
+    <div id="chat-messages" class="chat-messages">
+    </div>
+    
+    <div class="chat-input">
+        <form id="chat-form" enctype="multipart/form-data">
+            <div class="input-group">
+                <input type="text" id="message-input" placeholder="Type a message..." maxlength="1000">
+                <input type="file" id="media-input" accept="image/*,video/*,audio/*,.pdf,.doc,.docx" style="display: none;">
+                <button type="button" id="media-btn" class="media-btn" title="Attach file">📎</button>
+                <button type="submit">Send</button>
+            </div>
+            <div id="file-preview" class="file-preview" style="display: none;"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Set configuration for the chat
+    window.chatConfig = {
+        recipientId: {{ recipient.id }},
+        currentUserId: {{ app.user.id }}
+    };
+</script>
+<script src="{{ asset('js/chat-private.js') }}"></script>
+{% endblock %}

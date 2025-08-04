@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chat Progetto - {{ project.name }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/chat-project.css') }}">
+{% endblock %}
+
+{% block body %}
+
+{% include 'components/navbar.html.twig' %}
+
+<div class="chat-container">
+    <div class="chat-header">
+        <a href="{{ path('project_show', { id: project.id }) }}" class="back-btn">← Return to project</a>
+        <h2>Chat: {{ project.name }}</h2>
+        <small>{{ project.participants|length }} participants</small>
+    </div>
+    
+    <div id="chat-messages" class="chat-messages">
+    </div>
+    
+    <div class="chat-input">
+        <form id="chat-form" enctype="multipart/form-data">
+            <div class="input-group">
+                <input type="text" id="message-input" placeholder="Type a message to the team..." maxlength="1000">
+                <input type="file" id="media-input" accept="image/*,video/*,audio/*,.pdf,.doc,.docx" style="display: none;">
+                <button type="button" id="media-btn" class="media-btn" title="Attach file">📎</button>
+                <button type="submit">Send</button>
+            </div>
+            <div id="file-preview" class="file-preview" style="display: none;"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+    window.chatConfig = {
+        projectId: {{ project.id }},
+        currentUserId: {{ app.user.id }}
+    };
+</script>
+<script src="{{ asset('js/chat-project.js') }}"></script>
+{% endblock %}

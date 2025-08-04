@@ -11,6 +11,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Enum\UserRole;
 use App\Entity\User;
@@ -21,16 +22,39 @@ use App\Service\SearchBarService;
 use DateTime;
 final class UserController extends AbstractController
 {
-	#[Route('/userpage/{id}', name: 'userpage')]
-	public function index(Request $request, SearchBarService $searchBarService, int $id, EntityManagerInterface $em): Response
-	{
-		// returning original user to keep a reference to return to
-		$user = $this->getUser();
-		// calling the searchBar service
-		$search = $request->query->get('search');
-		$searchResults = $searchBarService->searchUsers($search);
-		// get the searched user by ID
-		$searchedUser = $em->getRepository(User::class)->find($id);
+    #[Route('/api/search/users', name: 'api_search_users', methods: ['GET'])]
+    public function searchUsersApi(Request $request, SearchBarService $searchBarService): JsonResponse
+    {
+        $query = $request->query->get('q', '');
+
+        if (empty($query)) {
+            return $this->json([]);
+        }
+
+        $results = $searchBarService->searchUsers($query);
+
+        $data = array_map(function (User $user) {
+            return [
+                'id' => $user->getId(),
+                'firstName' => $user->getFirstName(),
+                'lastName' => $user->getLastName(),
+                'email' => $user->getEmail(),
+            ];
+        }, $results);
+
+        return $this->json($data);
+    }
+
+    #[Route('/userpage/{id}', name: 'userpage')]
+    public function index(Request $request, SearchBarService $searchBarService, int $id, EntityManagerInterface $em): Response
+    {
+        // returning original user to keep a reference to return to
+        $user = $this->getUser();
+        // calling the searchBar service
+        $search = $request->query->get('search');
+        $searchResults = $searchBarService->searchUsers($search);
+        // get the searched user by ID
+        $searchedUser = $em->getRepository(User::class)->find($id);
 
 		if (!$searchedUser) {
 			throw $this->createNotFoundException('User not found.');
@@ -116,7 +140,6 @@ final class UserController extends AbstractController
 			$registrationFormView = $form->createView();
 		}
 
-		// TODO see if it's needed
 		$events = $em->getRepository(Event::class)->findAll();
 		foreach ($events as $event){
 			$date = new DateTime('now');

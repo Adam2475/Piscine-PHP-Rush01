@@ -1,22 +1,43 @@
 <div class="header">
-    <div class="search-container">
-        <form method="get" action="{{ path('userpage', {'id': user.id}) }}" autocomplete="off">
-            <input type="text" name="search" placeholder="Search users..." value="{{ app.request.get('search') }}">
-            <button type="submit">Search</button>
-            <img class="round-img" src="{{ originalUser.image }}" alt="Profile Image" style="max-width:150px;">
-            <p>{{ originalUser.email }}</p>
-        </form>
 
-        {% if searchResults is defined and searchResults|length > 0 %}
-            <ul class="search-results">
-                {% for u in searchResults %}
-                    <li>
-                        <a href="{{ path('userpage', {id: u.id}) }}">
-                            {{ u.firstName }} {{ u.lastName }} ({{ u.email }})
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+    <div class="search-container">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="21">
+            <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" d="M.5 10.5a10 10 0 1 0 20 0 10 10 0 1 0-20 0ZM23.5 23.5l-5.929-5.929">
+            </path>
+        </svg>
+
+        <input class="sbar" type="text" id="user-search" name="search" placeholder="Search users..." autocomplete="off">
+        <ul id="search-results" class="search-results"></ul>
+
     </div>
+
+    <div class="dropdown" id="dropdown-toggle" style="cursor: pointer;">
+
+        <p>{{ originalUser.email }}</p>
+
+        <img class="round-img"
+            src="{{ originalUser.image is not empty ? originalUser.image : asset('images/default_profile.jpeg') }}"
+            alt="Profile Image"
+            style="max-width:150px;">
+
+        <div class="user-dropdown" id="dropdown-menu">
+            <ul>
+                <li>
+                    <a href="/profile/edit">Edit</a>
+                </li>
+                {% if user.role is defined and user.role and user.role.value == 'admin' %}
+                    <li>
+                        <a href="/admin">Admin</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="/userpage/{{ user.id }}">User Page</a>
+                    </li>
+                {% endif %}
+                <li><a href="{{ path('app_logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+
 </div>

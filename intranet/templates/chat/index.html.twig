@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chat{% endblock %}
+
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/chat-main.css') }}">
+{% endblock %}
+
+{% block body %}
+
+{% include 'components/navbar.html.twig' %}
+
+<div class="chat-container">
+    <div class="chat-sidebar">
+        <h3>Chat</h3>
+        <div class="chat-tabs">
+            <button class="tab-btn active" data-tab="conversations">Conversations</button>
+            <button class="tab-btn" data-tab="users">Users</button>
+        </div>
+        
+        <div id="conversations-tab" class="tab-content active">
+            <div class="conversations-list">
+            </div>
+        </div>
+        
+        <div id="users-tab" class="tab-content">
+            <div class="users-search">
+                <input type="text" id="user-search" placeholder="Find users...">
+                <div id="users-list" class="users-list">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="chat-main">
+        <div id="chat-header" class="chat-header">
+            <span>Select a conversation</span>
+        </div>
+        
+        <div id="chat-messages" class="chat-messages">
+            <div class="no-chat-selected">
+                <p>Select a user or a conversation to start chatting</p>
+            </div>
+        </div>
+        
+        <div id="chat-input-container" class="chat-input" style="display: none;">
+            <form id="chat-form" enctype="multipart/form-data">
+                <div class="input-group">
+                    <input type="text" id="message-input" placeholder="Type a message..." maxlength="1000">
+                    <input type="file" id="media-input" accept="image/*,video/*,audio/*,.pdf,.doc,.docx" style="display: none;">
+                    <button type="button" id="media-btn" class="media-btn" title="Attach file">📎</button>
+                    <button type="submit">Send</button>
+                </div>
+                <div id="file-preview" class="file-preview" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.chatConfig = {
+        currentUserId: {{ app.user.id }}
+    };
+</script>
+<script src="{{ asset('js/chat-main.js') }}"></script>
+{% endblock %}
