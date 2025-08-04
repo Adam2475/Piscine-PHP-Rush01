@@ -17,6 +17,11 @@
             <form action="{{ path('project_unregister', { id: project.id }) }}" method="post">
                 <button type="submit">Unregister</button>
             </form>
+            <div style="margin-top: 1rem;">
+                <a href="{{ path('chat_project', { projectId: project.id }) }}" class="btn btn-primary">
+                    💬 Chat Progetto
+                </a>
+            </div>
         {% else %}
             <form action="{{ path('project_register', { id: project.id }) }}" method="post">
                 <button type="submit">Register</button>
