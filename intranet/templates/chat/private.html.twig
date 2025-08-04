@@ -7,6 +7,9 @@
 {% endblock %}
 
 {% block body %}
+
+{% include 'components/navbar.html.twig' %}
+
 <div class="chat-container">
     <div class="chat-header">
         <a href="{{ path('chat_index') }}" class="back-btn">← Return to chat</a>
