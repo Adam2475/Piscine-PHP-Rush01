@@ -21,9 +21,16 @@ class CreateEventFormType extends AbstractType
 		$builder
 			->add('name', TextType::class)
 			->add('title', TextType::class)
-			->add('maxParticipants', IntegerType::class)
+			->add('maxParticipants', IntegerType::class, [
+				'attr' => [
+					'min' => 0,
+				],
+			])
 			->add('participants', IntegerType::class, [
 				'data' => 0,
+				'attr' => [
+					'min' => 0,
+				],
 			])
 			->add('description', TextareaType::class)
 			->add('title', TextType::class)
@@ -45,9 +52,6 @@ class CreateEventFormType extends AbstractType
 			])
 			->add('endTime', TimeType::class, [
 				'widget' => 'single_text',
-			])
-			->add('duration', NumberType::class, [
-				'scale' => 2,
 			])
 		;
 	}
