@@ -43,9 +43,6 @@ class Event
     #[ORM\Column]
     private ?float $duration = null;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
-    private bool $registered = false;
-
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'events')]
     private Collection $users;
 
@@ -187,18 +184,6 @@ class Event
     public function removeUser(User $user): static
     {
         $this->users->removeElement($user);
-
-        return $this;
-    }
-
-    public function isRegistered(): ?bool
-    {
-        return $this->registered;
-    }
-
-    public function setRegistered(bool $registered): static
-    {
-        $this->registered = $registered;
 
         return $this;
     }

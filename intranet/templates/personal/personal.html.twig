@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="event-action">
-                    {% if event.registered == true %}
+                    {% if event.users.contains(user) == true %}
                         <a class="event-button" href="{{ path('userpage_event_deregistration', {
                             'event_id': event.id,
                             'user_id': user.id
