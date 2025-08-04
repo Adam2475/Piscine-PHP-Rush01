@@ -23,7 +23,7 @@ class CreateEventFormType extends AbstractType
 			->add('title', TextType::class)
 			->add('maxParticipants', IntegerType::class, [
 				'attr' => [
-					'min' => 0,
+					'min' => 1,
 				],
 			])
 			->add('participants', IntegerType::class, [
