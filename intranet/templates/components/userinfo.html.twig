@@ -1,18 +1,16 @@
 <div class="user_info">
-
-    <img src="{{ user.image is not empty ? user.image : asset('images/default_profile.jpeg') }}"
-     alt="Profile Image"
-     style="max-width:150px;">
-        <div class="pick_and_name">
-            <h2 class="user_name">
-            {{ user.getFirstName() }}
-            {{ user.getLastName() }}
-            </h2>
-        </div>
-    <div class="info">
-        <ul>
-            <li>Email: {{ user.getEmail() }}</li>
-        </ul>
+    <div class="pick_and_name">
+        <img src="{{ user.image is not empty ? user.image : asset('images/default_profile.jpeg') }}"
+        alt="Profile Image"
+        style="max-width:150px;">
+        <h2 class="user_name">
+        {{ user.getFirstName() }}
+        {{ user.getLastName() }}
+        </h2>
     </div>
-
+    <div class="info">
+    <ul>
+        <li>Email: {{ user.getEmail() }}</li>
+    </ul>
+    </div>
 </div>
