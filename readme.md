@@ -33,3 +33,22 @@ Then run it alongside the server
 mailhog
 ```
 MailHog starts an SMTP server on port 1025 and a web UI on http://localhost:8025.
+
+### Database reset and Load Fixtures
+
+In case of issues with the database or migrations being annoying, here's a quick way to reset the database and make fresh migrations:
+
+```
+rm -rf migrations/*
+php bin/console doctrine:database:drop --force
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:diff
+php bin/console doctrine:migrations:migrate
+```
+
+To load the fixtures (the available projects in the intranet). Keep in mind it will wipe the database
+
+```
+php bin/console doctrine:fixtures:load
+```
+
