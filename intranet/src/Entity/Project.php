@@ -26,12 +26,12 @@ class Project
     #[ORM\Column(type: 'integer')]
     private int $estimatedTimeInHours;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'projects')]
-    private Collection $participants;
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: UserProject::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $userProjects;
 
     public function __construct()
     {
-        $this->participants = new ArrayCollection();
+        $this->userProjects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -84,25 +84,31 @@ class Project
     }
 
     /**
-     * @return Collection<int, User>
+     * @return Collection<int, UserProject>
      */
-    public function getParticipants(): Collection
+    public function getUserProjects(): Collection
     {
-        return $this->participants;
+        return $this->userProjects;
     }
 
-    public function addParticipant(User $user): self
+    public function addUserProject(UserProject $userProject): self
     {
-        if (!$this->participants->contains($user)) {
-            $this->participants[] = $user;
+        if (!$this->userProjects->contains($userProject)) {
+            $this->userProjects[] = $userProject;
+            $userProject->setProject($this);
         }
 
         return $this;
     }
 
-    public function removeParticipant(User $user): self
+    public function removeUserProject(UserProject $userProject): self
     {
-        $this->participants->removeElement($user);
+        if ($this->userProjects->removeElement($userProject)) {
+            if ($userProject->getProject() === $this) {
+                $userProject->setProject(null);
+            }
+        }
+
         return $this;
     }
 }

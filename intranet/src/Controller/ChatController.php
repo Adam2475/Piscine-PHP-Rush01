@@ -3,11 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\ChatMessage;
-use App\Entity\User;
-use App\Entity\Project;
-use App\Repository\ChatMessageRepository;
 use App\Repository\UserRepository;
 use App\Repository\ProjectRepository;
+use App\Repository\ChatMessageRepository;
+use App\Repository\UserProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -39,8 +38,9 @@ class ChatController extends AbstractController
         $user = $this->getUser();
         $recipient = $userRepo->find($recipientId);
 
-        if (!$recipient)
+        if (!$recipient) {
             throw $this->createNotFoundException('User not found');
+        }
 
         $messages = $chatRepo->getPrivateMessages($user, $recipient);
         $chatRepo->markAsRead($recipient, $user);
@@ -52,15 +52,28 @@ class ChatController extends AbstractController
     }
 
     #[Route('/project/{projectId}', name: 'chat_project')]
-    public function projectChat(int $projectId, ProjectRepository $projectRepo, ChatMessageRepository $chatRepo): Response
-    {
+    public function projectChat(
+        int $projectId,
+        ProjectRepository $projectRepo,
+        ChatMessageRepository $chatRepo,
+        UserProjectRepository $userProjectRepository
+    ): Response {
         $user = $this->getUser();
         $project = $projectRepo->find($projectId);
 
-        if (!$project)
+        if (!$project) {
             throw $this->createNotFoundException('Project not found');
-        if (!$project->getParticipants()->contains($user))
+        }
+
+        $userProject = $userProjectRepository->findOneBy([
+            'user' => $user,
+            'project' => $project,
+        ]);
+
+        if (!$userProject) {
             throw $this->createAccessDeniedException('You are not authorized to access this chat');
+        }
+
         $messages = $chatRepo->getProjectMessages($project);
 
         return $this->render('chat/project.html.twig', [
@@ -70,66 +83,94 @@ class ChatController extends AbstractController
     }
 
     #[Route('/api/send', name: 'chat_send', methods: ['POST'])]
-    public function sendMessage(Request $request, EntityManagerInterface $em, UserRepository $userRepo, ProjectRepository $projectRepo): JsonResponse
-    {
+    public function sendMessage(
+        Request $request,
+        EntityManagerInterface $em,
+        UserRepository $userRepo,
+        ProjectRepository $projectRepo,
+        UserProjectRepository $userProjectRepository
+    ): JsonResponse {
         $user = $this->getUser();
 
-        if (!$user)
+        if (!$user) {
             return $this->json(['error' => 'User not authenticated'], 401);
+        }
+
         $content = $request->request->get('content');
         $mediaFile = $request->files->get('media');
-        
-        if ((!$content || empty(trim($content))) && !$mediaFile)
+
+        if ((!$content || empty(trim($content))) && !$mediaFile) {
             return $this->json(['error' => 'Message or file required'], 400);
+        }
+
         $message = new ChatMessage();
         $message->setSender($user);
-        
-        if ($content)
+
+        if ($content) {
             $message->setContent(trim($content));
-        else
+        } else {
             $message->setContent('');
-        if ($mediaFile)
-        {
+        }
+
+        if ($mediaFile) {
             $uploadsDirectory = $this->getParameter('kernel.project_dir') . '/public/uploads/chat';
 
-            if (!is_dir($uploadsDirectory))
+            if (!is_dir($uploadsDirectory)) {
                 mkdir($uploadsDirectory, 0755, true);
+            }
             $fileName = uniqid() . '.' . $mediaFile->guessExtension();
 
             $mediaFile->move($uploadsDirectory, $fileName);
             $message->setMediaUrl('/uploads/chat/' . $fileName);
             $message->setMediaName($mediaFile->getClientOriginalName());
         }
+
         $type = $request->request->get('type', 'private');
 
-        if ($type === 'project')
-        {
+        if ($type === 'project') {
             $projectId = $request->request->get('projectId');
 
-            if (!$projectId)
+            if (!$projectId) {
                 return $this->json(['error' => 'Project ID required'], 400);
+            }
+
             $project = $projectRepo->find($projectId);
-            
-            if (!$project || !$project->getParticipants()->contains($user))
-                return $this->json(['error' => 'Project not found or access denied'], 403);
+
+            if (!$project) {
+                return $this->json(['error' => 'Project not found'], 404);
+            }
+
+            $userProject = $userProjectRepository->findOneBy([
+                'user' => $user,
+                'project' => $project,
+            ]);
+
+            if (!$userProject) {
+                return $this->json(['error' => 'Access denied for this project chat'], 403);
+            }
+
             $message->setProject($project);
             $message->setType('project');
-        }
-        else
-        {
+        } else {
             $recipientId = $request->request->get('recipientId');
-            
-            if (!$recipientId)
+
+            if (!$recipientId) {
                 return $this->json(['error' => 'Recipient ID required'], 400);
+            }
+
             $recipient = $userRepo->find($recipientId);
-            
-            if (!$recipient)
+
+            if (!$recipient) {
                 return $this->json(['error' => 'Recipient not found'], 404);
+            }
+
             $message->setRecipient($recipient);
             $message->setType('private');
         }
+
         $em->persist($message);
         $em->flush();
+
         return $this->json([
             'id' => $message->getId(),
             'content' => $message->getContent(),
@@ -150,12 +191,14 @@ class ChatController extends AbstractController
         $user = $this->getUser();
         $recipient = $userRepo->find($recipientId);
 
-        if (!$recipient)
+        if (!$recipient) {
             return $this->json(['error' => 'Recipient not found'], 404);
+        }
+
         $messages = $chatRepo->getPrivateMessages($user, $recipient);
         $chatRepo->markAsRead($recipient, $user);
-        $messagesData = array_map(function($message)
-        {
+
+        $messagesData = array_map(function ($message) {
             return [
                 'id' => $message->getId(),
                 'content' => $message->getContent(),
@@ -174,16 +217,31 @@ class ChatController extends AbstractController
     }
 
     #[Route('/api/messages/project/{projectId}', name: 'chat_get_project_messages', methods: ['GET'])]
-    public function getProjectMessages(int $projectId, ProjectRepository $projectRepo, ChatMessageRepository $chatRepo): JsonResponse
-    {
+    public function getProjectMessages(
+        int $projectId,
+        ProjectRepository $projectRepo,
+        ChatMessageRepository $chatRepo,
+        UserProjectRepository $userProjectRepository
+    ): JsonResponse {
         $user = $this->getUser();
         $project = $projectRepo->find($projectId);
 
-        if (!$project || !$project->getParticipants()->contains($user))
-            return $this->json(['error' => 'Project not found or access denied'], 403);
+        if (!$project) {
+            return $this->json(['error' => 'Project not found'], 404);
+        }
+
+        $userProject = $userProjectRepository->findOneBy([
+            'user' => $user,
+            'project' => $project,
+        ]);
+
+        if (!$userProject) {
+            return $this->json(['error' => 'Access denied for this project chat'], 403);
+        }
+
         $messages = $chatRepo->getProjectMessages($project);
-        $messagesData = array_map(function($message)
-        {
+
+        $messagesData = array_map(function ($message) {
             return [
                 'id' => $message->getId(),
                 'content' => $message->getContent(),
@@ -209,5 +267,4 @@ class ChatController extends AbstractController
 
         return $this->json(['unreadCount' => $unreadCount]);
     }
-
 }

@@ -22,13 +22,13 @@
         </div>
     {% endif %}
 
-<div class="agenda">
-    <h2>Event</h2>
-    <ul class="event-list">
-        {% for event in events %}
-            <li class="event-item">
-                <p class="event-name">{{ event.getName() }}</p>
-                <h3 class="event-title">{{ event.getTitle() }}</h3>
+    <div class="agenda">
+        <h2>Event</h2>
+        <ul class="event-list">
+            {% for event in events %}
+                <li class="event-item">
+                    <p class="event-name">{{ event.getName() }}</p>
+                    <h3 class="event-title">{{ event.getTitle() }}</h3>
                     <div class="participant">
                         {{ event.getParticipants() }}/{{ event.getMaxParticipants() }}
                     </div>
@@ -62,27 +62,45 @@
 </div>
 
     <div class="tbd">
-        <h2>Projects</h2>
+        <h2>Active Projects</h2>
         <ul>
-            {% for project in user.getProjects() %}
-                <li>
-                    <a href="{{ path('project_show', { id: project.id }) }}">{{ project.name }}</a>
-                    {% if app.user and app.user.id == user.id %}
-                        <form method="post" action="{{ path('project_unregister', { id: project.id }) }}">
-                        <input type="hidden" name="redirect_to" value="userpage">
-                        <button>Unregister</button>
-                    {% endif %}
-                </form>
-                </li>
+            {% set activeProjects = user.userProjects|filter(up => not up.validated) %}
+            {% if activeProjects|length > 0 %}
+                {% for userProject in activeProjects %}
+                    <li>
+                        <a href="{{ path('project_show', { id: userProject.project.id }) }}">
+                            {{ userProject.project.name }}
+                        </a>
+                    </li>
+                {% endfor %}
             {% else %}
-                <li>No projects registered</li>
-            {% endfor %}
+                <li>No active projects registered</li>
+            {% endif %}
         </ul>
+
         {% if app.user and app.user.id == user.id %}
             <a href="{{ path('project_list') }}" class="btn btn-primary" style="margin-top: 10px; display: inline-block;">
                 View All Projects & Register
             </a>
         {% endif %}
+    </div>
+
+    <div class="tbd">
+        <h2>Completed Projects</h2>
+        <ul>
+            {% set completedProjects = user.userProjects|filter(up => up.validated) %}
+            {% if completedProjects|length > 0 %}
+                {% for userProject in completedProjects %}
+                    <li>
+                        <a href="{{ path('project_show', { id: userProject.project.id }) }}">
+                            {{ userProject.project.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li>No completed projects yet</li>
+            {% endif %}
+        </ul>
     </div>
 
     <div class="tbd">

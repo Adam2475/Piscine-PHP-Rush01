@@ -49,17 +49,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'users')]
     private Collection $events;
 
-    #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'users')]
-    #[ORM\JoinTable(name: 'user_project')]
-    private Collection $projects;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserProject::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $userProjects;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $image = null;
 
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    private int $experience = 0;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
-        $this->projects = new ArrayCollection();
+        $this->userProjects = new ArrayCollection();
+        $this->experience = 0;
     }
 
     public function getId(): ?int
@@ -207,25 +210,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Project>
+     * @return Collection<int, UserProject>
      */
-    public function getProjects(): Collection
+    public function getUserProjects(): Collection
     {
-        return $this->projects;
+        return $this->userProjects;
     }
 
-    public function addProject(Project $project): static
+    public function addUserProject(UserProject $userProject): static
     {
-        if (!$this->projects->contains($project)) {
-            $this->projects->add($project);
+        if (!$this->userProjects->contains($userProject)) {
+            $this->userProjects->add($userProject);
+            $userProject->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeProject(Project $project): static
+    public function removeUserProject(UserProject $userProject): static
     {
-        $this->projects->removeElement($project);
+        if ($this->userProjects->removeElement($userProject)) {
+            // Set the owning side to null (unless already changed)
+            if ($userProject->getUser() === $this) {
+                $userProject->setUser(null);
+            }
+        }
+
         return $this;
     }
 
@@ -237,6 +247,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setImage(?string $image): static
     {
         $this->image = $image;
+        return $this;
+    }
+
+    public function getExperience(): int
+    {
+        return $this->experience;
+    }
+
+    public function setExperience(int $experience): static
+    {
+        $this->experience = $experience;
+        return $this;
+    }
+
+    public function addExperience(int $xp): static
+    {
+        $this->experience += $xp;
         return $this;
     }
 }
