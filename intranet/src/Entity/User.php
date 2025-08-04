@@ -7,6 +7,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\DBAL\Types\Type\IntegerType;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -49,20 +50,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'users')]
     private Collection $events;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserProject::class, orphanRemoval: true, cascade: ['persist'])]
-    private Collection $userProjects;
+    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'participants')]
+    private Collection $projects;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $image = null;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private int $experience = 0;
+    #[ORM\Column(type: 'integer', nullable: false)]
+    private int $evalPoints;
+
+    /**
+     * @var Collection<int, EvalSlot>
+     */
+    #[ORM\OneToMany(targetEntity: EvalSlot::class, mappedBy: 'userId', orphanRemoval: true)]
+    private Collection $evalSlots;
 
     public function __construct()
     {
         $this->events = new ArrayCollection();
-        $this->userProjects = new ArrayCollection();
         $this->experience = 0;
+        $this->projects = new ArrayCollection();
+        $this->evalPoints = 5; // Default value for evalPoints
+        $this->evalSlots = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -78,6 +89,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFirstName(string $first_name): static
     {
         $this->first_name = $first_name;
+        return $this;
+    }
+
+    public function getEvalPoints(): int
+    {
+        return $this->evalPoints;
+    }
+
+    public function setEvalPoints(int $evalPoints): static
+    {
+        $this->evalPoints = $evalPoints;
         return $this;
     }
 
@@ -264,6 +286,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function addExperience(int $xp): static
     {
         $this->experience += $xp;
+    }
+
+    /**
+     * @return Collection<int, EvalSlot>
+     */
+    public function getEvalSlots(): Collection
+    {
+        return $this->evalSlots;
+    }
+
+    public function addEvalSlot(EvalSlot $evalSlot): static
+    {
+        if (!$this->evalSlots->contains($evalSlot)) {
+            $this->evalSlots->add($evalSlot);
+            $evalSlot->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvalSlot(EvalSlot $evalSlot): static
+    {
+        if ($this->evalSlots->removeElement($evalSlot)) {
+            // set the owning side to null (unless already changed)
+            if ($evalSlot->getUserId() === $this) {
+                $evalSlot->setUserId(null);
+            }
+        }
+
         return $this;
     }
 }

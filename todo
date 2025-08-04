@@ -7,14 +7,23 @@ TODO: rendere barra di ricerca asincrona con Ajax | (?)
 
 TODO: inserire immagini encodate in DB | OK
 TODO: inserire immagine default se non presente | (?)
+TODO: xp progress bar
+TODO: evaluation system (?)
+
+TODO: add protection redirection to all pages if not logged
 
 TODO: Posts logic
+
+TODO: add a isTaken bool for the slots when adding correction logic | !!
+TODO: correction logic | OK
+TODO: delete a correction slot if taken or expired | !!
 
 Roles:
 
 Adam: user entity + immagine
 
-Samu : live chat con ajax
+Samu : live chat con ajax | OK (testing)
+     : xp progress bar  
 
 mpichec: posts eventi
 

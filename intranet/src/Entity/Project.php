@@ -26,8 +26,9 @@ class Project
     #[ORM\Column(type: 'integer')]
     private int $estimatedTimeInHours;
 
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: UserProject::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
-    private Collection $userProjects;
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'projects')]
+    #[ORM\JoinTable(name: 'user_project')]
+    private Collection $participants;
 
     public function __construct()
     {

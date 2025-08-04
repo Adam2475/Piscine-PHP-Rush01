@@ -20,6 +20,8 @@ use App\Form\CreateEventFormType;
 use App\Entity\Event;
 use App\Service\SearchBarService;
 use DateTime;
+use App\Service\EvalSlotService;
+
 final class UserController extends AbstractController
 {
     #[Route('/api/search/users', name: 'api_search_users', methods: ['GET'])]
@@ -46,7 +48,11 @@ final class UserController extends AbstractController
     }
 
     #[Route('/userpage/{id}', name: 'userpage')]
-    public function index(Request $request, SearchBarService $searchBarService, int $id, EntityManagerInterface $em): Response
+    public function index(Request $request, 
+		SearchBarService $searchBarService, 
+		int $id, 
+		EntityManagerInterface $em,
+		EvalSlotService $evalSlotService): Response
     {
         // returning original user to keep a reference to return to
         $user = $this->getUser();
@@ -68,12 +74,16 @@ final class UserController extends AbstractController
 			}
 		}
 
+		// getting all the open slots (excluding user)
+		$openSlots = $evalSlotService->getOpenSlots($user);
+
 		return $this->render('personal/personal.html.twig', [
 			'user' => $searchedUser,
 			'originalUser' => $user, // Pass the original user
 			'id' => $searchedUser->getId(),
 			'searchResults' => $searchResults,
 			'events' => $events,
+			'slots' => $openSlots,
 		]);
 	}
 
