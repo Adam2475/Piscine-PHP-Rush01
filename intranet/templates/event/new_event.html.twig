@@ -10,12 +10,10 @@
 
 <div class="example-wrapper">
     <h1>Event Create! ✅</h1>
-    {{form}}
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/home/mapichec/Desktop/Piscine-PHP-Rush01/intranet/src/Controller/EventController.php</code></li>
-        <li>Your template at <code>/home/mapichec/Desktop/Piscine-PHP-Rush01/intranet/templates/event/index.html.twig</code></li>
-    </ul>
+        {{ form_start(eventForm) }}
+            {{ form_widget(eventForm) }}
+                <button class="btn btn-primary" type="submit">CREATE</button>
+        {{ form_end(eventForm) }}
+        <button><a href="/admin">back</a></button>
 </div>
 {% endblock %}

@@ -19,7 +19,7 @@ use App\Form\RegistrationFormType;
 use App\Form\CreateEventFormType;
 use App\Entity\Event;
 use App\Service\SearchBarService;
-
+use DateTime;
 final class UserController extends AbstractController
 {
     #[Route('/api/search/users', name: 'api_search_users', methods: ['GET'])]
@@ -56,104 +56,102 @@ final class UserController extends AbstractController
         // get the searched user by ID
         $searchedUser = $em->getRepository(User::class)->find($id);
 
-        if (!$searchedUser) {
-            throw $this->createNotFoundException('User not found.');
-        }
+		if (!$searchedUser) {
+			throw $this->createNotFoundException('User not found.');
+		}
 
-        return $this->render('personal/personal.html.twig', [
-            'user' => $searchedUser,
-            'originalUser' => $user, // Pass the original user
-            'id' => $searchedUser->getId(),
-            'searchResults' => $searchResults,
-        ]);
-    }
+		$events = $em->getRepository(Event::class)->findAll();
+		foreach ($events as $event){
+			$date = new DateTime('now');
+			if ($date == $event->getDate()) {
+				$em->remove($event);
+			}
+		}
 
-    #[Route('/admin', name: 'admin')]
-    public function admin(Request $request, EntityManagerInterface $em, MailerInterface $mailer): Response
-    {
-        $user = $this->getUser();
-        $registrationFormView = null;
+		return $this->render('personal/personal.html.twig', [
+			'user' => $searchedUser,
+			'originalUser' => $user, // Pass the original user
+			'id' => $searchedUser->getId(),
+			'searchResults' => $searchResults,
+			'events' => $events,
+		]);
+	}
 
-        if (!$user || $user->getRole() !== UserRole::ADMIN) {
-            $this->addFlash('error', 'Access denied.');
-            return $this->redirectToRoute('homepage');
-        }
+	#[Route('/admin', name: 'admin')]
+	public function admin(Request $request, EntityManagerInterface $em, MailerInterface $mailer): Response
+	{
+		$user = $this->getUser();
+		$registrationFormView = null;
 
-        if ($user && $user->getRole() === UserRole::ADMIN) {
-            $newUser = new User();
-            $form = $this->createForm(RegistrationFormType::class, $newUser);
-            $form->handleRequest($request);
+		if (!$user || $user->getRole() !== UserRole::ADMIN) {
+			$this->addFlash('error', 'Access denied.');
+			return $this->redirectToRoute('homepage');
+		}
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                // Generate confirmation token
-                $token = bin2hex(random_bytes(32));
-                $newUser->setConfirmationToken($token);
-                // Handle image upload
-                $imageFile = $form->get('image')->getData();
-                // Mark as inactive by default
-                $newUser->setIsActive(false);
+		if ($user && $user->getRole() === UserRole::ADMIN) {
+			$newUser = new User();
+			$form = $this->createForm(RegistrationFormType::class, $newUser);
+			$form->handleRequest($request);
 
-                // Encoding the image to base64
-                if ($imageFile)
-                {
-                    $imageData = file_get_contents($imageFile->getPathname());
-                    $base64 = base64_encode($imageData);
-                    $mime = $imageFile->getMimeType();
-                    $newUser->setImage('data:' . $mime . ';base64,' . $base64);
-                    echo "Image uploaded successfully.";
-                }
-                $newUser->setRole($form->get('role')->getData());
-                $newUser->setCreated(new \DateTime());
-                $em->persist($newUser);
-                $em->flush();
+			if ($form->isSubmitted() && $form->isValid()) {
+				// Generate confirmation token
+				$token = bin2hex(random_bytes(32));
+				$newUser->setConfirmationToken($token);
+				// Handle image upload
+				$imageFile = $form->get('image')->getData();
+				// Mark as inactive by default
+				$newUser->setIsActive(false);
 
-                // Send confirmation email
-                $email = (new TemplatedEmail())
-                    ->from(new Address('no-reply@example.com', 'Intranet Admin'))
-                    ->to($newUser->getEmail())
-                    ->subject('Please confirm your account')
-                    ->htmlTemplate('emails/confirmation.html.twig')
-                    ->context([
-                        'user' => $newUser,
-                        'confirmationUrl' => $this->generateUrl(
-                            'app_confirm_account',
-                            ['token' => $newUser->getConfirmationToken()],
-                            UrlGeneratorInterface::ABSOLUTE_URL
-                        ),
-                    ]);
+				// Encoding the image to base64
+				if ($imageFile)
+				{
+					$imageData = file_get_contents($imageFile->getPathname());
+					$base64 = base64_encode($imageData);
+					$mime = $imageFile->getMimeType();
+					$newUser->setImage('data:' . $mime . ';base64,' . $base64);
+					echo "Image uploaded successfully.";
+				}
+				$newUser->setRole($form->get('role')->getData());
+				$newUser->setCreated(new \DateTime());
+				$em->persist($newUser);
+				$em->flush();
 
-                $mailer->send($email);
+				// Send confirmation email
+				$email = (new TemplatedEmail())
+					->from(new Address('no-reply@example.com', 'Intranet Admin'))
+					->to($newUser->getEmail())
+					->subject('Please confirm your account')
+					->htmlTemplate('emails/confirmation.html.twig')
+					->context([
+						'user' => $newUser,
+						'confirmationUrl' => $this->generateUrl(
+							'app_confirm_account',
+							['token' => $newUser->getConfirmationToken()],
+							UrlGeneratorInterface::ABSOLUTE_URL
+						),
+					]);
 
-                $this->addFlash('success', 'User registered successfully! A confirmation email has been sent.');
-                return $this->redirectToRoute('admin');
-            }
+				$mailer->send($email);
 
-            $registrationFormView = $form->createView();
-        }
+				$this->addFlash('success', 'User registered successfully! A confirmation email has been sent.');
+				return $this->redirectToRoute('admin');
+			}
 
-        // Event creation form
-        $newEvent = new Event();
-        $eventForm = $this->createForm(CreateEventFormType::class, $newEvent);
-        $eventForm->handleRequest($request);
+			$registrationFormView = $form->createView();
+		}
 
-        if ($eventForm->isSubmitted() && $eventForm->isValid()) {
-            // Set agenda or other required fields if needed
-            // $newEvent->setAgenda($someAgenda);
-
-            $em->persist($newEvent);
-            $em->flush();
-
-            $this->addFlash('success', 'Event created successfully!');
-            return $this->redirectToRoute('admin');
-        }
-
-        $eventFormView = $eventForm->createView();
-
-        // Render admin page here
-        return $this->render('personal/admin.html.twig', [
-            'user' => $user,
-            'registrationForm' => $registrationFormView,
-            'eventForm' => $eventFormView,
-        ]);
-    }
+		$events = $em->getRepository(Event::class)->findAll();
+		foreach ($events as $event){
+			$date = new DateTime('now');
+			if ($date == $event->getDate()) {
+				$em->remove($event);
+			}
+		}
+		// // Render admin page here
+		return $this->render('personal/admin.html.twig', [
+			'user' => $user,
+			'registrationForm' => $registrationFormView,
+			'events' => $events,
+		]);
+	}
 }

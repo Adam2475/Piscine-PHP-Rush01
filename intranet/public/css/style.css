@@ -25,7 +25,7 @@ h1, h2 {
 	padding: 30px 0;
 	margin: 0;
 	font-size: 48px;
-	color: #004d66;
+	color: #53989e;
 	text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
 }
 
@@ -42,34 +42,55 @@ h1, h2 {
 }
 
 .main_profile {
-    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    background-image: url(../images/techWallpaper.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
-/* === USER INFO SECTION === */
 .user_info {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    width: 100%;
     margin-bottom: 30px;
-    background-color: #f9f9f9;
-    padding: 20px;
     border-radius: 10px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .pick_and_name {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.pick_and_name img {
+    max-width: 150px;
+    border-radius: 8px;
+    padding-left: 10px;
+    padding-top: 10px;
 }
 
 .user_name {
     margin: 0;
     font-size: 24px;
+    padding-left: 10px;
 }
 
 .info {
     flex: 1;
+    text-align: center;
+    padding-top: 10px;
 }
 
 .info ul {
@@ -79,14 +100,17 @@ h1, h2 {
 }
 
 .info li {
+    color: rgb(255, 255, 255);
     margin-bottom: 5px;
 }
 
 /* === AGENDA + TBD SECTION === */
 .agenda, .tbd {
+    opacity: 60%;
     background-color: #eef0f3;
     padding: 15px;
     margin: 10px;
+    width: calc(33% - 20px);
     border-radius: 10px;
 }
 
@@ -120,9 +144,7 @@ button:hover {
 .main_profile > .tbd {
     display: inline-block;
     vertical-align: top;
-    width: calc(33.333% - 20px); /* 3 columns with margin compensation */
-    width: calc(33% - 20px); /* 3 columns with margin compensation */
-    width: calc(33% - 20px); /* 3 columns with margin compensation */
+    width: 1200px;
     min-height: 200px;
     box-sizing: border-box;
 }
@@ -192,11 +214,19 @@ button:hover {
 .search-container {
     position: relative;
     width: 100%;
-    margin-left: 0.5em;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.5em;
+}
+
+.search-container svg {
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.dropdown {
+    padding-right: 10px;
+}
+
+.search-container img {
+    padding-right: 10px;
 }
 
 .search-results li a {
@@ -223,7 +253,7 @@ button:hover {
 /* === Navbar Styles === */
 
 .navbar {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     width: 5em;
@@ -236,17 +266,18 @@ button:hover {
 .navbar ul {
     list-style: none;
     padding: 0;
+    padding-left: 20px;
 }
 
 .navbar ul li {
     margin: 20px 0;
-    text-align: left;
+    text-align: center;
 }
 
 .navbar ul li a {
     color: #fff;
     text-decoration: none;
-    padding: 10px 20px;
+    padding: 10px 20px 10px 0px;
     display: block;
     transition: background 0.2s;
 }
@@ -304,16 +335,6 @@ button:hover {
 }
 
 /* User Module */
-
-.user_info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f0f0f0;
-    padding: 20px;
-    border-radius: 10px;
-    width: 100%;
-}
 
 .profile_img {
     width: 150px;

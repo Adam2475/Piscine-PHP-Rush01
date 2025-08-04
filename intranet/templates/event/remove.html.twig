@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Elimina Eventi{% endblock %}
+
+{% block body %}
+<style>
+.checkbox-group div {
+	margin-bottom: 0.5em;
+	display:grid;
+	grid-template-areas:
+		"input label";
+}
+</style>
+<div class="example-wrapper">
+	<h1>Remove Events ❌</h1>
+
+	{{ form_start(form) }}
+		<h3>Select events to be removed:</h3>
+	<div class="checkbox-group">
+		{{ form_widget(form.events) }}
+	</div>
+		<button type="submit" class="btn btn-primary">Elimina Selezionati</button>
+	{{ form_end(form) }}
+	<button><a href="/admin">back</a></button>
+</div>
+{% endblock %}
