@@ -52,3 +52,9 @@ To load the fixtures (the available projects in the intranet). Keep in mind it w
 php bin/console doctrine:fixtures:load
 ```
 
+Create a new admin once the database has been wiped
+
+```
+php bin/console app:create-admin
+```
+
