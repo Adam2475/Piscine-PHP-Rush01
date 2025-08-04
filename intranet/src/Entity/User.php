@@ -7,7 +7,6 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\DBAL\Types\Type\IntegerType;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -50,30 +49,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'users')]
     private Collection $events;
 
-    #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'participants')]
-    private Collection $projects;
-
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $image = null;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private int $experience = 0;
+
     #[ORM\Column(type: 'integer', nullable: false)]
     private int $evalPoints;
 
-    /**
-     * @var Collection<int, EvalSlot>
-     */
     #[ORM\OneToMany(targetEntity: EvalSlot::class, mappedBy: 'userId', orphanRemoval: true)]
     private Collection $evalSlots;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserProject::class, orphanRemoval: true)]
+    private Collection $userProjects;
 
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->experience = 0;
-        $this->projects = new ArrayCollection();
-        $this->evalPoints = 5; // Default value for evalPoints
+        $this->evalPoints = 5;
         $this->evalSlots = new ArrayCollection();
+        $this->userProjects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -252,7 +249,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeUserProject(UserProject $userProject): static
     {
         if ($this->userProjects->removeElement($userProject)) {
-            // Set the owning side to null (unless already changed)
             if ($userProject->getUser() === $this) {
                 $userProject->setUser(null);
             }
@@ -286,6 +282,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function addExperience(int $xp): static
     {
         $this->experience += $xp;
+        return $this;
     }
 
     /**
@@ -309,7 +306,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeEvalSlot(EvalSlot $evalSlot): static
     {
         if ($this->evalSlots->removeElement($evalSlot)) {
-            // set the owning side to null (unless already changed)
             if ($evalSlot->getUserId() === $this) {
                 $evalSlot->setUserId(null);
             }

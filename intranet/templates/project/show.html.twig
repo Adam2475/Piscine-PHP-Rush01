@@ -33,7 +33,7 @@
                 <h3>Upload your project file</h3>
                 <form action="{{ path('project_upload', { id: project.id }) }}" method="post" enctype="multipart/form-data">
                     <input type="file" name="project_file" required />
-                    <button type="submit">Upload & Validate</button>
+                    <button type="submit">Submit for Evaluation</button>
                 </form>
             {% else %}
                 <p><strong>Project completed ✅</strong></p>

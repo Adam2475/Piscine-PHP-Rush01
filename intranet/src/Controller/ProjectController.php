@@ -36,18 +36,24 @@ class ProjectController extends AbstractController
         $userProject = null;
 
         if ($user) {
-            // Find UserProject relation if it exists
             $userProject = $userProjectRepository->findOneBy([
                 'user' => $user,
                 'project' => $project,
             ]);
         }
 
+        // ✅ Get validated user projects
+        $completedParticipants = $project->getUserProjects()->filter(
+            fn(UserProject $up) => $up->isValidated()
+        );
+
         return $this->render('project/show.html.twig', [
             'project' => $project,
             'userProject' => $userProject,
+            'completedParticipants' => $completedParticipants, // 👈 pass it to Twig
         ]);
     }
+
 
     #[Route('/{id}/register', name: 'project_register')]
     public function register(Project $project, EntityManagerInterface $em): Response
