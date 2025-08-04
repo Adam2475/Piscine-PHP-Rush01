@@ -63,6 +63,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->events = new ArrayCollection();
         $this->projects = new ArrayCollection();
+        $this->evalPoints = 5; // Default value for evalPoints
     }
 
     public function getId(): ?int
