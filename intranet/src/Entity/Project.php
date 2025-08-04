@@ -27,6 +27,7 @@ class Project
     private int $estimatedTimeInHours;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'projects')]
+    #[ORM\JoinTable(name: 'user_project')]
     private Collection $participants;
 
     public function __construct()

@@ -7,6 +7,8 @@ TODO: rendere barra di ricerca asincrona con Ajax | (?)
 
 TODO: inserire immagini encodate in DB | OK
 TODO: inserire immagine default se non presente | (?)
+TODO: xp progress bar
+TODO: evaluation system (?)
 
 TODO: Posts logic
 
@@ -14,7 +16,8 @@ Roles:
 
 Adam: user entity + immagine
 
-Samu : live chat con ajax
+Samu : live chat con ajax | OK (testing)
+     : xp progress bar  
 
 mpichec: posts eventi
 
