@@ -14,6 +14,10 @@ TODO: add protection redirection to all pages if not logged
 
 TODO: Posts logic
 
+TODO: add a isTaken bool for the slots when adding correction logic | !!
+TODO: correction logic | OK
+TODO: delete a correction slot if taken or expired | !!
+
 Roles:
 
 Adam: user entity + immagine
