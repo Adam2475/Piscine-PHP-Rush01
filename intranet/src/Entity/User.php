@@ -59,11 +59,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'integer', nullable: false)]
     private int $evalPoints;
 
+    /**
+     * @var Collection<int, EvalSlot>
+     */
+    #[ORM\OneToMany(targetEntity: EvalSlot::class, mappedBy: 'userId', orphanRemoval: true)]
+    private Collection $evalSlots;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->projects = new ArrayCollection();
         $this->evalPoints = 5; // Default value for evalPoints
+        $this->evalSlots = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -252,6 +259,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setImage(?string $image): static
     {
         $this->image = $image;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EvalSlot>
+     */
+    public function getEvalSlots(): Collection
+    {
+        return $this->evalSlots;
+    }
+
+    public function addEvalSlot(EvalSlot $evalSlot): static
+    {
+        if (!$this->evalSlots->contains($evalSlot)) {
+            $this->evalSlots->add($evalSlot);
+            $evalSlot->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvalSlot(EvalSlot $evalSlot): static
+    {
+        if ($this->evalSlots->removeElement($evalSlot)) {
+            // set the owning side to null (unless already changed)
+            if ($evalSlot->getUserId() === $this) {
+                $evalSlot->setUserId(null);
+            }
+        }
+
         return $this;
     }
 }

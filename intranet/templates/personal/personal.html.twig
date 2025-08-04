@@ -90,6 +90,26 @@
         <h2>Courses</h2>
     </div>
 
+    <div class="tbd">
+        <h2>Pending evaluations</h2>
+        <button><a href="{{ path('evaluations') }}">menage slots</a></button>
+
+        <h1>Open Slots for Correction</h1>
+
+        {% if slots is empty %}
+            <p>No open slots available.</p>
+        {% else %}
+            <ul>
+                {% for slot in slots %}
+                    <li>
+                        {{ slot.startTime|date('Y-m-d H:i') }} → {{ slot.endTime|date('Y-m-d H:i') }}
+                        (created by: {{ slot.userId.email }})
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
     {# Additional TBD sections #}
 </div>
 

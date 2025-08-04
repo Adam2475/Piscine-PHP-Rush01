@@ -1,0 +1,23 @@
+{# templates/eval_slot/new.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}New Eval Slot{% endblock %}
+
+{% block body %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <h1>Create New Evaluation Slot</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.startTime) }}
+        {{ form_row(form.endTime) }}
+        <button class="btn btn-primary">Create</button>
+    {{ form_end(form) }}
+{% endblock %}
