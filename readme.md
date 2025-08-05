@@ -47,10 +47,10 @@ php bin/console doctrine:migrations:migrate
 ```
 
 To load the fixtures (the available projects in the intranet, otherwise the project page will appear empty)
-Also need to run this command every time more fixtures are added
+Also need to run this command every time more fixtures are added.
 
 ```
-php bin/console doctrine:fixtures:load
+php bin/console doctrine:fixtures:load --append
 ```
 
 Create a new admin once it's all done
