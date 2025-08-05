@@ -15,7 +15,9 @@ class RemoveEventType extends AbstractType
         $builder
             ->add('events', EntityType::class, [
                 'class' => Event::class,
-                'choice_label' => 'title',
+                'choice_label' => function (Event $event) {
+                    return $event->getTitle() . ' - ' . $event->getDescription();
+                },
                 'multiple' => true,
                 'expanded' => true, // checkbox
             ]);
