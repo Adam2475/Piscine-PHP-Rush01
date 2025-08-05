@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use App\Entity\UserProject;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,7 +27,7 @@ class Project
     #[ORM\Column(type: 'integer')]
     private int $estimatedTimeInHours;
 
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: UserProject::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: UserProject::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $userProjects;
 
     public function __construct()

@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Elimina Eventi{% endblock %}
+{% block title %} {{parent()}} | Remove Event {% endblock %}
 
 {% block body %}
 
-<div class="example-wrapper" id="remove_event">
-	<h1>Remove Events ❌</h1>
+{% include 'components/navbar.html.twig' %}
+
+<div class="example-wrapper">
+	<h1>Remove an Events</h1>
 
 	{{ form_start(form) }}
 		<h3>Select events to be removed:</h3>

@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    {% block stylesheets %}{% endblock %}
-    <title>{% block title %}Intranet{% endblock %}</title>
-</head>
-<body>
-    {% block body %}{% endblock %}
-    {% include 'components/script.html.twig' %}
-</body>
+    <head>
+        {% block head %}
+        {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        {% endblock %}
+        <title>{% block title %}Intranet{% endblock %}</title>
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        {% include 'components/script.html.twig' %}
+    </body>
 </html>

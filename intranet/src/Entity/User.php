@@ -49,20 +49,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'users')]
     private Collection $events;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserProject::class, orphanRemoval: true, cascade: ['persist'])]
-    private Collection $userProjects;
-
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $image = null;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private int $experience = 0;
 
+    #[ORM\Column(type: 'integer', nullable: false)]
+    private int $evalPoints;
+
+    #[ORM\OneToMany(targetEntity: EvalSlot::class, mappedBy: 'userId', orphanRemoval: true)]
+    private Collection $evalSlots;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserProject::class, orphanRemoval: true)]
+    private Collection $userProjects;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $notifications = [];
+
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    private int $unreadNotificationsCount = 0;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
-        $this->userProjects = new ArrayCollection();
         $this->experience = 0;
+        $this->evalPoints = 5;
+        $this->evalSlots = new ArrayCollection();
+        $this->userProjects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -78,6 +92,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFirstName(string $first_name): static
     {
         $this->first_name = $first_name;
+        return $this;
+    }
+
+    public function getEvalPoints(): int
+    {
+        return $this->evalPoints;
+    }
+
+    public function setEvalPoints(int $evalPoints): static
+    {
+        $this->evalPoints = $evalPoints;
         return $this;
     }
 
@@ -230,7 +255,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeUserProject(UserProject $userProject): static
     {
         if ($this->userProjects->removeElement($userProject)) {
-            // Set the owning side to null (unless already changed)
             if ($userProject->getUser() === $this) {
                 $userProject->setUser(null);
             }
@@ -264,6 +288,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function addExperience(int $xp): static
     {
         $this->experience += $xp;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EvalSlot>
+     */
+    public function getEvalSlots(): Collection
+    {
+        return $this->evalSlots;
+    }
+
+    public function addEvalSlot(EvalSlot $evalSlot): static
+    {
+        if (!$this->evalSlots->contains($evalSlot)) {
+            $this->evalSlots->add($evalSlot);
+            $evalSlot->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvalSlot(EvalSlot $evalSlot): static
+    {
+        if ($this->evalSlots->removeElement($evalSlot)) {
+            if ($evalSlot->getUserId() === $this) {
+                $evalSlot->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getNotifications(): ?array
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(string $notification): static
+    {
+        $this->notifications[] = $notification;
+        $this->unreadNotificationsCount++;
+
+        return $this;
+    }
+
+    public function getUnreadNotificationsCount(): int
+    {
+        return $this->unreadNotificationsCount;
+    }
+
+    public function setUnreadNotificationsCount(int $count): static
+    {
+        $this->unreadNotificationsCount = $count;
         return $this;
     }
 }

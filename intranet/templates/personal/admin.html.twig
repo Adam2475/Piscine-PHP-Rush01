@@ -6,21 +6,29 @@
 
 {% block body %}
 
-<div class="user_info" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 50px; gap: 20px; width:40%">
+{% include 'components/navbar.html.twig' %}
+
+<div class="edit_info">
 
     <h2>Admin Section</h2>
-
+    <div style="display: flex; flex-direction: row; gap: 150px; justify-content: center; align-items: flex-start; width: 100%;">
         {% if registrationForm is defined and registrationForm is not null %}
-            <h2>Register a New User</h2>
-            {{ form_start(registrationForm) }}
-                {{ form_widget(registrationForm) }}
-                <button class="btn btn-primary">Register</button>
-            {{ form_end(registrationForm) }}
+            <div style="width 100%">
+                <h2>Register a New User</h2>
+                {{ form_start(registrationForm) }}
+                    {{ form_widget(registrationForm) }}
+                    <button class="btn btn-primary">Register</button>
+                {{ form_end(registrationForm) }}
+            </div>
         {% endif %}
 
-    <h2>create a new event</h2>
-    <button class="btn btn-primary"><a href="{{path('admin_event_new') }}">Create event</button>
-    <button class="btn btn-primary"><a href="{{path('admin_event_remove') }}">Remove event</button>
+    <div style="display: flex; flex-direction: column; gap: 10px">
+        <h2>create a new event</h2>
+        <button class="btn btn-primary"><a href="{{path('admin_event_new') }}">Create event</button>
+        <button class="btn btn-primary"><a href="{{path('admin_event_remove') }}">Remove event</button>
+    </div>
+   </div> 
+</div>
 
 <button><a href="/userpage/{{user.id}}">back</a></button>
 
