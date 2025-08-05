@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Project Evaluation{% endblock %}
+
+{% block body %}
+<div class="container" style="max-width: 800px; margin: 2rem auto; padding: 1rem;">
+    <h1>Evaluate Project: {{ evaluation.project.name }}</h1>
+    
+    <div style="background: #f8f9fa; padding: 1rem; border-radius: 5px; margin: 1rem 0;">
+        <h3>Project Details</h3>
+        <p><strong>Requester:</strong> {{ evaluation.requester.firstName }} {{ evaluation.requester.lastName }}</p>
+        <p><strong>Project:</strong> {{ evaluation.project.name }}</p>
+        <p><strong>Description:</strong> {{ evaluation.project.description }}</p>
+        <p><strong>XP Value:</strong> {{ evaluation.project.xp }}</p>
+        <p><strong>Estimated Time:</strong> {{ evaluation.project.estimatedTimeInHours }} hours</p>
+        
+        {% if userProject and userProject.uploadedFilePath %}
+            <p><strong>Submitted File:</strong> 
+                <a href="{{ asset('uploads/project_files/' ~ userProject.uploadedFilePath) }}" target="_blank" class="btn btn-sm btn-primary">
+                    📁 Download Project File
+                </a>
+            </p>
+        {% endif %}
+    </div>
+
+    <div style="margin: 2rem 0;">
+        <h3>Evaluation Decision</h3>
+        <p>Please review the submitted project and decide whether it meets the requirements.</p>
+        
+        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+            <form action="{{ path('project_evaluate', { id: evaluation.id }) }}" method="post" style="display: inline;">
+                <input type="hidden" name="approved" value="1">
+                <button type="submit" class="btn btn-success" style="background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px;">
+                    ✅ Approve Project
+                </button>
+            </form>
+            
+            <form action="{{ path('project_evaluate', { id: evaluation.id }) }}" method="post" style="display: inline;">
+                <input type="hidden" name="approved" value="0">
+                <button type="submit" class="btn btn-danger" style="background: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px;">
+                    ❌ Reject Project
+                </button>
+            </form>
+        </div>
+        
+        <div style="margin-top: 1rem; font-size: 0.9em; color: #666;">
+            <p><strong>Note:</strong> If you approve the project, the requester will receive {{ evaluation.project.xp }} XP points and the project will be marked as completed.</p>
+            <p>If you reject the project, the requester will be able to resubmit their work after making improvements.</p>
+        </div>
+    </div>
+
+    <div style="margin-top: 2rem;">
+        <a href="{{ path('evaluations') }}" class="btn btn-secondary">← Back to Evaluations</a>
+    </div>
+</div>
+{% endblock %}

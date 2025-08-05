@@ -16,7 +16,6 @@
     <p><strong>Registered Participants:</strong> {{ registeredParticipants|length }}</p>
     <p><strong>Completed</strong> {{ completedParticipants|length }} times <strong>so far.</strong></p>
 
-
     {% if app.user %}
         {% if userProject is defined and userProject %}
             {% if not userProject.validated %}
@@ -30,19 +29,64 @@
                     </a>
                 </div>
 
-                <h3>Upload your project file</h3>
-                <form action="{{ path('project_upload', { id: project.id }) }}" method="post" enctype="multipart/form-data">
-                    <input type="file" name="project_file" required />
-                    <button type="submit">Submit for Evaluation</button>
-                </form>
+                {% if not userProject.uploadedFilePath %}
+                    <h3>Upload your project file</h3>
+                    {% if app.user.evalPoints >= 1 %}
+                        <form action="{{ path('project_upload', { id: project.id }) }}" method="post" enctype="multipart/form-data">
+                            <input type="file" name="project_file" required />
+                            <button type="submit">Submit for Evaluation</button>
+                        </form>
+                    {% else %}
+                        <div style="background: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                            <strong>⚠️ Insufficient Evaluation Points</strong><br>
+                            You need at least 1 evaluation point to submit a project for evaluation.<br>
+                            <small>Current evaluation points: {{ app.user.evalPoints }}</small>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <p><strong>✅ Project submitted for evaluation</strong></p>
+                    <p>Uploaded file: <a href="{{ asset('uploads/project_files/' ~ userProject.uploadedFilePath) }}" target="_blank">Download</a></p>
+                    
+                    {% if evaluationRequest and not evaluationRequest.evaluator %}
+                        <h3>Select an Evaluator</h3>
+                        <p>Choose an available evaluation slot:</p>
+                        
+                        {% if availableSlots|length > 0 %}
+                            <div style="margin: 1rem 0;">
+                                {% for slot in availableSlots %}
+                                    <div style="border: 1px solid #ccc; padding: 10px; margin: 5px 0; border-radius: 5px;">
+                                        <strong>{{ slot.userId.firstName }} {{ slot.userId.lastName }}</strong><br>
+                                        <small>{{ slot.startTime|date('Y-m-d H:i') }} - {{ slot.endTime|date('H:i') }}</small><br>
+                                        <form action="{{ path('project_select_evaluator', { id: project.id, slotId: slot.id }) }}" method="post" style="margin-top: 5px;">
+                                            <button type="submit" class="btn btn-primary btn-sm">Select this Evaluator</button>
+                                        </form>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p><em>No evaluation slots available at the moment. Please check back later.</em></p>
+                        {% endif %}
+                    {% elseif evaluationRequest and evaluationRequest.evaluator %}
+                        <p><strong>🔍 Under evaluation by:</strong> {{ evaluationRequest.evaluator.firstName }} {{ evaluationRequest.evaluator.lastName }}</p>
+                        
+                        {% if evaluationRequest.validated %}
+                            <p><strong>✅ Evaluation completed!</strong></p>
+                        {% else %}
+                            <p><em>Waiting for evaluation to be completed...</em></p>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
             {% else %}
                 <p><strong>Project completed ✅</strong></p>
                 {% if userProject.uploadedFilePath %}
                     <p>Uploaded file: <a href="{{ asset('uploads/project_files/' ~ userProject.uploadedFilePath) }}" target="_blank">Download</a></p>
                 {% endif %}
+                {% if userProject.validatedBy %}
+                    <p><strong>Validated by:</strong> {{ userProject.validatedBy.firstName }} {{ userProject.validatedBy.lastName }}</p>
+                {% endif %}
             {% endif %}
         {% else %}
-            {# Mostra bottone di registrazione se lutente non è già registrato e non ha completato il progetto #}
+            {# Show registration button if user is not already registered and hasn't completed the project #}
             <form action="{{ path('project_register', { id: project.id }) }}" method="post">
                 <button type="submit">Register</button>
             </form>

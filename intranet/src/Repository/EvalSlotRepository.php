@@ -16,28 +16,46 @@ class EvalSlotRepository extends ServiceEntityRepository
         parent::__construct($registry, EvalSlot::class);
     }
 
-    //    /**
-    //     * @return EvalSlot[] Returns an array of EvalSlot objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('e.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * Find available evaluation slots (excluding the current user's slots)
+     */
+    public function findAvailableSlots($excludeUser): array
+    {
+        return $this->createQueryBuilder('e')
+            ->leftJoin('App\Entity\ProjectEvaluationRequest', 'per', 'WITH', 'per.evaluator = e.userId AND per.validated = false')
+            ->andWhere('e.userId != :user')
+            ->andWhere('per.id IS NULL') // slot owner is not currently evaluating anything
+            ->andWhere('e.endTime > :now') // Only slots that haven't ended yet
+            ->setParameter('user', $excludeUser)
+            ->setParameter('now', new \DateTime())
+            ->orderBy('e.startTime', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
-    //    public function findOneBySomeField($value): ?EvalSlot
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * Delete expired evaluation slots
+     */
+    public function deleteExpiredSlots(): int
+    {
+        return $this->createQueryBuilder('e')
+            ->delete()
+            ->andWhere('e.endTime < :now')
+            ->setParameter('now', new \DateTime())
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * Find slots for a specific user
+     */
+    public function findByUser($user): array
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.userId = :user')
+            ->setParameter('user', $user)
+            ->orderBy('e.startTime', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
