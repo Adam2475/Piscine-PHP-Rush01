@@ -3,7 +3,7 @@
 {% block title %}{{ project.name }}{% endblock %}
 
 {% block body %}
-<div class="user_info" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 50px; gap: 20px; width:40%">
+<div class="edit_info">
     <h1>{{ project.name }}</h1>
 
     <p><strong>Description:</strong> {{ project.description }}</p>
@@ -16,24 +16,21 @@
     <p><strong>Registered Participants:</strong> {{ registeredParticipants|length }}</p>
     <p><strong>Completed</strong> {{ completedParticipants|length }} times <strong>so far.</strong></p>
 
-
     {% if app.user %}
         {% if userProject is defined and userProject %}
             {% if not userProject.validated %}
                 <form action="{{ path('project_unregister', { id: project.id }) }}" method="post">
-                    <button type="submit">Unregister</button>
+                    <button class="btn btn-primary" type="submit">Unregister</button>
                 </form>
 
-                <div style="margin-top: 1rem;">
-                    <a href="{{ path('chat_project', { projectId: project.id }) }}" class="btn btn-primary">
-                        💬 Chat Progetto
-                    </a>
-                </div>
+                <form action="{{ path('chat_project', { projectId: project.id }) }}" method="get">
+                    <button class="btn btn-primary" type="submit">💬 Chat Progetto</button>
+                </form>
 
-                <h3>Upload your project file</h3>
+                <h3 style="margin-top: 2rem;">Upload your project file</h3>
                 <form action="{{ path('project_upload', { id: project.id }) }}" method="post" enctype="multipart/form-data">
                     <input type="file" name="project_file" required />
-                    <button type="submit">Submit for Evaluation</button>
+                    <button class="btn btn-primary" type="submit">Submit for Evaluation</button>
                 </form>
             {% else %}
                 <p><strong>Project completed ✅</strong></p>
@@ -42,15 +39,16 @@
                 {% endif %}
             {% endif %}
         {% else %}
-            {# Mostra bottone di registrazione se lutente non è già registrato e non ha completato il progetto #}
             <form action="{{ path('project_register', { id: project.id }) }}" method="post">
-                <button type="submit">Register</button>
+                <button class="btn btn-primary" type="submit">Register</button>
             </form>
         {% endif %}
     {% else %}
         <p><a href="{{ path('app_login') }}">Login</a> to register for this project.</p>
     {% endif %}
 
-    <p><a href="{{ path('project_list') }}">Back to list</a></p>
+    <form action="{{ path('project_list') }}" method="get">
+        <button class="btn btn-primary" type="submit">Back to list</button>
+    </form>
 </div>
 {% endblock %}

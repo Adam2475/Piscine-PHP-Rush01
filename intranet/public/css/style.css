@@ -79,12 +79,13 @@ h1, h2 {
     padding: 40px 30px;
     border-radius: 10px;
     font-family: 'Segoe UI', sans-serif;
+    background-color: rgba(255, 255, 255, 0.4);
 }
 
 .edit_info h1 {
     margin-bottom: 20px;
     font-weight: 600;
-    color: white;
+    color: black;
 }
 
 .edit_info label {
@@ -94,6 +95,13 @@ h1, h2 {
     color: linear-gradient(to bottom, white, black);
     text-align: left;
     width: 100%;
+}
+
+.edit_info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
 }
 
 .edit_info select {
@@ -198,6 +206,7 @@ form {
     padding: 5px 30px;
     border-radius: 5px;
     font-family: 'Segoe UI', sans-serif;
+    background-color: rgba(255, 255, 255, 0.4);
 }
 
 .checkbox-group {
@@ -210,7 +219,7 @@ form {
 .example-wrapper h1 {
     margin-bottom: 20px;
     font-weight: 600;
-    color: white
+    color: black
 }
 
 .example-wrapper label {
@@ -292,6 +301,14 @@ form {
     border-radius: 10px;
     box-sizing: border-box;
     background-color: rgba(255, 255, 255, 0.2);
+}
+
+.user_info img {
+    height: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    margin: 4px;
+    border-radius: 8px; /* optional for rounded corners */
 }
 
 .pick_and_name {

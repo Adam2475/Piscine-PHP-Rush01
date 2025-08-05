@@ -1,38 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{parent()}} | Projects{% endblock %}
+{% block title %}{{ parent() }} | Projects{% endblock %}
 
 {% block body %}
 
 {% include 'components/navbar.html.twig' %}
 
-<div class="user_info" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 50px; gap: 20px; width:40%">
+<div class="edit_info">
     <h1>Available Projects</h1>
 
     {% if projects is empty %}
-        <p>No projects available at the moment.</p>
+        <p class="login_message">No projects available at the moment.</p>
     {% else %}
         <ul>
             {% for project in projects %}
-                <li>
+                <li style="margin-bottom: 20px;">
                     <strong>{{ project.name }}</strong><br>
                     {{ project.description|length > 100 ? project.description[:100] ~ '...' : project.description }}
                     <br>
                     XP: {{ project.xp }} |
                     Estimated time: {{ project.estimatedTimeInHours }} hours
                     <br>
-                    <a href="{{ path('project_show', { id: project.id }) }}">View Details</a>
+                    <form action="{{ path('project_show', { id: project.id }) }}" method="get" style="margin-top: 5px;">
+                        <button type="submit" class="btn btn-secondary">View Details</button>
+                    </form>
                 </li>
             {% endfor %}
         </ul>
     {% endif %}
 
     {% if app.user %}
-        <p>
-            <a href="{{ path('userpage', { id: app.user.id }) }}" class="btn btn-primary">
-                Back to your profile
-            </a>
-        </p>
+        <form action="{{ path('userpage', { id: app.user.id }) }}" method="get" style="margin-top: 30px;">
+            <button type="submit" class="btn btn-primary">Back to your profile</button>
+        </form>
     {% endif %}
 </div>
+
 {% endblock %}
