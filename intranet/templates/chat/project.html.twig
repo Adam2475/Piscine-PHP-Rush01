@@ -3,6 +3,7 @@
 {% block title %}Chat Progetto - {{ project.name }}{% endblock %}
 
 {% block stylesheets %}
+    {{parent()}}
     <link rel="stylesheet" href="{{ asset('css/chat-project.css') }}">
 {% endblock %}
 

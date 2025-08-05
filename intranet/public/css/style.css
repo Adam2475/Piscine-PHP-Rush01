@@ -6,7 +6,8 @@
 }
 
 html {
-    height: 100%;
+    min-height: 100%;
+    height: auto;
 }
 
 body, head {
@@ -34,11 +35,6 @@ body, head {
     font-family: sans-serif;
     display: flex;
     justify-content: center;
-    background-image: url(../images/intranet2.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: scroll;
     gap: 20px;
     flex-wrap: wrap;
 }
@@ -48,7 +44,7 @@ h1, h2 {
 	padding: 30px 0;
 	margin: 0;
 	font-size: 48px;
-    color: rgb(61, 61, 61);
+    color: black;
 	text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
 }
 
@@ -56,7 +52,7 @@ h1, h2 {
     text-align: center;
 	margin: 0;
 	font-size: 20px;
-    color: rgb(61, 61, 61);
+    color: white;
 	text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
 
 }
@@ -88,14 +84,14 @@ h1, h2 {
 .edit_info h1 {
     margin-bottom: 20px;
     font-weight: 600;
-    color: rgb(46, 46, 46);
+    color: white;
 }
 
 .edit_info label {
     display: block;
     margin-bottom: 5px;
     font-weight: 600;
-    color: rgb(27, 27, 27);
+    color: linear-gradient(to bottom, white, black);
     text-align: left;
     width: 100%;
 }
@@ -130,12 +126,13 @@ h1, h2 {
     background-color: #007bff;
     border: none;
     border-radius: 5px;
-    color: rgb(46, 46, 46);
+    color: rgb(170, 170, 170);
     transition: background-color 0.3s ease;
 }
 
 .edit_info button.btn-primary:hover {
     background-color: #0056b3;
+    color: rgb(100, 100, 100);;
 }
 
 .back-link {
@@ -165,7 +162,7 @@ form {
 } 
 .form_login {
     text-align: center;
-    color: rgb(49, 12, 12);
+    color: black;
 }
 
 
@@ -213,14 +210,14 @@ form {
 .example-wrapper h1 {
     margin-bottom: 20px;
     font-weight: 600;
-    color: rgb(106, 204, 221);
+    color: white
 }
 
 .example-wrapper label {
     display: block;
     margin-bottom: 5px;
     font-weight: 600;
-    color: rgb(106, 204, 221);
+    color: black;
     text-align: left;
     width: 100%;
 }
@@ -322,6 +319,10 @@ form {
     flex: 1;
     text-align: center;
     padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    border-radius: 10px;
 }
 
 .info ul {
@@ -357,7 +358,7 @@ button {
   margin: 10px;
   border: none;
   border-radius: 25px;
-  background: linear-gradient(to bottom, #5dd39e, #3fbf7f);
+  background: linear-gradient(to bottom, #111ed3, #4f4ddd);
   color: white;
   cursor: pointer;
   transition: all 0.2s ease;

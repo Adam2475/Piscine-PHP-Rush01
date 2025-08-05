@@ -1,8 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}All Projects{% endblock %}
+{% block title %} {{parent()}} | Projects{% endblock %}
 
 {% block body %}
+
+{% include 'components/navbar.html.twig' %}
+
 <div class="user_info" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 50px; gap: 20px; width:40%">
     <h1>Available Projects</h1>
 

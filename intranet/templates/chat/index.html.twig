@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Chat{% endblock %}
+{% block title %} {{parent()}} | Chat{% endblock %}
 
 
 {% block stylesheets %}
+    {{parent()}}
     <link rel="stylesheet" href="{{ asset('css/chat-main.css') }}">
 {% endblock %}
 

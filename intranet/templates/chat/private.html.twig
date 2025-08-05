@@ -3,6 +3,7 @@
 {% block title %}Chat con {{ recipient.firstName }} {{ recipient.lastName }}{% endblock %}
 
 {% block stylesheets %}
+    {{parent()}}
     <link rel="stylesheet" href="{{ asset('css/chat-private.css') }}">
 {% endblock %}
 
