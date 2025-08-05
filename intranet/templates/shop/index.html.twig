@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Shop{% endblock %}
+
+{% block body %}
+<div class="example-wrapper">
+    <h1 style="text-align: center; color: white;">🛒 Shop</h1>
+
+    <div style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin-top: 40px;">
+        {% set items = [
+            { 'name': 'Matita', 'price': 1.0, 'image': 'matita.png' },
+            { 'name': 'Maglietta', 'price': 15.0, 'image': 'maglietta.png' },
+            { 'name': 'Redbull', 'price': 2.5, 'image': 'redbull.png' }
+        ] %}
+
+        {% for item in items %}
+            <div style="
+                background: white;
+                border-radius: 12px;
+                padding: 20px;
+                width: 200px;
+                text-align: center;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            ">
+                <img src="{{ asset('images/' ~ item.image) }}" alt="{{ item.name }}" style="width: 100px; height: 100px; object-fit: contain; margin-bottom: 15px;">
+                <h3 style="margin: 0 0 10px;">{{ item.name }}</h3>
+                <p style="margin-bottom: 20px;">{{ item.price }} €</p>
+                <form method="post" action="{{ path('shop_buy') }}" style="width: 100%;">
+                    <input type="hidden" name="item" value="{{ item.name }}">
+                    <button type="submit" style="
+                        background: linear-gradient(to right, #4CAF50, #38c38f);
+                        border: none;
+                        color: white;
+                        padding: 10px 0;
+                        border-radius: 25px;
+                        width: 100%;
+                        font-size: 14px;
+                        cursor: pointer;
+                    ">
+                        Compra
+                    </button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

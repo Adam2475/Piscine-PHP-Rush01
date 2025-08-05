@@ -2,14 +2,30 @@
 <html>
     <head>
         {% block head %}
-        {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-        {% endblock %}
-        <title>{% block title %}Intranet{% endblock %}</title>
+            <meta charset="UTF-8">
+            <title>{% block title %}Intranet{% endblock %}</title>
+            {% block stylesheets %}
+                <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+            {% endblock %}
         {% endblock %}
     </head>
     <body>
+        {# ✅ Navbar globale, sempre visibile #}
+        {% include 'components/navbar.html.twig' %}
+
+        {# ✅ Messaggi flash (es. acquisto completato) #}
+        {% for label, messages in app.flashes %}
+            <div class="flash-{{ label }}">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        {# ✅ Contenuto specifico della pagina #}
         {% block body %}{% endblock %}
+
+        {# ✅ Script inclusi #}
         {% include 'components/script.html.twig' %}
     </body>
 </html>
