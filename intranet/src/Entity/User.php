@@ -70,6 +70,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private int $unreadNotificationsCount = 0;
 
+    #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    private int $level = 1;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -341,6 +344,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUnreadNotificationsCount(int $count): static
     {
         $this->unreadNotificationsCount = $count;
+        return $this;
+    }
+
+    public function getLevel(): int
+    {
+        return $this->level;
+    }
+
+    public function setLevel(int $level): static
+    {
+        $this->level = $level;
         return $this;
     }
 }
