@@ -33,9 +33,14 @@ final class EventController extends AbstractController
 			$hoursForm = number_format($hours,2);
 			$event->setDuration($hoursForm);
 			$em->persist($event);
+			foreach ($em->getRepository(User::class)->findAll() as $user)
+			{
+				$user->addNotification('A new event has been created: ' . $event->getTitle());
+				$em->persist($user);
+			}
 			$em->flush();
-
 			$this->addFlash('success', 'Event created successfully!');
+			
 			return $this->redirectToRoute('admin_event_new');
 		}
 

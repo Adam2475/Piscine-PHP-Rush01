@@ -64,6 +64,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserProject::class, orphanRemoval: true)]
     private Collection $userProjects;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $notifications = [];
+
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    private int $unreadNotificationsCount = 0;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -311,6 +317,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             }
         }
 
+        return $this;
+    }
+
+    public function getNotifications(): ?array
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(string $notification): static
+    {
+        $this->notifications[] = $notification;
+        $this->unreadNotificationsCount++;
+
+        return $this;
+    }
+
+    public function getUnreadNotificationsCount(): int
+    {
+        return $this->unreadNotificationsCount;
+    }
+
+    public function setUnreadNotificationsCount(int $count): static
+    {
+        $this->unreadNotificationsCount = $count;
         return $this;
     }
 }

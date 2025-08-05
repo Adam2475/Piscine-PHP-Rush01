@@ -12,6 +12,22 @@
 
     </div>
 
+    <div class="notifications-container">
+        <button id="notifications-btn" class="notifications-btn">
+            🔔
+            <span id="notifications-count" class="notifications-count">0</span>
+        </button>
+        <div id="notifications-dropdown" class="notifications-dropdown" style="display: none;">
+            <div class="notifications-header">
+                <h4>Notifications</h4>
+                <a href="/notifications" class="view-all-notifications-btn">See all notifications</a>
+            </div>
+            <div id="notifications-list" class="notifications-list">
+                <p class="no-notifications">No notifications</p>
+            </div>
+        </div>
+    </div>
+
     <div class="dropdown" id="dropdown-toggle" style="cursor: pointer;">
 
         <p>{{ originalUser.email }}</p>

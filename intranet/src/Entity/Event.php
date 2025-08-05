@@ -187,4 +187,17 @@ class Event
 
         return $this;
     }
+
+    public function getFormattedDuration() : string
+    {
+        $start = $this->getStartTime();
+        $end = $this->getEndTime();
+        
+        if (!$start || !$end)
+            return '00:00';
+        $diff = $start->diff($end);
+        $hours = $diff->h + ($diff->days * 24);
+        $minutes = $diff->i;
+        return sprintf('%02d:%02d', $hours, $minutes);
+    }
 }
