@@ -3,15 +3,8 @@
 {% block title %}Elimina Eventi{% endblock %}
 
 {% block body %}
-<style>
-.checkbox-group div {
-	margin-bottom: 0.5em;
-	display:grid;
-	grid-template-areas:
-		"input label";
-}
-</style>
-<div class="example-wrapper">
+
+<div class="example-wrapper" id="remove_event">
 	<h1>Remove Events ❌</h1>
 
 	{{ form_start(form) }}

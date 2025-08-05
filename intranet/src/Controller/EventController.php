@@ -16,7 +16,6 @@ final class EventController extends AbstractController
 {
 
 	// Add an event to the agenda
-	// TODO: vedere se ha realmente senso passare un user se poi devo fare find by ID
 	#[Route('/admin/event/new', name: 'admin_event_new')]
 	public function new(Request $request, EntityManagerInterface $em): Response
 	{
@@ -26,9 +25,7 @@ final class EventController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid()) {
 			$startTime = $form->get('startTime')->getData();
 			$endTime = $form->get('endTime')->getData();
-			// Calcolo la differenza
 			$interval = $startTime->diff($endTime);		
-			// Converto in float (es. 1 ora 30 min => 1.5)
 			$hours = (float) $interval->h + $interval->i / 60;
 			$hoursForm = number_format($hours,2);
 			$event->setDuration($hoursForm);
@@ -45,7 +42,7 @@ final class EventController extends AbstractController
 		]);
 	}
 
-	// TODO: Remove an event from the agenda
+	// Remove an event from the agenda
 	#[Route('/admin/event/remove', name:'admin_event_remove')]
 	public function edit(Request $request, EntityManagerInterface $em): Response
 	{
