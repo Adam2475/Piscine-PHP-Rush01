@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Notifications - Intranet{% endblock %}
+{% block title %} {{parent()}} | Notifications{% endblock %}
 
 {% block stylesheets %}
+    {{parent()}}
     <link rel="stylesheet" href="{{ asset('css/notifications-page.css') }}">
 {% endblock %}
 

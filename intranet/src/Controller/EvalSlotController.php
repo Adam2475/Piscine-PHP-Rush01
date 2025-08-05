@@ -22,7 +22,7 @@ class EvalSlotController extends AbstractController
 
         $form = $this->createForm(EvalSlotType::class, $evalSlot);
         $form->handleRequest($request);
-
+        $user = $this->getUser();
         
         if ($form->isSubmitted() && $form->isValid())
         {
@@ -47,6 +47,7 @@ class EvalSlotController extends AbstractController
 
         return $this->render('personal/eval.html.twig', [
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 

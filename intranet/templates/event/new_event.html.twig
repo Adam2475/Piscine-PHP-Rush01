@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello EventController!{% endblock %}
+{% block title %} {{parent()}} | New Event {% endblock %}
 
 {% block body %}
 
+{% include 'components/navbar.html.twig' %}
+
 <div class="example-wrapper">
-    <h1>Event Create! ✅</h1>
+    <h1>Create an Event</h1>
         {{ form_start(eventForm) }}
             {{ form_widget(eventForm) }}
                 <button class="btn btn-primary" type="submit">CREATE</button>
