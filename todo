@@ -20,6 +20,9 @@ TODO: add a isTaken bool for the slots when adding correction logic | !!
 TODO: correction logic | OK
 TODO: delete a correction slot if taken or expired | !!
 
+TODO: add altarian dollars to user
+TODO: add bonus to project evaluation
+
 Roles:
 
 Adam: user entity + immagine

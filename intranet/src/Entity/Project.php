@@ -2,6 +2,7 @@
 namespace App\Entity;
 
 use App\Entity\UserProject;
+use App\Entity\ProjectEvaluationRequest;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -30,9 +31,13 @@ class Project
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: UserProject::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $userProjects;
 
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: ProjectEvaluationRequest::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $evaluationRequests;
+
     public function __construct()
     {
         $this->userProjects = new ArrayCollection();
+        $this->evaluationRequests = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -107,6 +112,35 @@ class Project
         if ($this->userProjects->removeElement($userProject)) {
             if ($userProject->getProject() === $this) {
                 $userProject->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProjectEvaluationRequest>
+     */
+    public function getEvaluationRequests(): Collection
+    {
+        return $this->evaluationRequests;
+    }
+
+    public function addEvaluationRequest(ProjectEvaluationRequest $request): self
+    {
+        if (!$this->evaluationRequests->contains($request)) {
+            $this->evaluationRequests[] = $request;
+            $request->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvaluationRequest(ProjectEvaluationRequest $request): self
+    {
+        if ($this->evaluationRequests->removeElement($request)) {
+            if ($request->getProject() === $this) {
+                $request->setProject(null);
             }
         }
 

@@ -22,6 +22,9 @@ class UserProject
     #[ORM\Column(type: 'boolean')]
     private bool $validated = false;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    private ?User $validatedBy = null;
+
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $uploadedFilePath = null;
 
@@ -57,6 +60,18 @@ class UserProject
         $this->validated = $validated;
         return $this;
     }
+
+    public function getValidatedBy(): ?User
+    {
+        return $this->validatedBy;
+    }
+
+    public function setValidatedBy(?User $user): self
+    {
+        $this->validatedBy = $user;
+        return $this;
+    }
+
 
     public function getUploadedFilePath(): ?string
     {

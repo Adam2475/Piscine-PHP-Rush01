@@ -933,3 +933,32 @@ button:hover {
         text-align: center;
     }
 }
+
+/* xp bar */
+
+.xp-bar-container {
+    margin-top: 10px;
+    width: 100%;
+    max-width: 200px;
+}
+
+.xp-bar {
+    width: 100%;
+    background-color: #ddd;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 12px;
+    margin-bottom: 4px;
+}
+
+.xp-fill {
+    height: 100%;
+    background: linear-gradient(to right, #4caf50, #81c784);
+    transition: width 0.4s ease-in-out;
+}
+
+.xp-text {
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+}
