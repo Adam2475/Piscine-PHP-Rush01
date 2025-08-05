@@ -1,10 +1,10 @@
 {# templates/profile/edit.html.twig #}
 {% extends 'base.html.twig' %}
-
-{% block title %}Edit Profile{% endblock %}
-
+    {% block title %}
+        {{parent()}} | Edit
+    {% endblock %}
 {% block body %}
-<div class="user_info" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 50px; gap: 20px;">
+<div class="edit_info">
     <h1>Edit Your Profile</h1>
 
     {{ form_start(form) }}
@@ -13,8 +13,8 @@
         {{ form_row(form.email) }}
         <button class="btn btn-primary">Save Changes</button>
     {{ form_end(form) }}
+    <button class="btn btn-primary"><a href="/userpage/{{user.id}}">back</a></button>
 </div>
 
-<button><a href="/userpage/{{user.id}}">back</a></button>
 
 {% endblock %}

@@ -5,18 +5,25 @@
     --secondary-text: #444;
 }
 
+html {
+    height: 100%;
+}
+
 body, head {
-	margin: 0;
+    margin: 0;
 	padding: 0;
-	height: 100%;
 	font-family: 'Segoe UI', sans-serif;
 	color:rgb(0, 0, 0);
 	background-color: antiquewhite;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	background-color: #666;
     /* adjusted for the navbar */
+    background-image: url(../images/techWallpaper.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
     margin-left: 5em;
 }
 
@@ -27,6 +34,123 @@ h1, h2 {
 	font-size: 48px;
     color: rgb(106, 204, 221);
 	text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+.login_info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    gap: 20px;
+}
+
+.edit_info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    gap: 20px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 40px 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.edit_info h1 {
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: rgb(106, 204, 221);
+}
+
+.edit_info label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: rgb(106, 204, 221);
+    text-align: left;
+    width: 100%;
+}
+
+.edit_info select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.edit_info input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.edit_info button.btn-primary {
+    width: 100%;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.edit_info button.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.back-link {
+    margin-top: 15px;
+    display: inline-block;
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 500;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+form {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+} 
+.form_login {
+    text-align: center;
+    color: rgb(106, 204, 221);
+}
+
+
+.input_login {
+    padding: 8px;
+    font-size: 1rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: rgba(255, 255, 255, 0.6);
 }
 
 .user_name {
@@ -40,11 +164,98 @@ h1, h2 {
 }
 
 .example-wrapper {
-	margin: 1em auto;
-	max-width: 800px;
-	width: 95%;
-	font: 18px/1.5 sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top:10px;
+    gap: 20px;
+    max-width: 1200px;
+    max-height: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', sans-serif;
 }
+
+.example-wrapper h1 {
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: rgb(106, 204, 221);
+}
+
+.example-wrapper label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: rgb(106, 204, 221);
+    text-align: left;
+    width: 100%;
+}
+
+.example-wrapper textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.example-wrapper select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.example-wrapper input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.example-wrapper button.btn-primary {
+    width: 100%;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.example-wrapper button.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.back-link {
+    margin-top: 15px;
+    display: inline-block;
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 500;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
 
 .main_profile {
     margin: 0 auto;
@@ -56,6 +267,7 @@ h1, h2 {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: scroll;
     gap: 20px;
     flex-wrap: wrap;
 }
