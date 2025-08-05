@@ -96,6 +96,13 @@ h1, h2 {
     width: 100%;
 }
 
+.edit_info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+}
+
 .edit_info select {
     width: 100%;
     padding: 10px;
@@ -292,6 +299,14 @@ form {
     border-radius: 10px;
     box-sizing: border-box;
     background-color: rgba(255, 255, 255, 0.2);
+}
+
+.user_info img {
+    height: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    margin: 4px;
+    border-radius: 8px; /* optional for rounded corners */
 }
 
 .pick_and_name {

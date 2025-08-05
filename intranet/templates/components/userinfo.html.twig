@@ -1,8 +1,7 @@
 <div class="user_info">
 
     <img src="{{ user.image is not empty ? user.image : asset('images/default_profile.jpeg') }}"
-          alt="Profile Image"
-          style="max-width:150px;">
+          alt="Profile Image">
         <div class="pick_and_name">
             <h2 class="user_name">
                 {{ user.getFirstName() }}

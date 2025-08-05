@@ -108,7 +108,9 @@
 
     <div class="tbd">
         <h2>Pending evaluations</h2>
-        <button><a href="{{ path('evaluations') }}">menage slots</a></button>
+            <form action="{{ path('evaluations') }}" method="get">
+                <button class="btn btn-primary" type="submit">Menage Slots</button>
+            </form>
 
         <h1>Open Slots for Correction</h1>
 
