@@ -79,12 +79,13 @@ h1, h2 {
     padding: 40px 30px;
     border-radius: 10px;
     font-family: 'Segoe UI', sans-serif;
+    background-color: rgba(255, 255, 255, 0.4);
 }
 
 .edit_info h1 {
     margin-bottom: 20px;
     font-weight: 600;
-    color: white;
+    color: black;
 }
 
 .edit_info label {
@@ -205,6 +206,7 @@ form {
     padding: 5px 30px;
     border-radius: 5px;
     font-family: 'Segoe UI', sans-serif;
+    background-color: rgba(255, 255, 255, 0.4);
 }
 
 .checkbox-group {
@@ -217,7 +219,7 @@ form {
 .example-wrapper h1 {
     margin-bottom: 20px;
     font-weight: 600;
-    color: white
+    color: black
 }
 
 .example-wrapper label {
