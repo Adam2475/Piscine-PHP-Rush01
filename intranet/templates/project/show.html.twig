@@ -44,7 +44,7 @@
             </form>
         {% endif %}
     {% else %}
-        <p><a href="{{ path('app_login') }}">Login</a> to register for this project.</p>
+        <p><a href="{{ path('login') }}">Login</a> to register for this project.</p>
     {% endif %}
 
     <form action="{{ path('project_list') }}" method="get">

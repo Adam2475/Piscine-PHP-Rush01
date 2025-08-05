@@ -65,7 +65,7 @@ class ForgotPasswordController extends AbstractController
 
             // Always show this, even if user wasn't found
             $this->addFlash('success', 'If an account exists for this email, a password reset link has been sent.');
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('login');
         }
 
         return $this->render('security/forgot_password.html.twig', [

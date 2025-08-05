@@ -29,6 +29,7 @@ final class EventController extends AbstractController
 			$hours = (float) $interval->h + $interval->i / 60;
 			$hoursForm = number_format($hours,2);
 			$event->setDuration($hoursForm);
+			$event->setParticipants(0);
 			$em->persist($event);
 			foreach ($em->getRepository(User::class)->findAll() as $user)
 			{

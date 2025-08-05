@@ -11,7 +11,7 @@
     {% if app.user %}
         <button><a href="{{ path('userpage', { id: app.user.id }) }}">Go to Profile</a></button>
     {% else %}
-        <button><a href="{{ path('app_login') }}">Login</a></button>
+        <button><a href="{{ path('login') }}">Login</a></button>
     {% endif %}
 
 {% endblock %}

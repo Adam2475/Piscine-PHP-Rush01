@@ -66,7 +66,7 @@ class AccountConfirmationController extends AbstractController
             }
 
             $em->flush();
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('login');
         }
 
         return $this->render('security/set_password.html.twig', [

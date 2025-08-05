@@ -6,11 +6,13 @@ TODO: rendere barra di ricerca asincrona con Ajax | (?)
 
 
 TODO: inserire immagini encodate in DB | OK
-TODO: inserire immagine default se non presente | (?)
-TODO: xp progress bar
+TODO: inserire immagine default se non presente | OK
+TODO: xp progress bar | OK
 TODO: evaluation system (?)
 
 TODO: add protection redirection to all pages if not logged | !!
+          - [ ] se cerco di accedere all'url /admin o /admin/*
+                    come user mi da un'eccezione access denied
 
 TODO: Posts logic
 

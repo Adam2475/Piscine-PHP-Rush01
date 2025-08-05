@@ -26,12 +26,6 @@ class CreateEventFormType extends AbstractType
 					'min' => 1,
 				],
 			])
-			->add('participants', IntegerType::class, [
-				'data' => 0,
-				'attr' => [
-					'min' => 0,
-				],
-			])
 			->add('description', TextareaType::class)
 			->add('title', TextType::class)
     		->add('date', DateType::class, [

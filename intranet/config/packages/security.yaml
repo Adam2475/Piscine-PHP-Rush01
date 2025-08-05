@@ -28,8 +28,8 @@ security:
                 # remember_me: true
 
             logout:
-                path: app_logout  # This is the route name, not URL
-                target: / # Optional: redirect to login after logout
+                path: /logout  # This is the route name, not URL
+                target: /login # Optional: redirect to login after logout
 
             custom_authenticator: App\Security\IntranetAuthenticator
 
