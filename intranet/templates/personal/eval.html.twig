@@ -14,13 +14,65 @@
             </div>
         {% endfor %}
     {% endfor %}
-<div class="edit_info">
-    <h1>Create New Evaluation Slot</h1>
 
-    {{ form_start(form) }}
-        {{ form_row(form.startTime) }}
-        {{ form_row(form.endTime) }}
-        <button class="btn btn-primary">Create</button>
-    {{ form_end(form) }}
+<div class="container" style="max-width: 1000px; margin: 2rem auto;">
+    <h1>Evaluation Management</h1>
+
+    {# Pending Evaluations Section #}
+    {% if pendingEvaluations|length > 0 %}
+        <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 5px; padding: 1rem; margin: 1rem 0;">
+            <h2>⏳ Pending Evaluations ({{ pendingEvaluations|length }})</h2>
+            <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+                {% for evaluation in pendingEvaluations %}
+                    <div style="border: 1px solid #ddd; border-radius: 5px; padding: 1rem; background: white;">
+                        <h4>{{ evaluation.project.name }}</h4>
+                        <p><strong>Requester:</strong> {{ evaluation.requester.firstName }} {{ evaluation.requester.lastName }}</p>
+                        <p><strong>Submitted:</strong> {{ evaluation.createdAt|date('Y-m-d H:i') }}</p>
+                        
+                        <div style="margin-top: 1rem;">
+                            <a href="{{ path('project_evaluation_show', { id: evaluation.id }) }}" class="btn btn-primary">
+                                🔍 Review & Evaluate
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {# Create New Slot Section #}
+    <div style="background: #f8f9fa; border-radius: 5px; padding: 1.5rem; margin: 2rem 0;">
+        <h2>Create New Evaluation Slot</h2>
+        {{ form_start(form) }}
+            {{ form_row(form.startTime) }}
+            {{ form_row(form.endTime) }}
+            <button class="btn btn-primary">Create Slot</button>
+        {{ form_end(form) }}
+    </div>
+
+    {# User's Slots Section #}
+    {% if userSlots|length > 0 %}
+        <div style="margin-top: 2rem;">
+            <h2>Your Evaluation Slots</h2>
+            <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+                {% for slot in userSlots %}
+                    <div style="border: 1px solid #ddd; border-radius: 5px; padding: 1rem; background: white;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>{{ slot.startTime|date('Y-m-d H:i') }} - {{ slot.endTime|date('H:i') }}</strong>
+                                {% if slot.startTime < date() %}
+                                    <span style="color: #6c757d;">(Past)</span>
+                                {% elseif slot.startTime|date('Y-m-d') == date()|date('Y-m-d') %}
+                                    <span style="color: #ffc107;">(Today)</span>
+                                {% else %}
+                                    <span style="color: #28a745;">(Upcoming)</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

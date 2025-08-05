@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\EvalSlot;
+use App\Entity\ProjectEvaluationRequest;
 use App\Form\EvalSlotType;
+use App\Repository\ProjectEvaluationRequestRepository;
+use App\Repository\EvalSlotRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +19,12 @@ class EvalSlotController extends AbstractController
 {
     #[Route('/evaluations', name: 'evaluations')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function new(Request $request, EntityManagerInterface $em): Response
-    {
+    public function new(
+        Request $request, 
+        EntityManagerInterface $em,
+        ProjectEvaluationRequestRepository $evaluationRequestRepository,
+        EvalSlotRepository $evalSlotRepository
+    ): Response {
         $evalSlot = new EvalSlot();
 
         $form = $this->createForm(EvalSlotType::class, $evalSlot);
@@ -45,9 +52,20 @@ class EvalSlotController extends AbstractController
             return $this->redirectToRoute('evaluations');
         }
 
+        // Get user's evaluation slots
+        $userSlots = $evalSlotRepository->findByUser($user);
+        
+        // Get pending evaluations assigned to this user
+        $pendingEvaluations = $evaluationRequestRepository->findBy([
+            'evaluator' => $user,
+            'validated' => false
+        ]);
+
         return $this->render('personal/eval.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
+            'userSlots' => $userSlots,
+            'pendingEvaluations' => $pendingEvaluations,
         ]);
     }
 
@@ -70,5 +88,3 @@ class EvalSlotController extends AbstractController
         return !empty($overlappingSlots);
     }
 }
-
-?>
