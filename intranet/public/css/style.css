@@ -19,7 +19,7 @@ body, head {
 	flex-direction: column;
 	align-items: center;
     /* adjusted for the navbar */
-    background-image: url(../images/techWallpaper.jpg);
+    background-image: url(../images/intranet2.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -27,13 +27,38 @@ body, head {
     margin-left: 5em;
 }
 
+
+.main_profile {
+    margin: 0 auto;
+    padding: 20px;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    background-image: url(../images/intranet2.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
 h1, h2 {
 	text-align: center;
 	padding: 30px 0;
 	margin: 0;
 	font-size: 48px;
-    color: rgb(106, 204, 221);
+    color: rgb(61, 61, 61);
 	text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+.login_message {
+    text-align: center;
+	margin: 0;
+	font-size: 20px;
+    color: rgb(61, 61, 61);
+	text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
+
 }
 
 .login_info {
@@ -57,21 +82,20 @@ h1, h2 {
     margin-right: auto;
     padding: 40px 30px;
     border-radius: 10px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
     font-family: 'Segoe UI', sans-serif;
 }
 
 .edit_info h1 {
     margin-bottom: 20px;
     font-weight: 600;
-    color: rgb(106, 204, 221);
+    color: rgb(46, 46, 46);
 }
 
 .edit_info label {
     display: block;
     margin-bottom: 5px;
     font-weight: 600;
-    color: rgb(106, 204, 221);
+    color: rgb(27, 27, 27);
     text-align: left;
     width: 100%;
 }
@@ -106,7 +130,7 @@ h1, h2 {
     background-color: #007bff;
     border: none;
     border-radius: 5px;
-    color: white;
+    color: rgb(46, 46, 46);
     transition: background-color 0.3s ease;
 }
 
@@ -141,7 +165,7 @@ form {
 } 
 .form_login {
     text-align: center;
-    color: rgb(106, 204, 221);
+    color: rgb(49, 12, 12);
 }
 
 
@@ -176,7 +200,6 @@ form {
     margin-right: auto;
     padding: 5px 30px;
     border-radius: 5px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
     font-family: 'Segoe UI', sans-serif;
 }
 
@@ -263,22 +286,6 @@ form {
     text-decoration: underline;
 }
 
-
-.main_profile {
-    margin: 0 auto;
-    padding: 20px;
-    font-family: sans-serif;
-    display: flex;
-    justify-content: center;
-    background-image: url(../images/techWallpaper.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: scroll;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
 .user_info {
     display: flex;
     justify-content: space-between;
@@ -353,7 +360,6 @@ button {
   background: linear-gradient(to bottom, #5dd39e, #3fbf7f);
   color: white;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.2s ease;
 }
 button:hover {
@@ -691,7 +697,6 @@ button:hover {
     background: white;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     min-width: 300px;
     max-width: 400px;
     z-index: 1000;
@@ -809,4 +814,104 @@ button:hover {
     text-align: center !important;
     color: #666 !important;
     margin: 0 !important;
+}
+
+/* ===== Responsive Design Enhancements ===== */
+
+@media (max-width: 1200px) {
+    .main_profile > .agenda,
+    .main_profile > .tbd {
+        width: 90%;
+    }
+
+    .edit_info,
+    .example-wrapper {
+        padding: 30px 20px;
+    }
+
+    .navbar {
+        width: 4em;
+    }
+
+    .navbar ul li {
+        margin: 15px 0;
+    }
+
+    h1, h2 {
+        font-size: 36px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main_profile {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .user_info {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .info,
+    .pick_and_name {
+        width: 100%;
+        align-items: center;
+    }
+
+    .edit_info form,
+    .example-wrapper form,
+    .login_info form {
+        width: 100%;
+    }
+
+    .agenda, .tbd {
+        width: 100%;
+    }
+
+    .sbar {
+        width: 100%;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .dropdown {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    h1, h2 {
+        font-size: 28px;
+    }
+
+    .notifications-page-container {
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .edit_info,
+    .example-wrapper {
+        padding: 20px 15px;
+    }
+
+    .notifications-header,
+    .notifications-actions,
+    .notifications-page-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .btn,
+    .event-button {
+        width: 100%;
+        font-size: 16px;
+        text-align: center;
+    }
 }
