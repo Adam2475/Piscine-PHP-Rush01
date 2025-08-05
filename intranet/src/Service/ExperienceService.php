@@ -60,7 +60,7 @@ class ExperienceService
 
         // Set new values
 
-        var_dump($currentXp, $currentLevel);
+        // var_dump($currentXp, $currentLevel);
         $user->setLevel($currentLevel);
         // $user->setExperience($currentXp);
 

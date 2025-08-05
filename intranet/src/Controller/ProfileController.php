@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\File;
 
 use App\Form\RegistrationFormType;
+use App\Form\EditFormType;
 
 #[IsGranted('ROLE_USER')]
 class ProfileController extends AbstractController
@@ -20,7 +21,7 @@ class ProfileController extends AbstractController
     public function edit(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(EditFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
