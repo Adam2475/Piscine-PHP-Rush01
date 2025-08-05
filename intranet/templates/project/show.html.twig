@@ -3,7 +3,7 @@
 {% block title %}{{ project.name }}{% endblock %}
 
 {% block body %}
-<div class="user_info" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 50px; gap: 20px; width:40%">
+<div class="edit_info">
     <h1>{{ project.name }}</h1>
 
     <p><strong>Description:</strong> {{ project.description }}</p>
@@ -20,14 +20,12 @@
         {% if userProject is defined and userProject %}
             {% if not userProject.validated %}
                 <form action="{{ path('project_unregister', { id: project.id }) }}" method="post">
-                    <button type="submit">Unregister</button>
+                    <button class="btn btn-primary" type="submit">Unregister</button>
                 </form>
 
-                <div style="margin-top: 1rem;">
-                    <a href="{{ path('chat_project', { projectId: project.id }) }}" class="btn btn-primary">
-                        💬 Chat Progetto
-                    </a>
-                </div>
+                <form action="{{ path('chat_project', { projectId: project.id }) }}" method="get">
+                    <button class="btn btn-primary" type="submit">💬 Chat Progetto</button>
+                </form>
 
                 {% if not userProject.uploadedFilePath %}
                     <h3>Upload your project file</h3>
@@ -76,6 +74,7 @@
                         {% endif %}
                     {% endif %}
                 {% endif %}
+                
             {% else %}
                 <p><strong>Project completed ✅</strong></p>
                 {% if userProject.uploadedFilePath %}
@@ -86,15 +85,17 @@
                 {% endif %}
             {% endif %}
         {% else %}
-            {# Show registration button if user is not already registered and hasn't completed the project #}
+        
             <form action="{{ path('project_register', { id: project.id }) }}" method="post">
-                <button type="submit">Register</button>
+                <button class="btn btn-primary" type="submit">Register</button>
             </form>
         {% endif %}
     {% else %}
         <p><a href="{{ path('app_login') }}">Login</a> to register for this project.</p>
     {% endif %}
 
-    <p><a href="{{ path('project_list') }}">Back to list</a></p>
+    <form action="{{ path('project_list') }}" method="get">
+        <button class="btn btn-primary" type="submit">Back to list</button>
+    </form>
 </div>
 {% endblock %}

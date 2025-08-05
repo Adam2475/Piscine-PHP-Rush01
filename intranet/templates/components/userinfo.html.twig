@@ -3,20 +3,29 @@
     <img src="{{ user.image is not empty ? user.image : asset('images/default_profile.jpeg') }}"
           alt="Profile Image"
           style="max-width:150px;">
-        <div class="pick_and_name">
-            <h2 class="user_name">
-                {{ user.getFirstName() }}
-                {{ user.getLastName() }}
-            </h2>
-        <h2 class="user_name"><strong>XP:</strong> {{ user.userProjects
-            ? user.userProjects|filter(up => up.validated)|map(up => up.project.xp)|reduce((a, b) => a + b, 0)
-            : 0
-        }}</h2>
+
+    <div class="pick_and_name">
+
+        <h2 class="user_name">
+            {{ user.getFirstName() }}
+            {{ user.getLastName() }}
+        </h2>
+
+        <div class="levelBar">
+            <p>Level {{ user.level }} — {{ user.experience }} XP / {{ xpGoal }} XP</p>
+
+            <div class="xp-bar">
+                <div class="xp-fill" style="width: {{ xpProgress }}%;"></div>
+            </div>
         </div>
-    <div class="info">
-            <ul>
-            <li>Email: {{ user.getEmail() }}</li>
-            <li>Ev. P: {{ user.getEvalPoints() }}</li>
-            </ul>
+    
     </div>
+
+    <div class="info">
+        <ul>
+        <li>Email: {{ user.getEmail() }}</li>
+        <li>Ev. P: {{ user.getEvalPoints() }}</li>
+        </ul>
+    </div>
+
 </div>

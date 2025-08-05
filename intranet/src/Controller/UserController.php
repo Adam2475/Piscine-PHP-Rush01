@@ -21,6 +21,7 @@ use App\Entity\Event;
 use App\Service\SearchBarService;
 use DateTime;
 use App\Service\EvalSlotService;
+use App\Service\ExperienceService;
 
 final class UserController extends AbstractController
 {
@@ -52,6 +53,7 @@ final class UserController extends AbstractController
 		SearchBarService $searchBarService, 
 		int $id, 
 		EntityManagerInterface $em,
+		ExperienceService $experienceService,
 		EvalSlotService $evalSlotService): Response
     {
         // returning original user to keep a reference to return to
@@ -59,6 +61,9 @@ final class UserController extends AbstractController
         // calling the searchBar service
         $search = $request->query->get('search');
         $searchResults = $searchBarService->searchUsers($search);
+		// check xp and gain level
+		if ($user)
+		 	$experienceService->addExperience($user, 0);
         // get the searched user by ID
         $searchedUser = $em->getRepository(User::class)->find($id);
 
@@ -84,6 +89,9 @@ final class UserController extends AbstractController
 			'searchResults' => $searchResults,
 			'events' => $events,
 			'slots' => $openSlots,
+			'xpProgress' => $experienceService->getProgressPercent($user),
+    		'xpToNextLevel' => $experienceService->getXpRemaining($user),
+    		'xpGoal' => $experienceService->getXpForNextLevel($user->getLevel()),
 		]);
 	}
 

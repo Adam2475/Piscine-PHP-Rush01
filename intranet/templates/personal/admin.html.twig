@@ -24,12 +24,17 @@
 
     <div style="display: flex; flex-direction: column; gap: 10px">
         <h2>create a new event</h2>
-        <button class="btn btn-primary"><a href="{{path('admin_event_new') }}">Create event</button>
-        <button class="btn btn-primary"><a href="{{path('admin_event_remove') }}">Remove event</button>
+        <form action="{{ path('admin_event_new') }}" method="get" style="margin-top: 5px;">
+            <button type="submit" class="btn btn-primary">Create Event</button>
+        </form>
+        <form action="{{ path('admin_event_remove') }}" method="get" style="margin-top: 5px;">
+            <button type="submit" class="btn btn-primary">Remove Event</button>
+        </form>
     </div>
    </div> 
+    <form action="{{ path('userpage', {id: user.id}) }}" method="get" style="margin-top: 5px;">
+        <button type="submit" class="btn btn-primary">Go Back</button>
+    </form>
 </div>
-
-<button><a href="/userpage/{{user.id}}">back</a></button>
 
 {% endblock %}
