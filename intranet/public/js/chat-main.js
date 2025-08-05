@@ -1,4 +1,3 @@
-// Main Chat Interface JavaScript
 class MainChat {
     constructor(currentUserId) {
         this.currentUserId = currentUserId;
@@ -10,26 +9,20 @@ class MainChat {
     }
 
     init() {
-        // Check if there's a user parameter in URL
         const urlParams = new URLSearchParams(window.location.search);
         const userParam = urlParams.get('user');
         if (userParam) {
-            // Auto-start chat with this user
             setTimeout(() => {
                 this.startPrivateChat(userParam);
             }, 500);
         }
 
-        // Tab switching
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const tabName = e.target.dataset.tab;
-                
-                // Update active tab button
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 e.target.classList.add('active');
                 
-                // Update active tab content
                 document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
                 document.getElementById(tabName + '-tab').classList.add('active');
                 
@@ -39,7 +32,6 @@ class MainChat {
             });
         });
 
-        // User search
         document.getElementById('user-search').addEventListener('input', (e) => {
             const query = e.target.value;
             if (query.length > 2) {
@@ -49,18 +41,15 @@ class MainChat {
             }
         });
 
-        // Chat form submission
         document.getElementById('chat-form').addEventListener('submit', (e) => {
             e.preventDefault();
             this.sendMessage();
         });
 
-        // Media button click
         document.getElementById('media-btn').addEventListener('click', () => {
             document.getElementById('media-input').click();
         });
 
-        // File input change
         document.getElementById('media-input').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
@@ -68,7 +57,6 @@ class MainChat {
             }
         });
 
-        // Load initial data
         this.loadUsers();
     }
 
@@ -84,7 +72,6 @@ class MainChat {
                     </div>
                 `).join('');
                 
-                // Add click listeners
                 usersList.querySelectorAll('.user-item').forEach(item => {
                     item.addEventListener('click', (e) => {
                         const userId = e.currentTarget.dataset.userId;
@@ -106,7 +93,6 @@ class MainChat {
                     </div>
                 `).join('');
                 
-                // Add click listeners
                 usersList.querySelectorAll('.user-item').forEach(item => {
                     item.addEventListener('click', (e) => {
                         const userId = e.currentTarget.dataset.userId;
@@ -196,8 +182,6 @@ class MainChat {
                 </div>
             `;
         }).join('');
-        
-        // Scroll to bottom
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
@@ -232,7 +216,7 @@ class MainChat {
                 input.value = '';
                 fileInput.value = '';
                 this.hideFilePreview();
-                this.loadMessages(); // Reload messages to show the new one
+                this.loadMessages();
             }
         })
         .catch(error => console.error('Error:', error));
@@ -286,7 +270,7 @@ class MainChat {
             if (this.currentRecipientId || this.currentProjectId) {
                 this.loadMessages();
             }
-        }, 3000); // Poll every 3 seconds
+        }, 3000);
     }
 
     cleanup() {
@@ -296,12 +280,10 @@ class MainChat {
     }
 }
 
-// Initialize when document is ready
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof window.chatConfig !== 'undefined') {
         window.mainChatInstance = new MainChat(window.chatConfig.currentUserId);
         
-        // Cleanup on page unload
         window.addEventListener('beforeunload', function() {
             window.mainChatInstance.cleanup();
         });

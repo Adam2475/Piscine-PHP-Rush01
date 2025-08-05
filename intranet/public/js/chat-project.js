@@ -8,24 +8,18 @@ class ProjectChat {
     }
 
     init() {
-        // Load initial messages
         this.loadMessages();
-        
-        // Start polling for new messages
         this.startPolling();
         
-        // Chat form submission
         document.getElementById('chat-form').addEventListener('submit', (e) => {
             e.preventDefault();
             this.sendMessage();
         });
 
-        // Media button click
         document.getElementById('media-btn').addEventListener('click', () => {
             document.getElementById('media-input').click();
         });
 
-        // File input change
         document.getElementById('media-input').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
@@ -78,8 +72,7 @@ class ProjectChat {
                 </div>
             `;
         }).join('');
-        
-        // Scroll to bottom
+
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
@@ -109,7 +102,7 @@ class ProjectChat {
                 input.value = '';
                 fileInput.value = '';
                 this.hideFilePreview();
-                this.loadMessages(); // Reload messages to show the new one
+                this.loadMessages();
             }
         })
         .catch(error => console.error('Error:', error));
@@ -157,7 +150,7 @@ class ProjectChat {
     startPolling() {
         this.pollInterval = setInterval(() => {
             this.loadMessages();
-        }, 3000); // Poll every 3 seconds
+        }, 3000);
     }
 
     cleanup() {
@@ -167,16 +160,13 @@ class ProjectChat {
     }
 }
 
-// Initialize when document is ready
 document.addEventListener('DOMContentLoaded', function() {
-    // These variables will be set from the Twig template
     if (typeof window.chatConfig !== 'undefined') {
         window.projectChatInstance = new ProjectChat(
             window.chatConfig.projectId,
             window.chatConfig.currentUserId
         );
         
-        // Cleanup on page unload
         window.addEventListener('beforeunload', function() {
             window.projectChatInstance.cleanup();
         });
