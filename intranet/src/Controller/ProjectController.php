@@ -142,6 +142,7 @@ class ProjectController extends AbstractController
             // Se non è gia stato validato, aggiunge xp all'utente
             if (!$userProject->isValidated()) {
                 $userProject->setValidated(true);
+
                 $user->addExperience($project->getXp());
 
                 $em->persist($user);
