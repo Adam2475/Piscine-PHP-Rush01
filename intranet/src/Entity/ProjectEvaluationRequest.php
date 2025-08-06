@@ -37,6 +37,9 @@ class ProjectEvaluationRequest
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $evaluatedAt = null;
 
+    // Add property to store the slotId used for evaluation
+    private ?int $evalSlotId = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -126,6 +129,17 @@ class ProjectEvaluationRequest
     public function setEvaluatedAt(?\DateTime $evaluatedAt): self
     {
         $this->evaluatedAt = $evaluatedAt;
+        return $this;
+    }
+
+    public function getEvalSlotId(): ?int
+    {
+        return $this->evalSlotId;
+    }
+
+    public function setEvalSlotId(?int $evalSlotId): self
+    {
+        $this->evalSlotId = $evalSlotId;
         return $this;
     }
 }

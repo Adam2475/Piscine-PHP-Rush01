@@ -328,6 +328,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->notifications;
     }
 
+    public function setNotifications(array $notifications): static
+    {
+        $this->notifications = $notifications;
+        return $this;
+    }
+
     public function addNotification(string $message, ?string $link = null): static
     {
         $this->notifications[] = [
