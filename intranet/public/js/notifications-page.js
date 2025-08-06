@@ -7,12 +7,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let isAllSelected = false;
     
-    // Handle individual checkbox selection
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', updateSelectedCount);
     });
     
-    // Handle select all button
     if (selectAllBtn) {
         selectAllBtn.addEventListener('click', function() {
             isAllSelected = !isAllSelected;
@@ -24,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Handle delete selected button
     if (deleteSelectedBtn) {
         deleteSelectedBtn.addEventListener('click', function() {
             const selectedIndices = getSelectedIndices();
@@ -34,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Show confirmation dialog
             if (!confirm(`Are you sure you want to delete ${selectedIndices.length} notification(s)?`)) {
                 return;
             }
@@ -66,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(data => {
                 if (data.success) {
-                    // Remove selected notification cards with animation
                     const selectedCards = getSelectedCards();
                     selectedCards.forEach(card => {
                         card.style.animation = 'slideOut 0.3s ease-out forwards';
@@ -77,12 +72,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         }, 300);
                     });
                     
-                    // Update counters
                     setTimeout(() => {
                         updateNotificationCounters(data.deletedCount);
                         resetSelections();
                         
-                        // Check if no notifications left
                         const remainingCards = document.querySelectorAll('.notification-card');
                         if (remainingCards.length === 0) {
                             showEmptyState();
@@ -110,7 +103,6 @@ document.addEventListener('DOMContentLoaded', function() {
         selectedCountSpan.textContent = selectedCount;
         deleteSelectedBtn.disabled = selectedCount === 0;
         
-        // Update select all button state
         if (selectedCount === 0) {
             isAllSelected = false;
         } else if (selectedCount === totalCount) {
@@ -172,7 +164,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function updateNotificationCounters(deletedCount) {
-        // Update page badge
         const countBadge = document.querySelector('.notifications-count-badge');
         if (countBadge) {
             let currentCount = parseInt(countBadge.textContent) || 0;
@@ -183,7 +174,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Update header notification count
         const headerNotificationCount = document.getElementById('notifications-count');
         if (headerNotificationCount) {
             let currentCount = parseInt(headerNotificationCount.getAttribute('data-count') || '0');
@@ -198,7 +188,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Update pagination info
         const paginationInfo = document.querySelector('.pagination-info');
         if (paginationInfo) {
             const remainingCards = document.querySelectorAll('.notification-card');
@@ -269,6 +258,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     }
     
-    // Initialize the selected count on load
     updateSelectedCount();
 });

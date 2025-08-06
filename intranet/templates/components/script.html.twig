@@ -3,6 +3,10 @@
         const input = document.getElementById('user-search');
         const resultsContainer = document.getElementById('search-results');
 
+        if (!input || !resultsContainer) {
+            return; // Elementi non trovati, esci silenziosamente
+        }
+
         input.addEventListener('input', async function () {
             const query = input.value.trim();
 
@@ -47,6 +51,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     const toggle = document.getElementById('dropdown-toggle');
     const menu = document.getElementById('dropdown-menu');
+
+    if (!toggle || !menu) {
+        return; // Elementi non trovati, esci silenziosamente
+    }
 
     toggle.addEventListener('click', function (e) {
         e.stopPropagation();

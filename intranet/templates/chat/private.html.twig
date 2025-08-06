@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Chat con {{ recipient.firstName }} {{ recipient.lastName }}{% endblock %}
+{% block title %}Chat with {{ recipient.firstName }} {{ recipient.lastName }}{% endblock %}
 
 {% block stylesheets %}
     {{parent()}}
@@ -34,7 +34,6 @@
 </div>
 
 <script>
-    // Set configuration for the chat
     window.chatConfig = {
         recipientId: {{ recipient.id }},
         currentUserId: {{ app.user.id }}

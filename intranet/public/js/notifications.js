@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let lastNotificationCount = 0;
     let previousNotifications = [];
 
-    if (!notificationsBtn) {
-        console.log('Notifications button not found');
+    if (!notificationsBtn || !notificationsDropdown || !notificationsList) {
+        console.log('Notifications elements not found - this page might not have notifications');
         return;
     }
 

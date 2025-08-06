@@ -71,6 +71,32 @@ class ChatController extends AbstractController
         ]);
     }
 
+    #[Route('/api/conversations', name: 'chat_get_conversations', methods: ['GET'])]
+    public function getConversations(ChatMessageRepository $chatRepo): JsonResponse
+    {
+        $user = $this->getUser();
+        if (!$user)
+            return $this->json(['error' => 'User not authenticated'], 401);
+
+        $conversations = $chatRepo->getRecentConversations($user);
+        
+        $conversationsData = [];
+        foreach ($conversations as $conversation) {
+            $conversationsData[] = [
+                'id' => $conversation['recipient_id'] ?? $conversation['project_id'],
+                'type' => isset($conversation['recipient_id']) ? 'private' : 'project',
+                'name' => $conversation['name'],
+                'email' => $conversation['email'] ?? null,
+                'lastMessage' => $conversation['last_message'],
+                'lastMessageTime' => $conversation['last_message_time']->format('Y-m-d H:i:s'),
+                'unreadCount' => $conversation['unread_count'] ?? 0,
+                'avatar' => $conversation['image'] ?? null
+            ];
+        }
+
+        return $this->json($conversationsData);
+    }
+
     #[Route('/api/send', name: 'chat_send', methods: ['POST'])]
     public function sendMessage(Request $request, EntityManagerInterface $em, UserRepository $userRepo, ProjectRepository $projectRepo, UserProjectRepository $userProjectRepository): JsonResponse
     {

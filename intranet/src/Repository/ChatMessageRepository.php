@@ -56,17 +56,76 @@ class ChatMessageRepository extends ServiceEntityRepository
      */
     public function getRecentConversations(User $user, int $limit = 10): array
     {
-        return $this->createQueryBuilder('m')
-            ->select('DISTINCT IDENTITY(m.recipient) as recipient_id, IDENTITY(m.sender) as sender_id, MAX(m.createdAt) as last_message')
-            ->where('m.sender = :user OR m.recipient = :user')
+        // First, get all unique conversation partners
+        $conversationPartners = $this->createQueryBuilder('m')
+            ->select('
+                IDENTITY(m.recipient) as recipient_id,
+                IDENTITY(m.sender) as sender_id,
+                MAX(m.createdAt) as last_message_time
+            ')
+            ->where('(m.sender = :user OR m.recipient = :user)')
             ->andWhere('m.type = :type')
             ->setParameter('user', $user)
             ->setParameter('type', 'private')
             ->groupBy('m.recipient, m.sender')
-            ->orderBy('last_message', 'DESC')
-            ->setMaxResults($limit)
+            ->orderBy('last_message_time', 'DESC')
+            ->setMaxResults($limit * 2) // Get more to filter unique partners
             ->getQuery()
             ->getResult();
+
+        // Process to get unique conversation partners
+        $uniquePartners = [];
+        foreach ($conversationPartners as $conv) {
+            $partnerId = ($conv['sender_id'] == $user->getId()) ? $conv['recipient_id'] : $conv['sender_id'];
+            
+            if (!isset($uniquePartners[$partnerId])) {
+                $uniquePartners[$partnerId] = $conv['last_message_time'];
+            }
+        }
+
+        // Sort by last message time and limit
+        arsort($uniquePartners);
+        $uniquePartners = array_slice($uniquePartners, 0, $limit, true);
+
+        $conversations = [];
+        foreach ($uniquePartners as $partnerId => $lastTime) {
+            // Get the latest message for this conversation
+            $latestMessage = $this->createQueryBuilder('m')
+                ->select('m.content, m.createdAt, u.first_name, u.last_name, u.email, u.image')
+                ->leftJoin('App\Entity\User', 'u', 'WITH', 'u.id = :partnerId')
+                ->where('((m.sender = :user AND m.recipient = :partnerId) OR (m.sender = :partnerId AND m.recipient = :user))')
+                ->andWhere('m.type = :type')
+                ->setParameter('user', $user)
+                ->setParameter('partnerId', $partnerId)
+                ->setParameter('type', 'private')
+                ->orderBy('m.createdAt', 'DESC')
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getOneOrNullResult();
+
+            if ($latestMessage) {
+                // Count unread messages
+                $unreadCount = $this->createQueryBuilder('m')
+                    ->select('COUNT(m.id)')
+                    ->where('m.sender = :partnerId AND m.recipient = :user AND m.isRead = false')
+                    ->setParameter('partnerId', $partnerId)
+                    ->setParameter('user', $user)
+                    ->getQuery()
+                    ->getSingleScalarResult();
+
+                $conversations[] = [
+                    'recipient_id' => $partnerId,
+                    'name' => $latestMessage['first_name'] . ' ' . $latestMessage['last_name'],
+                    'email' => $latestMessage['email'],
+                    'image' => $latestMessage['image'],
+                    'last_message' => $latestMessage['content'],
+                    'last_message_time' => $latestMessage['createdAt'],
+                    'unread_count' => $unreadCount
+                ];
+            }
+        }
+
+        return $conversations;
     }
 
     /**

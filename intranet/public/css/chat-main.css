@@ -69,23 +69,37 @@
 }
 
 .conversations-list {
-    padding: 1rem;
+    padding: 0;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
 }
 
 .conversation-item {
-    padding: 0.75rem;
-    border-bottom: 1px solid #e9ecef;
+    padding: 1rem;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: #f5f5f5;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: none;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ddd;
+    color: #000;
 }
 
 .conversation-item:hover {
-    background: #e9ecef;
+    background: #e8e8e8;
+    color: #000;
 }
 
 .conversation-item.active {
-    background: #007bff;
-    color: white;
+    background: #d0d0d0;
+    color: #000;
 }
 
 .users-search {
@@ -280,4 +294,168 @@
 
 .message .file-link:hover {
     background: rgba(255,255,255,0.3);
+}
+
+/* Enhanced conversation styles */
+.conversation-item {
+    padding: 1rem;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: #f5f5f5;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: none;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ddd;
+}
+
+.conversation-item:hover {
+    background: #e8e8e8;
+    border-bottom: 1px solid #ddd;
+    box-shadow: none;
+    transform: none;
+}
+
+.conversation-item.active {
+    background: #d0d0d0;
+    border-bottom: 1px solid #ddd;
+    box-shadow: none;
+    transform: none;
+}
+
+.conversation-item.active .conversation-name {
+    color: #000;
+    font-weight: bold;
+}
+
+.conversation-item.active .conversation-time {
+    color: #000;
+}
+
+.conversation-item.unread {
+    background: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    box-shadow: none;
+}
+
+.conversation-item.unread:hover {
+    background: #e8e8e8;
+    border-bottom: 1px solid #ddd;
+    box-shadow: none;
+}
+
+.conversation-avatar, .conversation-avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #6c757d;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.conversation-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.conversation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.conversation-name {
+    font-weight: 600;
+    color: #000;
+}
+
+.conversation-time {
+    font-size: 12px;
+    color: #000;
+}
+
+.conversation-preview {
+    font-size: 14px;
+    color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0.25rem;
+}
+
+.conversation-email {
+    color: #000;
+    font-size: 12px;
+}
+
+.unread-badge {
+    background: #dc3545;
+    color: white;
+    border-radius: 12px;
+    padding: 0.2rem 0.6rem;
+    font-size: 11px;
+    font-weight: bold;
+    margin-left: 0.5rem;
+    min-width: 20px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(220, 53, 69, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 1px 3px rgba(220, 53, 69, 0.3); }
+    50% { box-shadow: 0 1px 8px rgba(220, 53, 69, 0.6); }
+    100% { box-shadow: 0 1px 3px rgba(220, 53, 69, 0.3); }
+}
+
+.conversation-item.unread .conversation-name {
+    font-weight: bold;
+    color: #000;
+}
+
+.conversation-item.unread .conversation-preview {
+    color: #000;
+    font-weight: 500;
+}
+
+.no-conversations {
+    padding: 2rem;
+    text-align: center;
+    color: #6c757d;
+}
+
+.no-conversations p {
+    margin: 0 0 0.5rem 0;
+    font-weight: 500;
+}
+
+.no-conversations small {
+    color: #9ca3af;
+}
+
+.error-message {
+    padding: 1rem;
+    text-align: center;
+    color: #dc3545;
+}
+
+.error-message button {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }

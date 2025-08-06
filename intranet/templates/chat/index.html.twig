@@ -22,6 +22,32 @@
         
         <div id="conversations-tab" class="tab-content active">
             <div class="conversations-list">
+                {% if conversations is empty %}
+                    <div class="no-conversations">
+                        <p>No conversations yet</p>
+                        <small>Start chatting with users to see conversations here</small>
+                    </div>
+                {% else %}
+                    {% for conversation in conversations %}
+                        <button class="btn btn-secondary {% if conversation.unread_count > 0 %}unread{% endif %}" 
+                                data-type="private" 
+                                data-id="{{ conversation.recipient_id }}"
+                                data-name="{{ conversation.name }}"
+                                onclick="openChat('{{ conversation.recipient_id }}', '{{ conversation.name }}');">
+                            <div class="conversation-info">
+                                <div class="conversation-header">
+                                    <span class="conversation-name">{{ conversation.name }}</span>
+                                    {% if conversation.unread_count > 0 %}
+                                        <span class="unread-badge">{{ conversation.unread_count }}</span>
+                                    {% endif %}
+                                </div>
+                                <div class="conversation-preview">
+                                    <div class="conversation-last-message">{{ conversation.last_message ?: 'No messages yet' }} - {{ conversation.last_message_time|date('H:i') }}</div>
+                                </div>
+                            </div>
+                        </button>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         
@@ -63,6 +89,41 @@
     window.chatConfig = {
         currentUserId: {{ app.user.id }}
     };
+    
+    window.openChat = function(recipientId, recipientName) {
+        console.log('openChat (template version) called with:', recipientId, recipientName);
+        
+        function waitForMainChat(attempts = 0) {
+            if (window.mainChatInstance && window.mainChatInstance.startPrivateChat) {
+                console.log('MainChat instance found, starting private chat');
+                try {
+                    window.mainChatInstance.startPrivateChat(recipientId);
+                } catch (error) {
+                    console.error('Error starting private chat:', error);
+                }
+            } else if (attempts < 30) {
+                console.log('Waiting for MainChat instance... attempt', attempts + 1);
+                setTimeout(() => waitForMainChat(attempts + 1), 100);
+            } else {
+                console.error('MainChat instance not found after 3 seconds');
+                alert('Chat system not ready yet. Please reload the page and try again.');
+            }
+        }
+        
+        waitForMainChat();
+    };
+    
+    if (typeof openChat !== 'function') {
+        window.openChat = window.openChat;
+    }
+    
+    console.log('openChat function available:', typeof window.openChat === 'function');
 </script>
 <script src="{{ asset('js/chat-main.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('After script load - openChat function available:', typeof window.openChat === 'function');
+        console.log('MainChat instance available:', typeof window.mainChatInstance !== 'undefined');
+    });
+</script>
 {% endblock %}
