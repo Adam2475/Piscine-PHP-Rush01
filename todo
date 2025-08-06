@@ -8,15 +8,15 @@ TODO: rendere barra di ricerca asincrona con Ajax | (?)
 TODO: inserire immagini encodate in DB | OK
 TODO: inserire immagine default se non presente | OK
 TODO: xp progress bar | OK
-TODO: evaluation system (?)
+TODO: evaluation system OK
 
 TODO: add protection redirection to all pages if not logged | OK
 
 TODO: Posts logic
 
-TODO: add a isTaken bool for the slots when adding correction logic | !!
+TODO: add a isTaken bool for the slots when adding correction logic | OK
 TODO: correction logic | OK
-TODO: delete a correction slot if taken or expired | !!
+TODO: delete a correction slot if taken or expired | OK
 
 TODO: add altarian dollars to user
 TODO: add bonus to project evaluation
