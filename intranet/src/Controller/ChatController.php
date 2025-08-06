@@ -144,7 +144,7 @@ class ChatController extends AbstractController
             $message->setType('private');
             // if (!$recipient->getIsActive())
             // {
-                $recipient->addNotification('You have a new message from ' . $user->getFirstName() . ' ' . $user->getLastName());
+                $recipient->addNotification('You have a new message from ' . $user->getFirstName() . ' ' . $user->getLastName(), '/chat/private/' . $user->getId());
                 $em->persist($recipient);
             // }
         }

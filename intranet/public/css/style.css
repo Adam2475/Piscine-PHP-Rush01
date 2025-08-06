@@ -844,6 +844,23 @@ button:hover {
     margin: 0;
 }
 
+.notification-link {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.notification-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.notification-time {
+    font-size: 11px;
+    color: #888;
+    margin-top: 4px;
+}
+
 .mark-all-read-btn {
     background: #28a745 !important;
     color: white !important;
@@ -882,6 +899,69 @@ button:hover {
     text-align: center !important;
     color: #666 !important;
     margin: 0 !important;
+}
+
+/* New notification styles */
+.notification-new {
+    background: linear-gradient(90deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%) !important;
+    border-left: 3px solid #28a745 !important;
+    animation: notificationFadeIn 0.5s ease-out;
+}
+
+.notification-new .notification-content {
+    position: relative;
+}
+
+.notification-new .notification-content::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background-color: #28a745;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes notificationFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: translateY(-50%) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(-50%) scale(1.2);
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(-50%) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Bell shake animation */
+@keyframes bellShake {
+    0% { transform: rotate(0deg); }
+    10% { transform: rotate(10deg); }
+    20% { transform: rotate(-8deg); }
+    30% { transform: rotate(6deg); }
+    40% { transform: rotate(-4deg); }
+    50% { transform: rotate(2deg); }
+    60% { transform: rotate(-1deg); }
+    70% { transform: rotate(0deg); }
+    100% { transform: rotate(0deg); }
 }
 
 /* ===== Responsive Design Enhancements ===== */

@@ -31,9 +31,10 @@ final class EventController extends AbstractController
 			$event->setDuration($hoursForm);
 			$event->setParticipants(0);
 			$em->persist($event);
+			$em->flush();
 			foreach ($em->getRepository(User::class)->findAll() as $user)
 			{
-				$user->addNotification('A new event has been created: ' . $event->getTitle());
+				$user->addNotification('A new event has been created: ' . $event->getTitle(), '/userpage/event/registration/' . $event->getId() . '/' . $user->getId());
 				$em->persist($user);
 			}
 			$em->flush();
