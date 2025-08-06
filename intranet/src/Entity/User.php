@@ -328,11 +328,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->notifications;
     }
 
-    public function addNotification(string $notification): static
+    public function addNotification(string $message, ?string $link = null): static
     {
-        $this->notifications[] = $notification;
+        $this->notifications[] = [
+            'message' => $message,
+            'link' => $link,
+            'timestamp' => (new \DateTime())->format('Y-m-d H:i:s')
+        ];
         $this->unreadNotificationsCount++;
 
+        return $this;
+    }
+
+    public function removeNotification(int $index): static
+    {
+        if (isset($this->notifications[$index]))
+        {
+            unset($this->notifications[$index]);
+            $this->notifications = array_values($this->notifications);
+            $this->unreadNotificationsCount = max(0, $this->unreadNotificationsCount - 1);
+        }
         return $this;
     }
 
