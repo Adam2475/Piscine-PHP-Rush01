@@ -5,8 +5,9 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
+    width: 100%;
     max-width: 1200px;
-    margin: 2rem auto;
+    margin: 4rem auto;
 }
 
 .chat-sidebar {
