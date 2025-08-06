@@ -39,6 +39,11 @@ body, head {
     flex-wrap: wrap;
 }
 
+.full-width {
+    flex: 1 1 100%;
+    text-align: center;
+}
+
 h1, h2 {
 	text-align: center;
 	padding: 30px 0;
@@ -209,13 +214,6 @@ form {
     background-color: rgba(255, 255, 255, 0.4);
 }
 
-.checkbox-group {
-	margin-bottom: 0.5em;
-	display:grid;
-	grid-template-areas:
-		"input label";
-}
-
 .example-wrapper h1 {
     margin-bottom: 20px;
     font-weight: 600;
@@ -280,6 +278,57 @@ form {
     background-color: #0056b3;
 }
 
+.remove-event {
+    margin-top:10px;
+    gap: 20px;
+    max-width: 1200px;
+    max-height: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px 30px;
+    border-radius: 5px;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.remove-event button.btn-primary {
+    width: 100%;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.remove-event button.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.remove-event h1 {
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: black
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align children (checkboxes + labels) to the left */
+    text-align: left;
+    border-color: solid blue 2px;
+}
+
+.checkbox-group label {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+    margin-bottom: 10px;
+}
+
+
 .back-link {
     margin-top: 15px;
     display: inline-block;
@@ -305,11 +354,12 @@ form {
 
 .user_info img {
     height: 100%;
-    max-height: 180px;
+    max-height: 155px;
     object-fit: cover;
     margin: 4px;
     border-radius: 8px; /* optional for rounded corners */
 }
+
 
 .pick_and_name {
     flex: 1;

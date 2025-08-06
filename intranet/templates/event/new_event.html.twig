@@ -10,8 +10,10 @@
     <h1>Create an Event</h1>
         {{ form_start(eventForm) }}
             {{ form_widget(eventForm) }}
-                <button class="btn btn-primary" type="submit">CREATE</button>
+                <button class="btn btn-primary" type="submit">Create</button>
         {{ form_end(eventForm) }}
-        <button><a href="/admin">back</a></button>
+        <form action="{{ path('admin') }}" method="get" style="margin-top: 5px;">
+            <button type="submit" class="btn btn-primary">Back</button>
+        </form>
 </div>
 {% endblock %}

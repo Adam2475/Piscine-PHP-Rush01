@@ -3,6 +3,8 @@
 {% block title %}Shop{% endblock %}
 
 {% block body %}
+
+{% include 'components/navbar.html.twig' %}
 <div class="example-wrapper">
     <h1 style="text-align: center; color: white;">🛒 Shop</h1>
 
@@ -10,7 +12,7 @@
         {% set items = [
             { 'name': 'Matita', 'price': 1.0, 'image': 'matita.png' },
             { 'name': 'Maglietta', 'price': 15.0, 'image': 'maglietta.png' },
-            { 'name': 'Redbull', 'price': 2.5, 'image': 'redbull.png' }
+            { 'name': 'Redbull', 'price': 2.5, 'image': 'redbull.jpg' }
         ] %}
 
         {% for item in items %}

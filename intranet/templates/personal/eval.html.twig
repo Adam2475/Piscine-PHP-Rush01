@@ -15,7 +15,7 @@
         {% endfor %}
     {% endfor %}
 
-<div class="container" style="max-width: 1000px; margin: 2rem auto;">
+<div class="edit_info" style="max-width: 1000px; margin: 2rem auto;">
     <h1>Evaluation Management</h1>
 
     {# Pending Evaluations Section #}
@@ -46,7 +46,7 @@
         {{ form_start(form) }}
             {{ form_row(form.startTime) }}
             {{ form_row(form.endTime) }}
-            <button class="btn btn-primary">Create Slot</button>
+            <button class="btn btn-secondary">Create Slot</button>
         {{ form_end(form) }}
     </div>
 
