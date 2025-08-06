@@ -20,6 +20,13 @@
                     📁 Download Project File
                 </a>
             </p>
+            {% if userProject.bonusFilePath %}
+            <p><strong>Bonus File:</strong> 
+                <a href="{{ asset('uploads/project_files/' ~ userProject.bonusFilePath) }}" target="_blank" class="btn btn-sm btn-warning">
+                    🎁 Download Bonus File
+                </a>
+            </p>
+            {% endif %}
         {% endif %}
     </div>
 
@@ -27,17 +34,23 @@
         <h3>Evaluation Decision</h3>
         <p>Please review the submitted project and decide whether it meets the requirements.</p>
         
-        <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: auto;">
-            <form action="{{ path('project_evaluate', { id: evaluation.id }) }}" method="post" style="display: inline;">
+        <div style="display: flex; align-items: flex-end; gap: 20px; margin-top: auto;">
+            <form action="{{ path('project_evaluate', { id: evaluation.id }) }}" method="post" style="display: flex; flex-direction: column; align-items: stretch; gap: 10px; margin: 0; min-width: 180px;">
                 <input type="hidden" name="approved" value="1">
-                <button type="submit" class="btn btn-success" style="background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; width: auto;">
+                {% if userProject.bonusFilePath %}
+                    <div style="margin-bottom: 10px;">
+                        <label style="display: flex; align-items: center; gap: 8px; font-size: 1.1em;">
+                            <input type="checkbox" name="bonus_approved" value="1" style="width: 22px; height: 22px; margin-right: 2px;"> <span style="margin-left: 0;">Validate Bonus</span>
+                        </label>
+                    </div>
+                {% endif %}
+                <button type="submit" class="btn btn-success" style="background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; height: 40px; width: 100%;">
                     ✅ Approve Project
                 </button>
             </form>
-            
-            <form action="{{ path('project_evaluate', { id: evaluation.id }) }}" method="post" style="display: inline;">
+            <form action="{{ path('project_evaluate', { id: evaluation.id }) }}" method="post" style="margin: 0; min-width: 180px; align-self: flex-end;">
                 <input type="hidden" name="approved" value="0">
-                <button type="submit" class="btn btn-danger" style="background: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px; width: auto;">
+                <button type="submit" class="btn btn-danger" style="background: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px; height: 40px; width: 100%;">
                     ❌ Reject Project
                 </button>
             </form>
@@ -46,6 +59,10 @@
         <div style="margin-top: 1rem; font-size: 0.9em; color: rgb(100, 100, 100); background-color: white;">
             <p><strong>Note:</strong> If you approve the project, the requester will receive {{ evaluation.project.xp }} XP points and the project will be marked as completed.</p>
             <p>If you reject the project, the requester will be able to resubmit their work after making improvements.</p>
+            {% if userProject.bonusFilePath %}
+                    <p>If you validate the bonus, the requester will gain an additional 25% XP for this project.</p> 
+                    <p>Please note that this will only apply if the main project is also approved.</p>
+            {% endif %}
         </div>
     </div>
 

@@ -32,6 +32,10 @@
                     {% if app.user.evalPoints >= 1 %}
                         <form action="{{ path('project_upload', { id: project.id }) }}" method="post" enctype="multipart/form-data">
                             <input type="file" name="project_file" required />
+                            <br>
+                            <label for="bonus_file">Bonus file (optional):</label>
+                            <input type="file" name="bonus_file" />
+                            <br>
                             <button type="submit">Submit for Evaluation</button>
                         </form>
                     {% else %}

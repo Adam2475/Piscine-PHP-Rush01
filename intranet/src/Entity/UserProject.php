@@ -28,6 +28,12 @@ class UserProject
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $uploadedFilePath = null;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $bonusFilePath = null;
+
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $bonusValidated = false;
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -81,6 +87,28 @@ class UserProject
     public function setUploadedFilePath(?string $path): self
     {
         $this->uploadedFilePath = $path;
+        return $this;
+    }
+
+    public function getBonusFilePath(): ?string
+    {
+        return $this->bonusFilePath;
+    }
+
+    public function setBonusFilePath(?string $path): self
+    {
+        $this->bonusFilePath = $path;
+        return $this;
+    }
+
+    public function isBonusValidated(): bool
+    {
+        return $this->bonusValidated;
+    }
+
+    public function setBonusValidated(bool $validated): self
+    {
+        $this->bonusValidated = $validated;
         return $this;
     }
 }
