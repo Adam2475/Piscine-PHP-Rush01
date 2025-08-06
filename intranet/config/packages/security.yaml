@@ -57,3 +57,4 @@ security:
         - { path: ^/userpage/*, roles: ROLE_USER }
         - { path: ^/project/*, roles: ROLE_USER }
         - { path: ^/notifications/*, roles: ROLE_USER }
+        - { path: ^/shop/*, roles: ROLE_USER }

@@ -10,6 +10,8 @@
         {% endblock %}
     </head>
     <body>
+        {# ✅ Navbar globale, sempre visibile #}
+        {% include 'components/navbar.html.twig' %}
 
         {# ✅ Messaggi flash (es. acquisto completato) #}
         {% for label, messages in app.flashes %}
