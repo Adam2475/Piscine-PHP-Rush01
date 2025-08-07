@@ -51,6 +51,9 @@ class MainChat {
             }, 500);
         }
 
+        // Inizializza l'header con il messaggio di default
+        this.renderChatHeader('Select a conversation', null, 'none');
+
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const tabName = e.target.dataset.tab;
@@ -350,21 +353,8 @@ class MainChat {
         
         this.updateConversationReadStatus(userId);
         
-        fetch('/api/search/users?q=')
-            .then(response => response.json())
-            .then(users => {
-                const user = users.find(u => u.id == userId);
-                if (user) {
-                    const chatHeader = document.getElementById('chat-header');
-                    if (chatHeader) {
-                        chatHeader.textContent = `${user.firstName} ${user.lastName}`;
-                        console.log('Updated chat header for:', user.firstName, user.lastName);
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching user info:', error);
-            });
+        // Aggiorna l'header della chat con avatar e nome
+        this.updateChatHeader(userId, 'private');
     }
 
     startProjectChat(projectId) {
@@ -393,10 +383,8 @@ class MainChat {
         
         this.startPolling();
         
-        const chatHeader = document.getElementById('chat-header');
-        if (chatHeader) {
-            chatHeader.textContent = `Project Chat #${projectId}`;
-        }
+        // Aggiorna l'header della chat per il progetto
+        this.updateChatHeader(projectId, 'project');
     }
 
     updateConversationReadStatus(userId) {
@@ -407,6 +395,91 @@ class MainChat {
             if (unreadBadge) {
                 unreadBadge.remove();
             }
+        }
+    }
+
+    updateChatHeader(id, type) {
+        const chatHeader = document.getElementById('chat-header');
+        if (!chatHeader) {
+            console.warn('chat-header element not found');
+            return;
+        }
+
+        if (type === 'private') {
+            // Per chat private, cerca le informazioni dell'utente dalle conversazioni
+            fetch('/chat/api/conversations')
+                .then(response => response.json())
+                .then(conversations => {
+                    const conversation = conversations.find(c => c.type === 'private' && c.id == id);
+                    if (conversation) {
+                        this.renderChatHeader(conversation.name, conversation.avatar, 'private');
+                    } else {
+                        // Fallback: cerca nelle API degli utenti
+                        return fetch('/api/search/users?q=');
+                    }
+                })
+                .then(response => {
+                    if (response) {
+                        return response.json();
+                    }
+                    return null;
+                })
+                .then(users => {
+                    if (users) {
+                        const user = users.find(u => u.id == id);
+                        if (user) {
+                            this.renderChatHeader(`${user.firstName} ${user.lastName}`, null, 'private');
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching user info:', error);
+                    this.renderChatHeader('Select a conversation', null, 'none');
+                });
+        } else if (type === 'project') {
+            // Per chat di progetto
+            fetch('/chat/api/conversations')
+                .then(response => response.json())
+                .then(conversations => {
+                    const conversation = conversations.find(c => c.type === 'project' && c.id == id);
+                    if (conversation) {
+                        this.renderChatHeader(conversation.name, null, 'project');
+                    } else {
+                        this.renderChatHeader(`Project Chat #${id}`, null, 'project');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching project info:', error);
+                    this.renderChatHeader(`Project Chat #${id}`, null, 'project');
+                });
+        }
+    }
+
+    renderChatHeader(name, avatarUrl, type) {
+        const chatHeader = document.getElementById('chat-header');
+        if (!chatHeader) return;
+
+        let avatarElement = '';
+        if (type === 'private' && avatarUrl) {
+            avatarElement = `<img src="${avatarUrl}" alt="${name}" class="chat-header-avatar">`;
+        } else if (type === 'private') {
+            // Avatar placeholder per chat private
+            const initials = name.split(' ').map(word => word[0]).join('').toUpperCase();
+            avatarElement = `<div class="chat-header-avatar-placeholder">${initials}</div>`;
+        } else if (type === 'project') {
+            // Icona per progetti
+            avatarElement = `<div class="chat-header-avatar-placeholder">📂</div>`;
+        }
+
+        if (type === 'none') {
+            chatHeader.innerHTML = `<span>${name}</span>`;
+        } else {
+            chatHeader.innerHTML = `
+                <div class="chat-header-content">
+                    ${avatarElement}
+                    <span class="chat-header-name">${name}</span>
+                </div>
+            `;
         }
     }
 
@@ -610,6 +683,8 @@ class MainChat {
         if (this.pollInterval) {
             clearInterval(this.pollInterval);
         }
+        // Reset header quando si chiude la chat
+        this.renderChatHeader('Select a conversation', null, 'none');
     }
 }
 
