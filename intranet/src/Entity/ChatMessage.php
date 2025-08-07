@@ -46,7 +46,9 @@ class ChatMessage
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
+        // Imposta il fuso orario italiano (o quello desiderato)
+        $timezone = new \DateTimeZone('Europe/Rome');
+        $this->createdAt = new \DateTime('now', $timezone);
     }
 
     public function getId(): ?int
@@ -105,6 +107,11 @@ class ChatMessage
 
     public function setCreatedAt(\DateTime $createdAt): static
     {
+        // Assicura che la data abbia il fuso orario corretto
+        if ($createdAt->getTimezone()->getName() !== 'Europe/Rome') {
+            $timezone = new \DateTimeZone('Europe/Rome');
+            $createdAt->setTimezone($timezone);
+        }
         $this->createdAt = $createdAt;
         return $this;
     }

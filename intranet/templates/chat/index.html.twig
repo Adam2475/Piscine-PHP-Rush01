@@ -37,12 +37,15 @@
                             <div class="conversation-info">
                                 <div class="conversation-header">
                                     <span class="conversation-name">{{ conversation.name }}</span>
-                                    {% if conversation.unread_count > 0 %}
-                                        <span class="unread-badge">{{ conversation.unread_count }}</span>
-                                    {% endif %}
+                                    <div class="conversation-meta">
+                                        <span class="conversation-time">{{ conversation.last_message_time|date('H:i') }}</span>
+                                        {% if conversation.unread_count > 0 %}
+                                            <span class="unread-badge">{{ conversation.unread_count }}</span>
+                                        {% endif %}
+                                    </div>
                                 </div>
                                 <div class="conversation-preview">
-                                    <div class="conversation-last-message">{{ conversation.last_message ?: 'No messages yet' }} - {{ conversation.last_message_time|date('H:i') }}</div>
+                                    <div class="conversation-last-message">{{ conversation.last_message ?: 'No messages yet' }}</div>
                                 </div>
                             </div>
                         </button>

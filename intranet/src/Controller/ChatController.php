@@ -87,7 +87,7 @@ class ChatController extends AbstractController
                 'type' => isset($conversation['recipient_id']) ? 'private' : 'project',
                 'name' => $conversation['name'],
                 'email' => $conversation['email'] ?? null,
-                'lastMessage' => $conversation['last_message'],
+                'lastMessage' => $conversation['last_message'], // Ora già formattato nel repository
                 'lastMessageTime' => $conversation['last_message_time']->format('Y-m-d H:i:s'),
                 'unreadCount' => $conversation['unread_count'] ?? 0,
                 'avatar' => $conversation['image'] ?? null

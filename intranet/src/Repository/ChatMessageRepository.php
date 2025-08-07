@@ -56,7 +56,6 @@ class ChatMessageRepository extends ServiceEntityRepository
      */
     public function getRecentConversations(User $user, int $limit = 10): array
     {
-        // First, get all unique conversation partners
         $conversationPartners = $this->createQueryBuilder('m')
             ->select('
                 IDENTITY(m.recipient) as recipient_id,
@@ -69,11 +68,10 @@ class ChatMessageRepository extends ServiceEntityRepository
             ->setParameter('type', 'private')
             ->groupBy('m.recipient, m.sender')
             ->orderBy('last_message_time', 'DESC')
-            ->setMaxResults($limit * 2) // Get more to filter unique partners
+            ->setMaxResults($limit * 2)
             ->getQuery()
             ->getResult();
 
-        // Process to get unique conversation partners
         $uniquePartners = [];
         foreach ($conversationPartners as $conv) {
             $partnerId = ($conv['sender_id'] == $user->getId()) ? $conv['recipient_id'] : $conv['sender_id'];
@@ -83,15 +81,13 @@ class ChatMessageRepository extends ServiceEntityRepository
             }
         }
 
-        // Sort by last message time and limit
         arsort($uniquePartners);
         $uniquePartners = array_slice($uniquePartners, 0, $limit, true);
 
         $conversations = [];
         foreach ($uniquePartners as $partnerId => $lastTime) {
-            // Get the latest message for this conversation
             $latestMessage = $this->createQueryBuilder('m')
-                ->select('m.content, m.createdAt, u.first_name, u.last_name, u.email, u.image')
+                ->select('m.content, m.mediaUrl, m.mediaName, m.createdAt, u.first_name, u.last_name, u.email, u.image')
                 ->leftJoin('App\Entity\User', 'u', 'WITH', 'u.id = :partnerId')
                 ->where('((m.sender = :user AND m.recipient = :partnerId) OR (m.sender = :partnerId AND m.recipient = :user))')
                 ->andWhere('m.type = :type')
@@ -104,7 +100,6 @@ class ChatMessageRepository extends ServiceEntityRepository
                 ->getOneOrNullResult();
 
             if ($latestMessage) {
-                // Count unread messages
                 $unreadCount = $this->createQueryBuilder('m')
                     ->select('COUNT(m.id)')
                     ->where('m.sender = :partnerId AND m.recipient = :user AND m.isRead = false')
@@ -118,7 +113,7 @@ class ChatMessageRepository extends ServiceEntityRepository
                     'name' => $latestMessage['first_name'] . ' ' . $latestMessage['last_name'],
                     'email' => $latestMessage['email'],
                     'image' => $latestMessage['image'],
-                    'last_message' => $latestMessage['content'],
+                    'last_message' => $this->formatMessagePreview($latestMessage['content'], $latestMessage['mediaUrl'], $latestMessage['mediaName']),
                     'last_message_time' => $latestMessage['createdAt'],
                     'unread_count' => $unreadCount
                 ];
@@ -157,5 +152,40 @@ class ChatMessageRepository extends ServiceEntityRepository
             ->setParameter('read', false)
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * Format message preview for conversation list
+     */
+    private function formatMessagePreview(?string $content, ?string $mediaUrl, ?string $mediaName): string
+    {
+        if ($mediaUrl) {
+            $extension = pathinfo($mediaUrl, PATHINFO_EXTENSION);
+            $lowerExt = strtolower($extension);
+        
+            if (in_array($lowerExt, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg']))
+                return '📷 Image';
+            elseif (in_array($lowerExt, ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm']))
+                return '🎥 Video';
+            elseif (in_array($lowerExt, ['mp3', 'wav', 'ogg', 'aac', 'flac']))
+                return '🎵 Audio';
+            elseif (in_array($lowerExt, ['pdf']))
+                return '📄 PDF';
+            elseif (in_array($lowerExt, ['doc', 'docx']))
+                return '📝 Document';
+            else
+                return '📎 File';
+        }
+        
+        // Se c'è solo testo, limitalo a 50 caratteri
+        if ($content) {
+            $content = trim($content);
+            if (strlen($content) > 50) {
+                return substr($content, 0, 50) . '...';
+            }
+            return $content;
+        }
+        
+        return 'No messages yet';
     }
 }
