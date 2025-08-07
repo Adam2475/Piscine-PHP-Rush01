@@ -149,9 +149,9 @@ class ChatController extends AbstractController
             foreach ($allUserProjects as $projUsers)
             {
                 $participant = $projUsers->getUser();
-                if ($participant->getId() !== $user->getId() && !$participant->getIsActive())
+                if ($participant->getId() !== $user->getId())
                 {
-                    $participant->addNotification('New message in project "' . $project->getName() . '" from ' . $user->getFirstName() . ' ' . $user->getLastName());
+                    $participant->addNotification('New message in project "' . $project->getName() . '" from ' . $user->getFirstName() . ' ' . $user->getLastName(), '/chat/project/' . $project->getId());
                     $em->persist($participant);
                 }
             }
