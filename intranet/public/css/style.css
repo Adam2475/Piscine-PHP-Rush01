@@ -429,11 +429,13 @@ button {
   margin: 10px;
   border: none;
   border-radius: 25px;
+  align-self: center;
   background: linear-gradient(to bottom, #111ed3, #4f4ddd);
   color: white;
   cursor: pointer;
   transition: all 0.2s ease;
 }
+
 button:hover {
   background: linear-gradient(to bottom, #76e7b6, #4fd18d);
   transform: translateY(-2px);

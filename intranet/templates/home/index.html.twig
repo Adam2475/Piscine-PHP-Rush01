@@ -9,9 +9,13 @@
     <h1>Welcome to 24 School</h1>
     
     {% if app.user %}
-        <button><a href="{{ path('userpage', { id: app.user.id }) }}">Go to Profile</a></button>
+        <form action="{{ path('userpage', { id: app.user.id }) }}" method="get" style="margin-top: 5px;">
+            <button type="submit" class="btn btn-primary">Go to Profile</button>
+        </form>
     {% else %}
-        <button><a href="{{ path('login') }}">Login</a></button>
+        <form action="{{ path('login') }}" method="get" style="margin-top: 5px;">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
     {% endif %}
 
 {% endblock %}
