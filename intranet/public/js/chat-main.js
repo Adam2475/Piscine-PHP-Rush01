@@ -217,12 +217,23 @@ class MainChat {
                     const unreadBadge = conversation.unreadCount > 0 
                         ? `<span class="unread-badge">${conversation.unreadCount}</span>` 
                         : '';
-                    console.log('Rendering conversation without avatar:', conversation.name);
+                    console.log('Rendering conversation with avatar:', conversation.name);
+                
+                    let avatarElement = '';
+                    if (conversation.type === 'private' && conversation.avatar) {
+                        avatarElement = `<img src="${conversation.avatar}" alt="${conversation.name}" class="conversation-avatar">`;
+                    } else if (conversation.type === 'private') {
+                        const initials = conversation.name.split(' ').map(word => word[0]).join('').toUpperCase();
+                        avatarElement = `<div class="conversation-avatar-placeholder">${initials}</div>`;
+                    } else {
+                        avatarElement = `<div class="conversation-avatar-placeholder">📂</div>`;
+                    }
                     
                     return `
                         <div class="conversation-item ${conversation.unreadCount > 0 ? 'unread' : ''}" 
                              data-type="${conversation.type}" 
                              data-id="${conversation.id}">
+                            ${avatarElement}
                             <div class="conversation-info">
                                 <div class="conversation-header">
                                     <strong class="conversation-name">${conversation.name}</strong>
@@ -231,8 +242,8 @@ class MainChat {
                                 <div class="conversation-preview">
                                     ${conversation.lastMessage || 'No messages yet'}
                                 </div>
-                                <div>
-                                    <strong class="conversation-time">${timeStr}</strong>
+                                <div class="conversation-meta">
+                                    <span class="conversation-time">${timeStr}</span>
                                 </div>
                             </div>
                         </div>

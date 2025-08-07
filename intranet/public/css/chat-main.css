@@ -366,6 +366,11 @@
     object-fit: cover;
 }
 
+.conversation-avatar-placeholder {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    font-size: 14px;
+}
+
 /* Specific styles for conversation avatars */
 .conversation-item img.conversation-avatar {
     width: 40px !important;
@@ -401,6 +406,7 @@
     gap: 0.5rem;
     flex-shrink: 0;
     margin-left: auto;
+    margin-top: 0.25rem;
 }
 
 .conversation-name {
